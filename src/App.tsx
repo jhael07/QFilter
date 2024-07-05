@@ -5,19 +5,22 @@ import { IFilter } from "./lib/types";
 import { executeFilters } from "./lib/utils/common";
 
 const App = () => {
-  const filters = new QFilter<{ name: string }>();
+  const filters = new QFilter<{ name: string; age: number }>();
 
   const users = [
-    { name: "Jhael" },
-    { name: "Galva" },
-    { name: "Thomas" },
-    { name: "Sthifer" },
-    { name: "Enmanuel" },
+    { name: "Jhael", age: 20 },
+    { name: "Galva", age: 26 },
+    { name: "Thomas", age: 20 },
+    { name: "Sthifer", age: 25 },
+    { name: "Enmanuel", age: 19 },
   ];
 
   filters.addGroup({
     id: "first",
-    filters: [{ field: "name", operator: "NotContains", value: "a" }],
+    filters: [
+      { field: "name", operator: "Contains", value: "a" },
+      { field: "age", operator: "GreaterThan", value: 20 },
+    ],
     logic: "AND",
   });
 
@@ -37,7 +40,7 @@ const App = () => {
     }
   };
 
-  console.log(filters.build()[0], users, executeQuery<{ name: string }>(filters.build(), users));
+  // console.log(filters.build()[0], users, executeQuery<{ name: string }>(filters.build(), users));
 
   return (
     <div className="w-full h-screen bg-terciary-950 flex justify-center ">
