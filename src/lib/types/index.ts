@@ -1,5 +1,3 @@
-type Logic = "AND" | "OR";
-
 type OP =
   | "Equal"
   | "NotEqual"
@@ -12,18 +10,63 @@ type OP =
   | "StartsWith"
   | "NotStartsWith"
   | "EndsWith"
-  | "NotEndsWith";
+  | "NotEndsWith"
+  | ComparisonOperator;
 
-interface FilterItem<T> {
-  field: keyof T;
+type FilterType = "startGroup" | "endGroup" | "logicalOperator" | "comparisonOperator";
+
+type FilterGroup = "(" | ")";
+
+type LogicalOperator = "&&" | "||" | "!";
+
+type ComparisonOperator = "===" | "!==" | ">" | "<" | ">=" | "<=";
+
+type commonFilterProps<T> = {
+  id: string | number;
+  parentId?: string | number | null;
+  type: FilterType;
+  children?: Array<GroupCondition<T>>;
+};
+
+type FilterLogicalOperator<T> = {
+  operator: LogicalOperator;
+} & commonFilterProps<T>;
+
+type FilterGroupOperator<T> = {
+  operator: FilterGroup;
+} & commonFilterProps<T>;
+
+type FilterOperator<T> = {
   operator: OP;
-  value: number | string | boolean;
-}
+  value: string | number | boolean;
+  field: keyof T;
+} & commonFilterProps<T>;
 
-interface IFilter<T> {
-  id: string;
-  logic: Logic;
-  filters: Array<FilterItem<T>>;
-}
+type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
 
-export { type IFilter, type OP, type Logic, type FilterItem };
+type AddFilterFn<T> = (
+  id: string | number,
+  field: keyof T,
+  operator: OP,
+  value: number | string | boolean,
+  parentId: string | number
+) => FilterOperator<T>;
+
+type GroupCondition<T> =
+  | FilterOperator<T>
+  | FilterGroupOperator<T>
+  | (FilterLogicalOperator<T> & commonFilterProps<T>);
+
+export {
+  type GroupCondition,
+  type OP,
+  type FilterType,
+  type FilterGroup,
+  type LogicalOperator,
+  type ComparisonOperator,
+  type FilterLogicalOperator,
+  type FilterGroupOperator,
+  type FilterOperator,
+  type FilterBuild,
+  type AddFilterFn,
+};

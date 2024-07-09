@@ -1,0 +1,30 @@
+[
+  {
+    "id": "guid",
+    "condition": "user.name==='Jhael'",
+    "type": "filter"
+  },
+  {
+    "condition": "||",
+    "type": "op"
+  },
+  {
+    "condition": "user.name.startsWith('Jhael')",
+    "type": "filter"
+  },
+  {
+    "id":"guid",
+    "condition": "(",
+    "type": "startGroup"
+  },
+  {
+    "id": "guid",
+    "condition": "user.name==='Jhael'",
+    "type": "filter",
+    "parent":"guid"
+  },
+  {
+    "condition": ")",
+    "type": "endGroup"
+  }
+]
