@@ -1,0 +1,93 @@
+{
+  "filters": [
+    {
+      "field": "age",
+      "operator": "<=",
+      "value": 30,
+      "id": "8bba1bfc",
+      "parentId": null,
+      "type": "comparisonOperator"
+    },
+    {
+      "id": "4cf9a476",
+      "parentId": null,
+      "operator": "&&",
+      "type": "logicalOperator"
+    },
+    {
+      "field": "city",
+      "operator": "!==",
+      "value": "Santiago",
+      "id": "fd5b8a3e",
+      "parentId": null,
+      "type": "comparisonOperator"
+    },
+    {
+      "id": "ea7bce84",
+      "parentId": null,
+      "operator": "&&",
+      "type": "logicalOperator"
+    },
+    {
+      "id": "4e6236ca",
+      "operator": "(",
+      "type": "group",
+      "parentId": "klk",
+      "children": [
+        {
+          "field": "city",
+          "operator": "!==",
+          "value": "Santiago",
+          "id": "fd5b8a3e",
+          "parentId": null,
+          "type": "comparisonOperator"
+        },
+        {
+          "id": "4e6236ca",
+          "operator": "(",
+          "type": "group",
+          "parentId": "klk",
+          "children": [
+            {
+              "field": "city",
+              "operator": "!==",
+              "value": "Santiago",
+              "id": "fd5b8a3e",
+              "parentId": null,
+              "type": "comparisonOperator"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "field": "city",
+      "operator": "Contains",
+      "value": "sde",
+      "id": "838ad590",
+      "parentId": null,
+      "type": "comparisonOperator"
+    },
+    {
+      "id": "0f422825",
+      "parentId": null,
+      "operator": "&&",
+      "type": "logicalOperator"
+    },
+    {
+      "field": "name",
+      "operator": "Contains",
+      "value": "g",
+      "id": "8fa5be08",
+      "parentId": null,
+      "type": "comparisonOperator"
+    },
+    {
+      "id": "1e9818bb",
+      "parentId": "klk",
+      "operator": ")",
+      "type": "endGroup"
+    }
+  ],
+  "buildFilters": ""
+}
