@@ -13,7 +13,7 @@ type OP =
   | "NotEndsWith"
   | ComparisonOperator;
 
-type FilterType = "startGroup" | "endGroup" | "logicalOperator" | "comparisonOperator";
+type FilterType = "group" | "logicalOperator" | "comparisonOperator";
 
 type FilterGroup = "(" | ")";
 
@@ -55,9 +55,21 @@ type AddFilterFn<T> = (
 type GroupCondition<T> =
   | FilterOperator<T>
   | FilterGroupOperator<T>
-  | (FilterLogicalOperator<T> & commonFilterProps<T>);
+  | FilterLogicalOperator<T>
+  | commonFilterProps<T>;
+
+type BuildResult<T> = { conditions: Readonly<string>; result: ReadonlyArray<T> };
+
+type FiltersType<T> =
+  | FilterOperator<T>
+  | FilterGroupOperator<T>
+  | FilterLogicalOperator<T>
+  | commonFilterProps<T>;
 
 export {
+  type FiltersType,
+  type BuildResult,
+  type commonFilterProps,
   type GroupCondition,
   type OP,
   type FilterType,

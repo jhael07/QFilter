@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GroupCondition, OP } from "../types";
 
-const generateUID = () => crypto.randomUUID().substring(0, 8);
+/**
+ * Generates a random UID with only 8 characters.
+ * This is used for most of the IDs in the `QFilter` class.
+ *
+ * @returns {string} A string representing the generated UID.
+ */
+export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
 
 export const where = <T>(
   field: keyof T,
@@ -21,51 +28,39 @@ export const where = <T>(
   return body;
 };
 
-export const group = <T>(filters: Array<GroupCondition<T>>): Array<GroupCondition<T>> => {
-  const id = crypto.randomUUID().substring(0, 8);
+export const group = <T>(
+  filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>
+): Array<GroupCondition<T>> => {
+  const id = generateUID();
 
-  const allFilters: Array<GroupCondition<T>> = [];
-
-  allFilters.push({
+  const group = {
     id,
-    operator: "(",
-    type: "startGroup",
-  });
+    children: filters?.map((filter: any) => ({ ...filter, parentId: id })) as any,
+    type: "group",
+  } as any;
 
-  filters.forEach((child) =>
-    allFilters.push({ ...child, parentId: id, id: crypto.randomUUID().substring(0, 8) })
-  );
-  allFilters.push({
-    id: crypto.randomUUID(),
-    operator: ")",
-    type: "endGroup",
-  });
-
-  return allFilters;
+  return group;
 };
 
-export const and = <T>(parentId: string | number | null = null): GroupCondition<T> => {
+export const and = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),
-    parentId,
     operator: "&&",
     type: "logicalOperator",
   };
 };
 
-export const or = <T>(parentId: string | number | null = null): GroupCondition<T> => {
+export const or = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),
-    parentId,
     operator: "||",
     type: "logicalOperator",
   };
 };
 
-export const not = <T>(parentId: string | number | null = null): GroupCondition<T> => {
+export const not = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),
-    parentId,
     operator: "!",
     type: "logicalOperator",
   };
