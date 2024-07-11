@@ -21,7 +21,7 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
 Install the library using npm or yarn:
 
 ```bash
-npm install qfilter
+npx jsr add @jrod/qfilter
 ```
 
 or
