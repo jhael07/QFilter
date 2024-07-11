@@ -1,38 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "./index.css";
-import QFilterBuilder from "./lib/QFilterBuilder";
-import { and, where } from "./lib/utils/groupItems";
+// import QFilterBuilder from "./lib/QFilterBuilder";
+// import { and, where } from "./lib/utils/groupItems";
 // import { and, group, or, where } from "./lib/utils/groupItems";
 
-type Test = { name: string; age: number; city: string };
+// type Test = { name: string; age: number; city: string };
 const App = () => {
-  const users: Array<Test> = [
-    { name: "Jhael", age: 20, city: "DN" },
-    { name: "Jhael", age: 21, city: "Santiago" },
-    { name: "Galva", age: 26, city: "SD" },
-    { name: "Galva", age: 26, city: "SDE" },
-    { name: "Thomas", age: 20, city: "SDN" },
-    { name: "Sthifer", age: 25, city: "SDN" },
-    { name: "Enmanuel", age: 19, city: "SDO" },
-  ];
+  // const users: Array<Test> = [
+  //   { name: "Jhael", age: 20, city: "DN" },
+  //   { name: "Jhael", age: 21, city: "Santiago" },
+  //   { name: "Galva", age: 26, city: "SD" },
+  //   { name: "Galva", age: 26, city: "SDE" },
+  //   { name: "Thomas", age: 20, city: "SDN" },
+  //   { name: "Sthifer", age: 25, city: "SDN" },
+  //   { name: "Enmanuel", age: 19, city: "SDO" },
+  // ];
 
-  const filterBuilder = new QFilterBuilder<Test>()
-    .where("name", "Contains", "e")
-    .and()
-    .group([where("age", "GreaterThan", 20)]);
-
-  const groupId = filterBuilder.getFilters.at(2)?.id;
-
-  filterBuilder.add(groupId ?? "", [and(), where("name", "Contains", "s")]);
-
-  const build = filterBuilder.build();
-
-  try {
-    console.log(build.filter(users));
-  } catch (err) {
-    console.log(err.message);
-  }
-  console.log(build);
+  // const builder = new QFilterBuilder<Test>()
+  //   .where("name", "Contains", "e")
+  //   .and()
+  //   .group([where("age", "GreaterThan", 20)]);
 
   return (
     <div className="w-full h-screen bg-terciary-950 flex justify-center ">

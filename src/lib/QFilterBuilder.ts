@@ -10,7 +10,7 @@ import {
   GroupCondition,
   OP,
 } from "./types";
-import { generateUID } from "./utils/groupItems";
+import { generateUID } from "./utils/operations";
 
 class QFilterBuilder<T> {
   private filters: Array<FiltersType<T>> = [];
@@ -54,56 +54,82 @@ class QFilterBuilder<T> {
   }
 
   /**
-   * This method ```adds``` an item or a group of items in the ```QFilter``` by it's index or it's id.
+   * Adds an item or a group of items to the `QFilterBuilder` by its ID.
    *
-   * @param identifier this could be either an index or an id (string or number).
-   * @param filters this is an array of filters, they could of any of these types: ``` FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>```
+   * @param {string | number} id - The ID of the item.
+   * @param {Array<FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>>} filtersToAdd - An array of filters to add. These filters can be of types: `FilterOperator<T>`, `FilterGroupOperator<T>`, or `FilterLogicalOperator<T>`.
+   * @param {"before" | "after"} [position="before"] - Specifies the position to add the new filters relative to the item with the given ID. Can be "before" or "after". By default it is ```"before"```.
+   * @param {Array<commonFilterProps<T> | FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>>} [filtersArr] - If not provided, the default filters in the `QFilterBuilder` will be used.
    *
    * @example
+   * const users: Array<Test> = [
+   *   { name: "Jhael", age: 20, city: "DN" },
+   *   { name: "Jhael", age: 21, city: "Santiago" },
+   *   { name: "Galva", age: 26, city: "SD" },
+   *   { name: "Galva", age: 26, city: "SDE" },
+   *   { name: "Thomas", age: 20, city: "SDN" },
+   *   { name: "Sthifer", age: 25, city: "SDN" },
+   *   { name: "Enmanuel", age: 19, city: "SDO" },
+   * ];
    *
-   * const newFilter = new QFilter<name: string, age: number>()
+   * const builder = new QFilterBuilder<Test>()
+   *   .where("name", "Contains", "e")
+   *   .and()
+   *   .where("age", "GreaterThan", 20);
    *
-   * newFilter.where("name","Equal","Jon Doe").and().where("age","LessThan",30);
+   * // At this point, the result is:
+   * // [
+   * //   { name: 'Jhael', age: 21, city: 'Santiago' },
+   * //   { name: 'Sthifer', age: 25, city: 'SDN' }
+   * // ]
    *
-   * // Here we will add a new condition  between the first and the third, so for that reason wi will pass the number 2 as it is the second position.
+   * // The method `getFilters` returns an array of all filters so far:
+   * // [where, and, where]
+   * //   0,     1,    2
    *
-   * newFilter.add(2,[where("age","GreaterThan",20), and()])
+   * // Add a condition before the last `where` (position 2):
+   * const idToAdd = builder.getFilters.at(2)?.id ?? "";
    *
-   * // You could also add a new group of condtions or new condition into an existing group by the id:
+   * builder.add(idToAdd, [where("age", "GreaterThan", 21), and()]);
+   * // Now the logic is: `data.name.toLowerCase().includes('e') && data.age > 21 && (data.age > 20)`
    *
+   * const QFilter = builder.build();
+   * const usersFilter = QFilter.filter(users);
+   * console.log(usersFilter); // [ { name: 'Sthifer', age: 25, city: 'SDN' } ]
    *
-   * newFilter.where("name","Equal","Jon Doe").and().where("age","LessThan",30).or().group([where("name", "Contains", "s")])
-   *
-   * // let's added it
-   *
-   * // variable to get the id of the group
-   * const groupId = newFilter.getFiters.at(4).id
-   *
-   * newFilter.add(groupId, [and(),where("age","GreaterThan",23)])
-   *
-   *
-   *
-   * @returns void
+   * @returns {boolean} - Returns `true` if the filters were successfully added, otherwise `false`.
    */
   add(
-    identifier: string | number,
-    filters?: (
-      | commonFilterProps<T>
-      | FilterOperator<T>
-      | FilterGroupOperator<T>
-      | FilterLogicalOperator<T>
-    )[]
-  ): void {
-    for (let i = 0; i < this.filters.length; i++) {
-      const item = this.filters[i];
-      if (item.id === identifier || i === identifier) {
-        filters?.forEach((filter, j) => this.filters.splice(i + j, 0, filter));
-        return;
+    id: string | number,
+    filtersToAdd: Array<FiltersType<T>>,
+    position: "after" | "before" = "before",
+    filtersArr?: Array<FiltersType<T>>
+  ): boolean {
+    const itemsToFilter = filtersArr ?? this.filters;
+
+    for (let i = 0; i < itemsToFilter.length; i++) {
+      const item = itemsToFilter[i];
+      if (item.id === id) {
+        filtersToAdd.forEach((filter, j) => {
+          // prettier-ignore
+          const index = position === "before"
+           ? i + j // before index position
+           : i + j + 1; // after index position
+
+          itemsToFilter.splice(index, 0, filter);
+        });
+        return true;
       }
 
-      if (item.children) filters?.forEach((filter) => this.filters[i].children?.push(filter));
+      if (item.type === "group" && item.children) {
+        const added = this.add(id, filtersToAdd, position, item.children);
+        if (added) return true;
+      }
     }
+
+    return false;
   }
+
   remove(
     id: string | number,
     filters?: (
@@ -127,6 +153,38 @@ class QFilterBuilder<T> {
       if (item.type === "group" && item.children) {
         const removed = this.remove(id, item.children);
         if (removed) return true;
+      }
+    }
+    return false;
+  }
+
+  update(
+    id: string | number,
+    filter:
+      | commonFilterProps<T>
+      | FilterOperator<T>
+      | FilterGroupOperator<T>
+      | FilterLogicalOperator<T>,
+    filters?: (
+      | commonFilterProps<T>
+      | FilterOperator<T>
+      | FilterGroupOperator<T>
+      | FilterLogicalOperator<T>
+    )[]
+  ): boolean {
+    const filtersToApply = filters ?? this.filters;
+
+    for (let i = 0; i < filtersToApply.length; i++) {
+      const item = filtersToApply[i];
+
+      if (item.id === id) {
+        filtersToApply.splice(i, 1, filter);
+        return true;
+      }
+
+      if (item.type === "group" && item.children) {
+        const updated = this.update(id, filter, item.children);
+        if (updated) return true;
       }
     }
     return false;
