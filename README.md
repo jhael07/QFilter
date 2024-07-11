@@ -106,7 +106,7 @@ console.log(filteredUsers);
 
 Applies the filters to the given data source and returns the filtered data.
 
-## Utilities
+## Utilities for group filter
 
 | Method Signature                              | Description                   |
 | --------------------------------------------- | ----------------------------- |
@@ -120,11 +120,11 @@ Applies the filters to the given data source and returns the filtered data.
 ## Example
 
 ```typescript
-[
+.group([
   where("age", "GreaterThan", 20),
   or(),
   not(where("city", "Equal", "SD"), and(), group([where("age", "GreaterThan", 20)])),
-];
+]);
 ```
 
 ## Contributing
