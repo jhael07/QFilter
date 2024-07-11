@@ -24,13 +24,13 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
 
 Install the library using npm or yarn:
 
-```sh
+```bash
 npm install qfilter
 ```
 
 or
 
-```sh
+```bash
 yarn add qfilter
 ```
 
@@ -88,39 +88,17 @@ console.log(filteredUsers);
 
 ### QFilterBuilder
 
-#### `where(field: keyof T, operator: OP, value: number | string | boolean, id?: string | number, parentId?: string | number): this`
+## Table of Contents
 
-Adds a comparison filter.
-
-#### `group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this`
-
-Creates a group of filters.
-
-#### `add(id: string | number, filtersToAdd: Array<FiltersType<T>>, position: "after" | "before" = "before", filtersArr?: Array<FiltersType<T>>): boolean`
-
-Adds filters at a specified position relative to the given ID.
-
-#### `remove(id: string | number, filters?: Array<FiltersType<T>>): boolean`
-
-Removes filters by ID.
-
-#### `update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean`
-
-Updates a filter by ID.
-
-#### `and(): this`
-
-Adds a logical AND operator.
-
-#### `or(): this`
-
-Adds a logical OR operator.
-
-#### `not(): this`
-
-Adds a logical NOT operator.
-
-#### `build(): QFilter<T>`
+- [where(field: keyof T, operator: OP, value: number | string | boolean, id?: string | number, parentId?: string | number): this](#wherefield-keyof-t-operator-op-value-number--string--boolean-id-string--number-parentid-string--number-this)
+- [group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this](#groupfilters-arraygroupconditiont--arraygroupconditiont-this)
+- [add(id: string | number, filtersToAdd: Array<FiltersType<T>>, position: "after" | "before" = "before", filtersArr?: Array<FiltersType<T>>): boolean](#addid-string--number-filterstoadd-arrayfilterstypet-position-after--before--before-filtersarr-arrayfilterstypet-boolean)
+- [remove(id: string | number, filters?: Array<FiltersType<T>>): boolean](#removeid-string--number-filters-arrayfilterstypet-boolean)
+- [update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean](#updateid-string--number-filter-filterstypet-filters-arrayfilterstypet-boolean)
+- [and(): this](#and-this)
+- [or(): this](#or-this)
+- [not(): this](#not-this)
+- [build(): QFilter<T>](#build-qfiltert)
 
 Builds and returns a `QFilter` instance.
 
