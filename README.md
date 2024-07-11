@@ -108,8 +108,6 @@ Applies the filters to the given data source and returns the filtered data.
 
 ## Utilities
 
-Here's the markdown table with the types excluded from the method signatures:
-
 | Method Signature                              | Description                   |
 | --------------------------------------------- | ----------------------------- |
 | `generateUID()`                               | Generates a random UID.       |
@@ -119,11 +117,15 @@ Here's the markdown table with the types excluded from the method signatures:
 | `or()`                                        | Creates a logical OR filter.  |
 | `not()`                                       | Creates a logical NOT filter. |
 
-Creates a logical NOT filter.
+## Example
 
-## Examples
-
-Refer to the [examples](./examples) directory for more usage examples.
+```typescript
+[
+  where("age", "GreaterThan", 20),
+  or(),
+  not(where("city", "Equal", "SD"), and(), group([where("age", "GreaterThan", 20)])),
+];
+```
 
 ## Contributing
 
