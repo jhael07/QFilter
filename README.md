@@ -110,7 +110,6 @@ Applies the filters to the given data source and returns the filtered data.
 
 Here's the markdown table with the types excluded from the method signatures:
 
-```markdown
 | Method Signature                              | Description                   |
 | --------------------------------------------- | ----------------------------- |
 | `generateUID()`                               | Generates a random UID.       |
@@ -119,7 +118,6 @@ Here's the markdown table with the types excluded from the method signatures:
 | `and()`                                       | Creates a logical AND filter. |
 | `or()`                                        | Creates a logical OR filter.  |
 | `not()`                                       | Creates a logical NOT filter. |
-```
 
 Creates a logical NOT filter.
 
