@@ -1,15 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import QFilter from "./QFilter";
-import {
-  commonFilterProps,
-  FilterGroupOperator,
-  FilterLogicalOperator,
-  FilterOperator,
-  FiltersType,
-  GroupCondition,
-  OP,
-} from "./types";
+import { FilterOperator, FiltersType, GroupCondition, OP } from "./types";
 import { generateUID } from "./utils/operations";
 
 class QFilterBuilder<T> {
@@ -130,15 +122,7 @@ class QFilterBuilder<T> {
     return false;
   }
 
-  remove(
-    id: string | number,
-    filters?: (
-      | commonFilterProps<T>
-      | FilterOperator<T>
-      | FilterGroupOperator<T>
-      | FilterLogicalOperator<T>
-    )[]
-  ): boolean {
+  remove(id: string | number, filters?: Array<FiltersType<T>>): boolean {
     // 1. get the filters
     const itemsToFilter = filters ?? this.filters;
     // 2. iterate to remove
@@ -158,20 +142,7 @@ class QFilterBuilder<T> {
     return false;
   }
 
-  update(
-    id: string | number,
-    filter:
-      | commonFilterProps<T>
-      | FilterOperator<T>
-      | FilterGroupOperator<T>
-      | FilterLogicalOperator<T>,
-    filters?: (
-      | commonFilterProps<T>
-      | FilterOperator<T>
-      | FilterGroupOperator<T>
-      | FilterLogicalOperator<T>
-    )[]
-  ): boolean {
+  update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean {
     const filtersToApply = filters ?? this.filters;
 
     for (let i = 0; i < filtersToApply.length; i++) {

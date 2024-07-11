@@ -88,17 +88,17 @@ console.log(filteredUsers);
 
 ### QFilterBuilder
 
-| Method Signature | Description                              |
-| ---------------- | ---------------------------------------- |
-| [where]          | Adds a comparison filter.                |
-| [group]          | Creates a group of filters.              |
-| [add]            | Adds filters at a specified position.    |
-| [remove]         | Removes filters by ID.                   |
-| [update]         | Updates a filter by ID.                  |
-| [and]            | Adds a logical AND operator.             |
-| [or]             | Adds a logical OR operator.              |
-| [not]            | Adds a logical NOT operator.             |
-| [build]          | Builds and returns a `QFilter` instance. |
+| Method Signature | Params                                                                                                                                                        | Description                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| [where]          | field: `keyof T`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
+| [group]          | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
+| [add]            | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
+| [remove]         | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
+| [update]         | id:`string` \| `number`<br>filter: `FiltersType<T>`<br> filters?: `Array<FiltersType<T>>`                                                                     | Updates a filter by ID.                  |
+| [and]            |                                                                                                                                                               | Adds a logical AND operator.             |
+| [or]             |                                                                                                                                                               | Adds a logical OR operator.              |
+| [not]            |                                                                                                                                                               | Adds a logical NOT operator.             |
+| [build]          |                                                                                                                                                               | Builds and returns a `QFilter` instance. |
 
 ### QFilter
 
@@ -108,27 +108,18 @@ Applies the filters to the given data source and returns the filtered data.
 
 ## Utilities
 
-### `generateUID()`
+Here's the markdown table with the types excluded from the method signatures:
 
-Generates a random UID.
-
-### `where<T>(field: keyof T, operator: OP, value: number | string | boolean, id?: string | number, parentId?: string | number): GroupCondition<T>`
-
-Creates a `where` filter.
-
-### `group<T>(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): Array<GroupCondition<T>>`
-
-Creates a group of filters.
-
-### `and<T>(): GroupCondition<T>`
-
-Creates a logical AND filter.
-
-### `or<T>(): GroupCondition<T>`
-
-Creates a logical OR filter.
-
-### `not<T>(): GroupCondition<T>`
+```markdown
+| Method Signature                              | Description                   |
+| --------------------------------------------- | ----------------------------- |
+| `generateUID()`                               | Generates a random UID.       |
+| `where(field, operator, value, id, parentId)` | Creates a where filter.       |
+| `group(filters)`                              | Creates a group of filters.   |
+| `and()`                                       | Creates a logical AND filter. |
+| `or()`                                        | Creates a logical OR filter.  |
+| `not()`                                       | Creates a logical NOT filter. |
+```
 
 Creates a logical NOT filter.
 
