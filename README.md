@@ -12,6 +12,7 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
   - [QFilterBuilder](#qfilterbuilder)
   - [QFilter](#qfilter)
   - [Utilities](#utilities-for-group-filter)
+- [Type Definitions](#types-definitions)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -122,6 +123,132 @@ Applies the filters to the given data source and returns the filtered data.
 ]);
 ```
 
+## Types Definitions
+
+#### `OP`
+
+```typescript
+type OP =
+  | "Equal"
+  | "NotEqual"
+  | "LessThan"
+  | "GreaterThan"
+  | "GreaterThanOrEqual"
+  | "LessThanOrEqual"
+  | "Contains"
+  | "NotContains"
+  | "StartsWith"
+  | "NotStartsWith"
+  | "EndsWith"
+  | "NotEndsWith"
+  | ComparisonOperator;
+```
+
+#### `FilterType`
+
+```typescript
+type FilterType = "group" | "logicalOperator" | "comparisonOperator";
+```
+
+#### `FilterGroup`
+
+```typescript
+type FilterGroup = "(" | ")";
+```
+
+#### `LogicalOperator`
+
+```typescript
+type LogicalOperator = "&&" | "||" | "!";
+```
+
+#### `ComparisonOperator`
+
+```typescript
+type ComparisonOperator = "===" | "!==" | ">" | "<" | ">=" | "<=";
+```
+
+#### `commonFilterProps<T>`
+
+```typescript
+type commonFilterProps<T> = {
+  id: string | number;
+  parentId?: string | number | null;
+  type: FilterType;
+  children?: Array<GroupCondition<T>>;
+};
+```
+
+#### `FilterLogicalOperator<T>`
+
+```typescript
+type FilterLogicalOperator<T> = {
+  operator: LogicalOperator;
+} & commonFilterProps<T>;
+```
+
+#### `FilterGroupOperator<T>`
+
+```typescript
+type FilterGroupOperator<T> = {
+  operator: FilterGroup;
+} & commonFilterProps<T>;
+```
+
+#### `FilterOperator<T>`
+
+```typescript
+type FilterOperator<T> = {
+  operator: OP;
+  value: string | number | boolean;
+  field: keyof T;
+} & commonFilterProps<T>;
+```
+
+#### `FilterBuild<T>`
+
+```typescript
+type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
+```
+
+#### `AddFilterFn<T>`
+
+```typescript
+type AddFilterFn<T> = (
+  id: string | number,
+  field: keyof T,
+  operator: OP,
+  value: number | string | boolean,
+  parentId: string | number
+) => FilterOperator<T>;
+```
+
+#### `GroupCondition<T>`
+
+```typescript
+type GroupCondition<T> =
+  | FilterOperator<T>
+  | FilterGroupOperator<T>
+  | FilterLogicalOperator<T>
+  | commonFilterProps<T>;
+```
+
+#### `BuildResult<T>`
+
+```typescript
+type BuildResult<T> = { conditions: Readonly<string>; result: ReadonlyArray<T> };
+```
+
+#### `FiltersType<T>`
+
+```typescript
+type FiltersType<T> =
+  | FilterOperator<T>
+  | FilterGroupOperator<T>
+  | FilterLogicalOperator<T>
+  | commonFilterProps<T>;
+```
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or improvements.
@@ -129,7 +256,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-Feel free to customize the README further to better suit your project's needs!

@@ -7,9 +7,23 @@ import { generateUID } from "./utils/operations";
 class QFilterBuilder<T> {
   private filters: Array<FiltersType<T>> = [];
 
+  /**
+   * Getter for retrieving a readonly copy of the filters array.
+   * @returns {ReadonlyArray<FiltersType<T>>} A readonly array of filters.
+   */
   get getFilters(): readonly FiltersType<T>[] {
     return this.filters.slice() as ReadonlyArray<FiltersType<T>>;
   }
+
+  /**
+   * Adds a filter condition to the query.
+   * @param {keyof T} field The field on which to apply the filter.
+   * @param {OP} operator The comparison operator for the filter.
+   * @param {number | string | boolean} value The value to compare against.
+   * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+   * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
+   * @returns {this} The instance of the class with the added filter condition.
+   */
 
   where(
     field: keyof T,
@@ -31,6 +45,11 @@ class QFilterBuilder<T> {
     return this;
   }
 
+  /**
+   * Groups multiple filter conditions into a logical group.
+   * @param {Array<GroupCondition<T> | Array<GroupCondition<T>>>} filters An array of group conditions or nested arrays of group conditions.
+   * @returns {this} The instance of the class with the added grouped filter conditions.
+   */
   group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this {
     const id = generateUID();
 
@@ -122,6 +141,12 @@ class QFilterBuilder<T> {
     return false;
   }
 
+  /**
+   * Removes a filter condition or group of conditions by ID from the filters array.
+   * @param {string | number} id The identifier of the filter condition or group to remove.
+   * @param {Array<FiltersType<T>>} [filters] Optional array of filters to search within (defaults to this.filters if not provided).
+   * @returns {boolean} True if the filter condition or group was successfully removed, false otherwise.
+   */
   remove(id: string | number, filters?: Array<FiltersType<T>>): boolean {
     // 1. get the filters
     const itemsToFilter = filters ?? this.filters;
@@ -142,6 +167,13 @@ class QFilterBuilder<T> {
     return false;
   }
 
+  /**
+   * Updates a filter condition or group of conditions by ID in the filters array.
+   * @param {string | number} id The identifier of the filter condition or group to update.
+   * @param {FiltersType<T>} filter The updated filter object to replace the existing one.
+   * @param {Array<FiltersType<T>>} [filters] Optional array of filters to search within (defaults to this.filters if not provided).
+   * @returns {boolean} True if the filter condition or group was successfully updated, false otherwise.
+   */
   update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean {
     const filtersToApply = filters ?? this.filters;
 
@@ -161,6 +193,10 @@ class QFilterBuilder<T> {
     return false;
   }
 
+  /**
+   * Adds a logical AND operator ('&&') to the filters array.
+   * @returns {this} The instance of the class with the added logical AND operator.
+   */
   and(): this {
     this.filters.push({
       id: generateUID(),
@@ -171,6 +207,10 @@ class QFilterBuilder<T> {
     return this;
   }
 
+  /**
+   * Adds a logical OR operator ('||') to the filters array.
+   * @returns {this} The instance of the class with the added logical OR operator.
+   */
   or(): this {
     this.filters.push({
       id: generateUID(),
@@ -180,6 +220,10 @@ class QFilterBuilder<T> {
     return this;
   }
 
+  /**
+   * Adds a logical NOT operator ('!') to the filters array.
+   * @returns {this} The instance of the class with the added logical NOT operator.
+   */
   not(): this {
     this.filters.push({
       id: generateUID(),
@@ -189,6 +233,10 @@ class QFilterBuilder<T> {
     return this;
   }
 
+  /**
+   * Constructs a new QFilter instance with the current filters array.
+   * @returns {QFilter<T>} A new QFilter instance initialized with the current filters.
+   */
   build(): QFilter<T> {
     return new QFilter(this.filters);
   }

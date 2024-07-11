@@ -17,6 +17,11 @@ class QFilter<T> extends QExecute<T> {
     this.filters = filters;
   }
 
+  /**
+   * Dynamically generates a filter expression based on the provided filter item.
+   * Modifies the `buildFilters` property of the class instance.
+   * @param {commonFilterProps<T> | FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>} item The filter item to generate the expression for.
+   */
   private generateFilter(
     item:
       | commonFilterProps<T>
@@ -118,6 +123,11 @@ class QFilter<T> extends QExecute<T> {
     }
   }
 
+  /**
+   * Applies the built filters to the provided dataSource and returns filtered results.
+   * @param {T[]} dataSource The array of data to filter.
+   * @returns {readonly T[]} An array of filtered data matching the applied filters.
+   */
   filter(dataSource: T[]): readonly T[] {
     if (!this.buildFilters) {
       this.buildFilters = "";
