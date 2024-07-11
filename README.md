@@ -15,8 +15,7 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
 - [API](#api)
   - [QFilterBuilder](#qfilterbuilder)
   - [QFilter](#qfilter)
-  - [Utilities](#utilities)
-- [Examples](#examples)
+  - [Utilities](#utilities-for-group-filter)
 - [Contributing](#contributing)
 - [License](#license)
 
