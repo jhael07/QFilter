@@ -88,17 +88,18 @@ console.log(filteredUsers);
 
 ### QFilterBuilder
 
-## Table of Contents
+| Method Signature                                                                                                                                                                                                                                                                  | Description                           |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [where(field: keyof T, operator: OP, value: number \| string \| boolean, id?: string \| number, parentId?: string \| number): this](#wherefield-keyof-t-operator-op-value-number--string--boolean-id-string--number-parentid-string--number-this)                                 | Adds a comparison filter.             |
+| [group(filters: Array<GroupCondition<T> \| Array<GroupCondition<T>>>): this](#groupfilters-arraygroupconditiont--arraygroupconditiont-this)                                                                                                                                       | Creates a group of filters.           |
+| [add(id: string \| number, filtersToAdd: Array<FiltersType<T>>, position: "after" \| "before" = "before", filtersArr?: Array<FiltersType<T>>): boolean](#addid-string--number-filterstoadd-arrayfilterstypet-position-after--before--before-filtersarr-arrayfilterstypet-boolean) | Adds filters at a specified position. |
+| [remove(id: string \| number, filters?: Array<FiltersType<T>>): boolean](#removeid-string--number-filters-arrayfilterstypet-boolean)                                                                                                                                              | Removes filters by ID.                |
+| [update(id: string \| number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean](#updateid-string--number-filter-filterstypet-filters-arrayfilterstypet-boolean)                                                                                                  | Updates a filter by ID.               |
+| [and(): this](#and-this)                                                                                                                                                                                                                                                          | Adds a logical AND operator.          |
+| [or(): this](#or-this)                                                                                                                                                                                                                                                            | Adds a logical OR operator.           |
+| [not(): this](#not-this)                                                                                                                                                                                                                                                          | Adds a logical NOT operator.          |
 
-- [where(field: keyof T, operator: OP, value: number | string | boolean, id?: string | number, parentId?: string | number): this](#wherefield-keyof-t-operator-op-value-number--string--boolean-id-string--number-parentid-string--number-this)
-- [group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this](#groupfilters-arraygroupconditiont--arraygroupconditiont-this)
-- [add(id: string | number, filtersToAdd: Array<FiltersType<T>>, position: "after" | "before" = "before", filtersArr?: Array<FiltersType<T>>): boolean](#addid-string--number-filterstoadd-arrayfilterstypet-position-after--before--before-filtersarr-arrayfilterstypet-boolean)
-- [remove(id: string | number, filters?: Array<FiltersType<T>>): boolean](#removeid-string--number-filters-arrayfilterstypet-boolean)
-- [update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean](#updateid-string--number-filter-filterstypet-filters-arrayfilterstypet-boolean)
-- [and(): this](#and-this)
-- [or(): this](#or-this)
-- [not(): this](#not-this)
-- [build(): QFilter<T>](#build-qfiltert)
+| [build(): QFilter<T>](#build-qfiltert)
 
 Builds and returns a `QFilter` instance.
 
