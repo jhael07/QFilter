@@ -90,15 +90,15 @@ console.log(filteredUsers);
 
 | Method Signature | Params                                                                                                                                                        | Description                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| [where]          | field: `keyof T`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
-| [group]          | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
-| [add]            | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
-| [remove]         | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
-| [update]         | id:`string` \| `number`<br>filter: `FiltersType<T>`<br> filters?: `Array<FiltersType<T>>`                                                                     | Updates a filter by ID.                  |
-| [and]            |                                                                                                                                                               | Adds a logical AND operator.             |
-| [or]             |                                                                                                                                                               | Adds a logical OR operator.              |
-| [not]            |                                                                                                                                                               | Adds a logical NOT operator.             |
-| [build]          |                                                                                                                                                               | Builds and returns a `QFilter` instance. |
+| where            | field: `keyof T`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
+| group            | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
+| add              | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
+| remove           | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
+| update           | id:`string` \| `number`<br>filter: `FiltersType<T>`<br> filters?: `Array<FiltersType<T>>`                                                                     | Updates a filter by ID.                  |
+| and              |                                                                                                                                                               | Adds a logical AND operator.             |
+| or               |                                                                                                                                                               | Adds a logical OR operator.              |
+| not              |                                                                                                                                                               | Adds a logical NOT operator.             |
+| build            |                                                                                                                                                               | Builds and returns a `QFilter` instance. |
 
 ### QFilter
 
