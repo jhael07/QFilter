@@ -1,7 +1,3 @@
-Here's a comprehensive README for your repository:
-
----
-
 # QFilter
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
