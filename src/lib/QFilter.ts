@@ -23,7 +23,7 @@ class QFilter<T> extends QExecute<T> {
       | FilterOperator<T>
       | FilterGroupOperator<T>
       | FilterLogicalOperator<T>
-  ) {
+  ): void {
     if (!item) return;
 
     if (!this.buildFilters) this.buildFilters = "";

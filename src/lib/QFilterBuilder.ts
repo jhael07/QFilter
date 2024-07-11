@@ -15,7 +15,7 @@ import { generateUID } from "./utils/operations";
 class QFilterBuilder<T> {
   private filters: Array<FiltersType<T>> = [];
 
-  get getFilters() {
+  get getFilters(): readonly FiltersType<T>[] {
     return this.filters.slice() as ReadonlyArray<FiltersType<T>>;
   }
 
@@ -39,7 +39,7 @@ class QFilterBuilder<T> {
     return this;
   }
 
-  group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>) {
+  group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this {
     const id = generateUID();
 
     const children = filters?.map((filter: any) => ({ ...filter, parentId: id })) as any;
@@ -218,7 +218,7 @@ class QFilterBuilder<T> {
     return this;
   }
 
-  build() {
+  build(): QFilter<T> {
     return new QFilter(this.filters);
   }
 }
