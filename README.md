@@ -88,20 +88,17 @@ console.log(filteredUsers);
 
 ### QFilterBuilder
 
-| Method Signature | Description                           |
-| ---------------- | ------------------------------------- |
-| [where]          | Adds a comparison filter.             |
-| [group]          | Creates a group of filters.           |
-| [add]            | Adds filters at a specified position. |
-| [remove]         | Removes filters by ID.                |
-| [update]         | Updates a filter by ID.               |
-| [and]            | Adds a logical AND operator.          |
-| [or]             | Adds a logical OR operator.           |
-| [not]            | Adds a logical NOT operator.          |
-
-| [build]
-
-Builds and returns a `QFilter` instance.
+| Method Signature | Description                              |
+| ---------------- | ---------------------------------------- |
+| [where]          | Adds a comparison filter.                |
+| [group]          | Creates a group of filters.              |
+| [add]            | Adds filters at a specified position.    |
+| [remove]         | Removes filters by ID.                   |
+| [update]         | Updates a filter by ID.                  |
+| [and]            | Adds a logical AND operator.             |
+| [or]             | Adds a logical OR operator.              |
+| [not]            | Adds a logical NOT operator.             |
+| [build]          | Builds and returns a `QFilter` instance. |
 
 ### QFilter
 
