@@ -93,13 +93,13 @@ class QFilter<T> extends QExecute<T> {
       }
       if (operator === "Contains") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().includes('${value.toString().toLowerCase()}')`
+          `data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
         );
         return;
       }
       if (operator === "NotContains") {
         this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().includes('${value.toString().toLowerCase()}')`
+          `!data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
         );
         return;
       }

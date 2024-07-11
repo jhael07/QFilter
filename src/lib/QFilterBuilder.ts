@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import QFilter from "./QFilter";
-import { FilterOperator, FiltersType, GroupCondition, OP } from "./types";
+import { FilterOperator, FiltersType, GroupCondition, Join, OP } from "./types";
 import { generateUID } from "./utils/operations";
 
 class QFilterBuilder<T> {
@@ -26,9 +26,9 @@ class QFilterBuilder<T> {
    */
 
   where(
-    field: keyof T,
+    field: Join<T>,
     operator: OP,
-    value: number | string | boolean,
+    value: number | string | boolean | undefined | null,
     id: string | number = crypto.randomUUID().substring(0, 8),
     parentId: string | number | null = null
   ): this {
@@ -239,6 +239,15 @@ class QFilterBuilder<T> {
    */
   build(): QFilter<T> {
     return new QFilter(this.filters);
+  }
+
+  // test(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): this {
+  //   return this;
+  // }
+
+  test(test: Join<T>) {
+    console.log(test);
+    return this;
   }
 }
 

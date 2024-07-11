@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type OP =
   | "Equal"
   | "NotEqual"
@@ -38,8 +39,8 @@ type FilterGroupOperator<T> = {
 
 type FilterOperator<T> = {
   operator: OP;
-  value: string | number | boolean;
-  field: keyof T;
+  value: string | number | boolean | undefined | null;
+  field: keyof T | string;
 } & commonFilterProps<T>;
 
 type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
@@ -82,3 +83,19 @@ export {
   type FilterBuild,
   type AddFilterFn,
 };
+
+// export type Join<T> = T extends object
+//   ? {
+//       [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Join<T[K]>}`}`;
+//     }[keyof T]
+//   : never;
+
+export type Join<T> = T extends object
+  ? T extends Array<any>
+    ? "length"
+    : {
+        [K in keyof T]-?: `${Exclude<K, symbol>}${
+          | ""
+          | `${undefined extends T[K] | null ? "?" : ""}.${Join<NonNullable<T[K]>>}`}`;
+      }[keyof T]
+  : never;
