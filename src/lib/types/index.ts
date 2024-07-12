@@ -84,12 +84,6 @@ export {
   type AddFilterFn,
 };
 
-// export type Join<T> = T extends object
-//   ? {
-//       [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Join<T[K]>}`}`;
-//     }[keyof T]
-//   : never;
-
 export type Join<T> = T extends object
   ? T extends Array<any>
     ? "length"

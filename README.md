@@ -24,12 +24,6 @@ Install the library using npm or yarn:
 npx jsr add @jrod/qfilter
 ```
 
-or
-
-```bash
-yarn add qfilter
-```
-
 ## Usage
 
 ### Basic Usage
