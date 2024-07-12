@@ -9,6 +9,15 @@ import { GroupCondition, Join, OP } from "../types";
  */
 export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
 
+/**
+ * Adds a filter condition to the query.
+ * @param {Join<T>} field The field on which to apply the filter.
+ * @param {OP} operator The comparison operator for the filter.
+ * @param {number | string | boolean} value The value to compare against.
+ * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+ * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
+ * @returns {this} The instance of the class with the added filter condition.
+ */
 export const where = <T>(
   field: Join<T>,
   operator: OP,
@@ -28,6 +37,11 @@ export const where = <T>(
   return body;
 };
 
+/**
+ * Groups multiple filter conditions into a logical group.
+ * @param {Array<GroupCondition<T> | Array<GroupCondition<T>>>} filters An array of group conditions or nested arrays of group conditions.
+ * @returns {this} The instance of the class with the added grouped filter conditions.
+ */
 export const group = <T>(
   filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>
 ): Array<GroupCondition<T>> => {
@@ -42,6 +56,10 @@ export const group = <T>(
   return group;
 };
 
+/**
+ * Adds a logical AND operator ('&&') to the filters array.
+ * @returns {this} The instance of the class with the added logical AND operator.
+ */
 export const and = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),
@@ -50,6 +68,10 @@ export const and = <T>(): GroupCondition<T> => {
   };
 };
 
+/**
+ * Adds a logical OR operator ('||') to the filters array.
+ * @returns {this} The instance of the class with the added logical OR operator.
+ */
 export const or = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),
@@ -58,6 +80,10 @@ export const or = <T>(): GroupCondition<T> => {
   };
 };
 
+/**
+ * Adds a logical NOT operator ('!') to the filters array.
+ * @returns {this} The instance of the class with the added logical NOT operator.
+ */
 export const not = <T>(): GroupCondition<T> => {
   return {
     id: generateUID(),

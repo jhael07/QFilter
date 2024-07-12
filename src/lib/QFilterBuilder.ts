@@ -4,6 +4,10 @@ import QFilter from "./QFilter";
 import { FilterOperator, FiltersType, GroupCondition, Join, OP } from "./types";
 import { generateUID } from "./utils/operations";
 
+/**
+ * ### QFilterBuilder
+ *
+ */
 class QFilterBuilder<T> {
   private filters: Array<FiltersType<T>> = [];
 
@@ -17,7 +21,7 @@ class QFilterBuilder<T> {
 
   /**
    * Adds a filter condition to the query.
-   * @param {keyof T} field The field on which to apply the filter.
+   * @param {Join<T>} field The field on which to apply the filter.
    * @param {OP} operator The comparison operator for the filter.
    * @param {number | string | boolean} value The value to compare against.
    * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
@@ -239,15 +243,6 @@ class QFilterBuilder<T> {
    */
   build(): QFilter<T> {
     return new QFilter(this.filters);
-  }
-
-  // test(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): this {
-  //   return this;
-  // }
-
-  test(test: Join<T>) {
-    console.log(test);
-    return this;
   }
 }
 
