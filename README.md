@@ -123,8 +123,8 @@ Applies the filters to the given data source and returns the filtered data.
 
 ```typescript
 type OP =
-  | "Equal"
-  | "NotEqual"
+  | "Equals"
+  | "NotEquals"
   | "LessThan"
   | "GreaterThan"
   | "GreaterThanOrEqual"
