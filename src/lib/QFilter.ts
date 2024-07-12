@@ -31,33 +31,45 @@ class QFilter<T> extends QExecute<T> {
 
       if (operator === "Equal" || operator === "===") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()} === ${typeof value === "string" ? `'${value}'` : value}`
+          `data.${field.toString()} === ${
+            typeof value === "string" ? `'${value}'` : value
+          }`
         );
         return;
       }
       if (operator === "NotEqual" || operator === "!==") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()} !== ${typeof value === "string" ? `'${value}'` : value}`
+          `data.${field.toString()} !== ${
+            typeof value === "string" ? `'${value}'` : value
+          }`
         );
         return;
       }
       if (operator === "GreaterThan" || operator === ">") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} > ${value}`);
+        this.buildFilters = this.buildFilters.concat(
+          `data.${field.toString()} > ${value}`
+        );
         return;
       }
 
       if (operator === "GreaterThanOrEqual" || operator === ">=") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} >= ${value}`);
+        this.buildFilters = this.buildFilters.concat(
+          `data.${field.toString()} >= ${value}`
+        );
         return;
       }
 
       if (operator === "LessThan" || operator === "<") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} < ${value}`);
+        this.buildFilters = this.buildFilters.concat(
+          `data.${field.toString()} < ${value}`
+        );
         return;
       }
 
       if (operator === "LessThanOrEqual" || operator === "<=") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} <= ${value}`);
+        this.buildFilters = this.buildFilters.concat(
+          `data.${field.toString()} <= ${value}`
+        );
         return;
       }
       if (operator === "StartsWith") {
@@ -86,13 +98,17 @@ class QFilter<T> extends QExecute<T> {
       }
       if (operator === "Contains") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().includes('${value.toString().toLowerCase()}')`
+          `data.${field.toString()}.toLowerCase().includes('${value
+            .toString()
+            .toLowerCase()}')`
         );
         return;
       }
       if (operator === "NotContains") {
         this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().includes('${value.toString().toLowerCase()}')`
+          `!data.${field.toString()}.toLowerCase().includes('${value
+            .toString()
+            .toLowerCase()}')`
         );
         return;
       }
@@ -120,7 +136,7 @@ class QFilter<T> extends QExecute<T> {
     this.buildFilters = "";
     this.filters?.forEach((item) => this.generateFilter(item));
 
-    return this.ApplyFilters(this.buildFilters, dataSource);
+    return this.QExecute(this.buildFilters, dataSource);
   }
 }
 

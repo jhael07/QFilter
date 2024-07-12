@@ -42,7 +42,10 @@ class QFilterBuilder<T> {
   group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>) {
     const id = generateUID();
 
-    const children = filters?.map((filter: any) => ({ ...filter, parentId: id })) as any;
+    const children = filters?.map((filter: any) => ({
+      ...filter,
+      parentId: id,
+    })) as any;
 
     this.filters.push({
       id,
@@ -54,9 +57,9 @@ class QFilterBuilder<T> {
   }
 
   /**
-   * This method ```adds``` an item or a group of items in the ```QFilter``` by it's index or it's id.
+   * This method ```adds``` an item or a group of items in the ```QFilter``` by it's id.
    *
-   * @param identifier this could be either an index or an id (string or number).
+   * @param id this could be either an index or an id (string or number).
    * @param filters this is an array of filters, they could of any of these types: ``` FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>```
    *
    * @example
@@ -86,7 +89,7 @@ class QFilterBuilder<T> {
    * @returns void
    */
   add(
-    identifier: string | number,
+    id: string | number,
     filters?: (
       | commonFilterProps<T>
       | FilterOperator<T>
@@ -94,14 +97,15 @@ class QFilterBuilder<T> {
       | FilterLogicalOperator<T>
     )[]
   ): void {
+    const itemsToFilter = filters ?? this.filters;
     for (let i = 0; i < this.filters.length; i++) {
       const item = this.filters[i];
-      if (item.id === identifier || i === identifier) {
-        filters?.forEach((filter, j) => this.filters.splice(i + j, 0, filter));
+      if (item.id === id) {
+        filters?.forEach((filter) => this.filters.splice(i, 0, filter));
         return;
       }
 
-      if (item.children) filters?.forEach((filter) => this.filters[i].children?.push(filter));
+      if (item.children) this.add(id, itemsToFilter);
     }
   }
   remove(
@@ -120,7 +124,8 @@ class QFilterBuilder<T> {
       const item = itemsToFilter[i];
       if (item.id === id) {
         //  this will remove the item and modified the original array
-        if (itemsToFilter[i - 1]?.type === "logicalOperator") itemsToFilter.splice(i - 1, 2);
+        if (itemsToFilter[i - 1]?.type === "logicalOperator")
+          itemsToFilter.splice(i - 1, 2);
         else itemsToFilter.splice(i, 1);
         return true;
       }

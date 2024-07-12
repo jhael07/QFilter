@@ -2,9 +2,9 @@
 import "./index.css";
 import QFilterBuilder from "./lib/QFilterBuilder";
 import { and, where } from "./lib/utils/groupItems";
-// import { and, group, or, where } from "./lib/utils/groupItems";
 
 type Test = { name: string; age: number; city: string };
+
 const App = () => {
   const users: Array<Test> = [
     { name: "Jhael", age: 20, city: "DN" },
@@ -17,22 +17,28 @@ const App = () => {
   ];
 
   const filterBuilder = new QFilterBuilder<Test>()
-    .where("name", "Contains", "e")
+    .where("age", "GreaterThanOrEqual", 25)
     .and()
-    .group([where("age", "GreaterThan", 20)]);
+    .where("city", "Contains", "E")
+    .or()
+    .group([where("age", "<=", 26), and(), where("name", "Contains", "a")]);
+  // .where("name", "Contains", "e")
+  // .and()
+  // .group([where("age", "GreaterThan", 20)]);
 
-  const groupId = filterBuilder.getFilters.at(2)?.id;
+  // const groupId = filterBuilder.getFilters[2]?.id;
 
-  filterBuilder.add(groupId ?? "", [and(), where("name", "Contains", "s")]);
+  // filterBuilder.add(groupId ?? "", [and(), where("name", "Contains", "s")]);
 
-  const build = filterBuilder.build();
+  // const groupId = filterBuilder.getFilters[4]?.id ?? "";
 
-  try {
-    console.log(build.filter(users));
-  } catch (err) {
-    console.log(err.message);
-  }
-  console.log(build);
+  // filterBuilder.add(groupId, [and(), where("city", "Equal", "Santiago")]);
+
+  // filterBuilder.remove(groupId);
+
+  // const build = filterBuilder.build();
+
+  // console.log(build.filter(users));
 
   return (
     <div className="w-full h-screen bg-terciary-950 flex justify-center ">
