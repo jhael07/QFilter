@@ -15,8 +15,8 @@ class QFilterBuilder<T> {
    * Getter for retrieving a readonly copy of the filters array.
    * @returns {ReadonlyArray<FiltersType<T>>} A readonly array of filters.
    */
-  get getFilters(): readonly FiltersType<T>[] {
-    return this.filters.slice() as ReadonlyArray<FiltersType<T>>;
+  get getFilters(): FiltersType<T>[] {
+    return this.filters;
   }
 
   /**
@@ -29,7 +29,7 @@ class QFilterBuilder<T> {
    * @returns {this} The instance of the class with the added filter condition.
    */
 
-  where(
+  condition(
     field: Join<T>,
     operator: OP,
     value: number | string | boolean | undefined | null,
@@ -44,8 +44,9 @@ class QFilterBuilder<T> {
       parentId,
       type: "comparisonOperator",
     };
-
+    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
     this.filters.push(body);
+
     return this;
   }
 
@@ -58,6 +59,8 @@ class QFilterBuilder<T> {
     const id = generateUID();
 
     const children = filters?.map((filter: any) => ({ ...filter, parentId: id })) as any;
+
+    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
 
     this.filters.push({
       id,

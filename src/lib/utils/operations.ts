@@ -18,7 +18,7 @@ export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
  * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
  * @returns {this} The instance of the class with the added filter condition.
  */
-export const where = <T>(
+export const condition = <T>(
   field: Join<T>,
   operator: OP,
   value: number | string | boolean | undefined | null,
@@ -47,9 +47,18 @@ export const group = <T>(
 ): Array<GroupCondition<T>> => {
   const id = generateUID();
 
+  const children: any[] = [];
+
+  filters.forEach((item) => {
+    if (children.length > 0 && children.at(-1)?.type !== "logicalOperator") {
+      children.push(and());
+    }
+    children.push({ ...item, parentId: id });
+  });
+
   const group = {
     id,
-    children: filters?.map((filter: any) => ({ ...filter, parentId: id })) as any,
+    children,
     type: "group",
   } as any;
 
