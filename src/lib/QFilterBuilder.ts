@@ -177,23 +177,23 @@ class QFilterBuilder<T> {
   /**
    * Updates a filter condition or group of conditions by ID in the filters array.
    * @param {string | number} id The identifier of the filter condition or group to update.
-   * @param {FiltersType<T>} filter The updated filter object to replace the existing one.
+   * @param {FiltersType<T>} value The updated filter object to replace the existing one.
    * @param {Array<FiltersType<T>>} [filters] Optional array of filters to search within (defaults to this.filters if not provided).
    * @returns {boolean} True if the filter condition or group was successfully updated, false otherwise.
    */
-  update(id: string | number, filter: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean {
+  update(id: string | number, value: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean {
     const filtersToApply = filters ?? this.filters;
 
     for (let i = 0; i < filtersToApply.length; i++) {
       const item = filtersToApply[i];
 
       if (item.id === id) {
-        filtersToApply.splice(i, 1, filter);
+        filtersToApply.splice(i, 1, value);
         return true;
       }
 
       if (item.type === "group" && item.children) {
-        const updated = this.update(id, filter, item.children);
+        const updated = this.update(id, value, item.children);
         if (updated) return true;
       }
     }

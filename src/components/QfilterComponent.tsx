@@ -1,11 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import QFilterBuilder from "../lib";
-import { FilterLogicalOperator, FilterOperator, LogicalOperator } from "../lib/types";
-import { IoClose } from "react-icons/io5";
-import { MdModeEdit } from "react-icons/md";
+import { FilterLogicalOperator, FilterOperator } from "../lib/types";
 
-const QfilterComponent = <T,>({ filterBuilder }: { filterBuilder: QFilterBuilder<T> }) => {
+import { HeaderButton } from "./buttons";
+import { QfilterComponentProps } from "../types";
+import { logicalOperationCondition } from "../utils/string";
+import CloseButton from "./buttons/CloseButton";
+import FilterBody from "./FilterBody";
+
+const QfilterComponent = <T,>({
+  filterBuilder,
+}: // config,
+{
+  filterBuilder: QFilterBuilder<T>;
+  config?: QfilterComponentProps<T>;
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setFiltersChange] = useState(false);
 
@@ -22,8 +32,8 @@ const QfilterComponent = <T,>({ filterBuilder }: { filterBuilder: QFilterBuilder
     return (
       <div
         key={item.id}
-        className={`p-4 grid gap-2 first:pl-0 border-l border-slate-300 rounded-md
-         bg-slate-400/30  relative min-w-[20rem] mt-4  ${children ? "ml-8" : ""}`}
+        className={`p-4 flex flex-col gap-2 first:pl-0 border-l border-slate-300 rounded-md
+         bg-slate-400/30 relative ${children ? "ml-[2.5%] w-full" : ""}`}
       >
         <p className="text-slate-800 font-bold w-full">Group: </p>
         <div className=" transition-all duration-300">
@@ -34,57 +44,60 @@ const QfilterComponent = <T,>({ filterBuilder }: { filterBuilder: QFilterBuilder
             }}
           />
         </div>
-        {item?.children?.map((item: any, i: number, arr: any[]) => {
-          if (item.children) return createGroup(item, true);
-          if (item.type === "logicalOperator") {
+        <div className="flex flex-wrap gap-6 items-start">
+          {item?.children?.map((item: any, i: number, arr: any[]) => {
+            if (item.children) return createGroup(item, true);
+            if (item.type === "logicalOperator") {
+              return (
+                <div key={item.id} className="w-full">
+                  <div
+                    key={item.id}
+                    className="bg-slate-100 text-slate-800 font-semibold p-2 rounded-md shadow-md w-fit 
+              px-6 h-fit relative group transition-all  cursor-default"
+                  >
+                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <CloseButton onClick={() => {}} />
+                    </div>
+                    <p>{logicalOperationCondition((item as FilterLogicalOperator<T>).operator)}</p>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <div
                 key={item.id}
-                className="bg-slate-100 text-slate-800 font-semibold p-2 rounded-md shadow-md w-fit 
-              px-6 h-fit relative group transition-all  cursor-default"
+                className=" text-slate-800 font-semibold shadow-md relative group transition-all 
+                w-full h-fit"
               >
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <CloseButton onClick={() => {}} />
+                  <CloseButton onClick={() => handleDelete(i, arr)} />
                 </div>
-                <p>{logicalOperationCondition((item as FilterLogicalOperator<T>).operator)}</p>
+                <div className=" rounded-lg">
+                  <FilterBody item={item as FilterOperator<T>} />
+                </div>
               </div>
             );
-          }
-
-          return (
-            <div
-              key={item.id}
-              className=" text-slate-800 font-semibold shadow-md relative group transition-all 
-                w-full h-fit"
-            >
-              <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <CloseButton onClick={() => handleDelete(i, arr)} />
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <FilterBody item={item as FilterOperator<T>} />
-              </div>
-            </div>
-          );
-        })}
+          })}
+        </div>
       </div>
     );
   };
 
   return (
     <div
-      className="text-white min-w-[10rem] max-w-[60rem] bg-slate-100 p-4 mx-auto rounded-lg gap-4 
-   grid"
+      className="text-white bg-slate-100 p-4 mx-auto rounded-lg gap-4 h-fit  overflow-y-scroll overflow-hidden 
+   flex flex-col w-full container-filter"
     >
       <div className="p-2 flex gap-x-6 relative">
         <HeaderButton
           title="Add Condition"
           onClick={() => {
-            filterBuilder.condition("name", "GreaterThanOrEqual", "e");
+            // filterBuilder.condition("name", "GreaterThanOrEqual", "e");
             setFiltersChange((prev) => !prev);
           }}
         />
         <HeaderButton title="Add Group" />
-        <div className="w-80 p-2 border absolute -bottom-4 bg-"></div>
       </div>
 
       {filters.length === 0 ? (
@@ -96,13 +109,12 @@ const QfilterComponent = <T,>({ filterBuilder }: { filterBuilder: QFilterBuilder
             <div
               key={item.id}
               className=" text-slate-800 font-semibold  shadow-md relative group rounded-md
-               transition-all 
-              w-full  h-fit"
+               transition-all w-full  h-fit"
             >
               <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
                 <CloseButton onClick={() => handleDelete(i, arr)} />
               </div>
-              <div className="overflow-hidden rounded-lg">
+              <div className=" rounded-lg">
                 <FilterBody item={item as FilterOperator<T>} />
               </div>
             </div>
@@ -130,101 +142,3 @@ const QfilterComponent = <T,>({ filterBuilder }: { filterBuilder: QFilterBuilder
 };
 
 export default QfilterComponent;
-
-const HeaderColumn = ({ title }: { title: string }) => {
-  return (
-    <div
-      key={title}
-      className=" gap-10 w-full border-b pb-1 p-2 bg-slate-200 
-text-slate-800 font-bold cursor-default px-4 min-h-10"
-    >
-      {title}
-    </div>
-  );
-};
-const FilterColumn = ({ title, value }: { title: string; value: string | ReactNode }) => {
-  return (
-    <div className="w-full">
-      <HeaderColumn title={title} />
-      <div className="flex items-center gap-x-1 pt-1 p-2 px-4">{value}</div>
-    </div>
-  );
-};
-
-const FilterBody = <T,>({ item }: { item: FilterOperator<T> }) => {
-  return (
-    <div key={item.id} className="flex w-full bg-slate-100 cursor-default">
-      <FilterColumn title="Column" value={item.field?.toString()} />
-      <FilterColumn title="Operator" value={item.operator?.toString()} />
-      <FilterColumn title="Value" value={item.value?.toString() ?? ""} />
-      <FilterColumn title="Acciones" value={<EditButton />} />
-    </div>
-  );
-};
-
-const logicalOperationCondition = (type: LogicalOperator) => {
-  if (type === "&&") return "And";
-  if (type === "||") return "Or";
-  if (type === "!") return "Not";
-};
-
-const CloseButton = ({ ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return (
-    <button
-      {...rest}
-      className="  rounded-full h-6 w-6 bg-red-600 hover:bg-red-700 flex items-center text-center
- justify-center absolute -top-2 -right-2 transition-all"
-    >
-      <IoClose className="text-white " />
-    </button>
-  );
-};
-
-const EditButton = ({ ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return (
-    <button {...rest} className="px-2">
-      <MdModeEdit className="text-slate-500 text-sm hover:text-slate-600  duration-300" />
-    </button>
-  );
-};
-
-const HeaderButton = ({
-  title,
-  ...rest
-}: { title: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return (
-    <button
-      {...rest}
-      className="bg-primary-900 p-2 rounded-md hover:bg-orange-400 shadow-sm transition-all hover:text-secondary-950 font-semibold"
-    >
-      {title}
-    </button>
-  );
-};
-
-const GroupComponent = <T,>(item: any) => {
-  return (
-    <div className="p-2 border bg-slate-400">
-      {item?.children?.map((item, i) => {
-        return (
-          <div
-            key={item.id}
-            className=" text-slate-800 font-semibold  shadow-md relative group transition-all 
-                 w-full  h-fit"
-          >
-            <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
-              <CloseButton
-                onClick={() => {
-                  item.children.splice(i);
-                }}
-              />
-            </div>
-            <div className="overflow-hidden rounded-lg">
-              <FilterBody item={item as FilterOperator<T>} />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};

@@ -75,14 +75,14 @@ const App = () => {
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
         <div className="mx-auto flex">
           <h1
-            className="text-9xl font-medium bg-gradient-to-br from-primary-600 mx-auto
+            className="text-8xl lg:text-9xl font-medium bg-gradient-to-br from-primary-600 mx-auto
           to-secondary-500 inline-block h-fit text-transparent bg-clip-text p-2.5"
           >
             QFilter
           </h1>
         </div>
 
-        <div className="w-fit mx-auto mt-10 ">
+        <div className="lg:w-6/12 mx-auto mt-10 ">
           <QfilterComponent filterBuilder={builder} />
         </div>
       </div>
