@@ -4,17 +4,17 @@ import QFilterBuilder from "../lib";
 import { FilterLogicalOperator, FilterOperator } from "../lib/types";
 
 import { HeaderButton } from "./buttons";
-import { QfilterComponentProps } from "../types";
+import { QFilterConfig } from "../types";
 import { logicalOperationCondition } from "../utils/string";
 import CloseButton from "./buttons/CloseButton";
 import FilterBody from "./FilterBody";
 
 const QfilterComponent = <T,>({
   filterBuilder,
-}: // config,
-{
+  config,
+}: {
   filterBuilder: QFilterBuilder<T>;
-  config?: QfilterComponentProps<T>;
+  config?: QFilterConfig<T>;
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setFiltersChange] = useState(false);
@@ -86,8 +86,8 @@ const QfilterComponent = <T,>({
 
   return (
     <div
-      className="text-white bg-slate-100 p-4 mx-auto rounded-lg gap-4 h-fit  overflow-y-scroll overflow-hidden 
-   flex flex-col w-full container-filter"
+      className="text-white bg-slate-100 p-4 mx-auto rounded-lg gap-4  overflow-y-scroll overflow-hidden 
+   flex flex-col w-full"
     >
       <div className="p-2 flex gap-x-6 relative">
         <HeaderButton
@@ -109,13 +109,17 @@ const QfilterComponent = <T,>({
             <div
               key={item.id}
               className=" text-slate-800 font-semibold  shadow-md relative group rounded-md
-               transition-all w-full  h-fit"
+               transition-all w-full   h-fit"
             >
               <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">
                 <CloseButton onClick={() => handleDelete(i, arr)} />
               </div>
-              <div className=" rounded-lg">
-                <FilterBody item={item as FilterOperator<T>} />
+              <div className=" rounded-lg ">
+                <FilterBody
+                  QFilter={filterBuilder}
+                  options={config?.columns}
+                  item={item as FilterOperator<T>}
+                />
               </div>
             </div>
           );

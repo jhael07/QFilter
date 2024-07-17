@@ -50,6 +50,26 @@ class QFilterBuilder<T> {
     return this;
   }
 
+  addConditionUI(
+    field?: Join<T>,
+    operator?: OP,
+    value?: number | string | boolean | undefined | null,
+    parentId: string | number | null = null
+  ): this {
+    const body = {
+      field,
+      operator,
+      value,
+      id: generateUID(),
+      parentId,
+      type: "comparisonOperator",
+    } as any;
+    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
+    this.filters.push(body);
+
+    return this;
+  }
+
   /**
    * Groups multiple filter conditions into a logical group.
    * @param {Array<GroupCondition<T> | Array<GroupCondition<T>>>} filters An array of group conditions or nested arrays of group conditions.

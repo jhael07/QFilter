@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { QFilter } from "./components/alternative-simple/QFilter";
 import QfilterComponent from "./components/QfilterComponent";
 import "./index.css";
 import QFilterBuilder, { condition, group } from "./lib";
@@ -12,15 +13,15 @@ type User = {
 };
 
 const App = () => {
-  const builder = new QFilterBuilder<User>()
-    .condition("name", "Contains", "k")
-    .group([
-      condition("company?.name", "Contains", "j"),
-      group([
-        condition("company?.name", "Contains", "j"),
-        group([condition("company?.name", "Contains", "j")]),
-      ]),
-    ]);
+  const builder = new QFilterBuilder<User>();
+  // .condition("name", "Contains", "k")
+  // .group([
+  //   condition("company?.name", "Contains", "j"),
+  //   group([
+  //     condition("company?.name", "Contains", "j"),
+  //     group([condition("company?.name", "Contains", "j")]),
+  //   ]),
+  // ]);
 
   const users: User[] = [
     {
@@ -69,6 +70,7 @@ const App = () => {
   });
 
   console.log(Array.from(new Set(keys)) as Join<User>[]);
+
   // console.log(Object.keys(users));
   return (
     <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
@@ -83,7 +85,22 @@ const App = () => {
         </div>
 
         <div className="lg:w-6/12 mx-auto mt-10 ">
-          <QfilterComponent filterBuilder={builder} />
+          <QFilter<User>
+            QFilter={builder}
+            columns={[
+              { label: "Name", value: "name" },
+              { label: "Company Name", value: "company?.name" },
+            ]}
+          />
+          <QfilterComponent
+            filterBuilder={builder}
+            config={{
+              columns: [
+                { label: "Name", value: "name" },
+                { label: "Company Name", value: "company?.name" },
+              ],
+            }}
+          />
         </div>
       </div>
     </div>

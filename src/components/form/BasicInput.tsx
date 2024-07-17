@@ -1,12 +1,14 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 const BasicInput = ({
   value,
+  setValue,
   children,
   onClick,
 }: {
   children: ReactNode;
   onClick?: React.MouseEventHandler<HTMLInputElement> | undefined;
+  setValue?: Dispatch<SetStateAction<string>>;
   value?: ReactNode | string | number | boolean | null;
 }) => {
   return (
@@ -16,6 +18,9 @@ const BasicInput = ({
     w-full text-sm"
         defaultValue={value?.toString()}
         onClick={onClick}
+        onChange={(e) => {
+          setValue?.(e.target.value);
+        }}
       />
       {children}
     </div>

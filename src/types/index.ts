@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode } from "react";
-import { Join } from "../lib/types";
+import { FilterOperator, Join } from "../lib/types";
+import QFilterBuilder from "../lib";
 
-type QFilterOption = {
-  label: string | number;
-  value: string | number | readonly string[] | undefined;
-};
+type QFilterOption<T> = { label: string | number; value: Join<T> };
 
-type FilterColumnProps = {
+type FilterColumnProps<T> = {
   title: string;
   value: string | ReactNode;
+  QFilter: QFilterBuilder<T>;
+  item?: FilterOperator<T>;
   type?: "input" | "select" | "action";
-  options?: Array<QFilterOption>;
+  options?: Array<QFilterOption<T>>;
 };
 
 type QFilterColumn<T> = {
@@ -18,17 +19,16 @@ type QFilterColumn<T> = {
   dataIndex: Join<T>;
   type: "number" | "string" | "boolean" | "date";
   selectMultiple?: boolean;
-  options?: Array<QFilterOption>;
+  options?: Array<QFilterOption<T>>;
   renderComponent?: (column: QFilterColumn<T>) => ReactNode;
 };
 
-type QfilterComponentProps<T> = {
-  columns: Array<QFilterColumn<T>>;
+// type QfilterComponentProps<T> = {
+//   columns: Array<QFilterColumn<T>>;
+// };
+
+type QFilterConfig<T> = {
+  columns: Array<QFilterOption<T>>;
 };
 
-export {
-  type FilterColumnProps,
-  type QFilterOption,
-  type QFilterColumn,
-  type QfilterComponentProps,
-};
+export { type QFilterOption, type QFilterConfig, type FilterColumnProps };

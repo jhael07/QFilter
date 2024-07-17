@@ -9,8 +9,8 @@
 }
 
 .option-scroll::-webkit-scrollbar {
-  @apply w-1 h-1  !important;
+  @apply w-1.5 h-1  !important;
 }
 .option-scroll::-webkit-scrollbar-thumb {
-  @apply bg-slate-200  !important;
+  @apply bg-slate-200 rounded-sm  !important;
 }
