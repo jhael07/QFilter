@@ -24,12 +24,6 @@ Install the library using npm or yarn:
 npx jsr add @jrod/qfilter
 ```
 
-or
-
-```bash
-yarn add qfilter
-```
-
 ## Usage
 
 ### Basic Usage
@@ -86,7 +80,7 @@ console.log(filteredUsers);
 
 | Method Signature | Params                                                                                                                                                        | Description                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| where            | field: `keyof T`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
+| where            | field: `Join<T>`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
 | group            | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
 | add              | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
 | remove           | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
@@ -129,8 +123,8 @@ Applies the filters to the given data source and returns the filtered data.
 
 ```typescript
 type OP =
-  | "Equal"
-  | "NotEqual"
+  | "Equals"
+  | "NotEquals"
   | "LessThan"
   | "GreaterThan"
   | "GreaterThanOrEqual"
@@ -201,7 +195,7 @@ type FilterGroupOperator<T> = {
 type FilterOperator<T> = {
   operator: OP;
   value: string | number | boolean;
-  field: keyof T;
+  field: Join<T>;
 } & commonFilterProps<T>;
 ```
 
@@ -216,7 +210,7 @@ type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | Filter
 ```typescript
 type AddFilterFn<T> = (
   id: string | number,
-  field: keyof T,
+  field: Join<T>,
   operator: OP,
   value: number | string | boolean,
   parentId: string | number

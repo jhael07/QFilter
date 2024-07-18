@@ -67,6 +67,8 @@ type FiltersType<T> =
   | FilterLogicalOperator<T>
   | commonFilterProps<T>;
 
+type FiltersUI<T> = FilterOperator<T>;
+
 export {
   type FiltersType,
   type BuildResult,
@@ -82,13 +84,8 @@ export {
   type FilterOperator,
   type FilterBuild,
   type AddFilterFn,
+  type FiltersUI,
 };
-
-// export type Join<T> = T extends object
-//   ? {
-//       [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Join<T[K]>}`}`;
-//     }[keyof T]
-//   : never;
 
 export type Join<T> = T extends object
   ? T extends Array<any>

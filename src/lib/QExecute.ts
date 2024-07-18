@@ -1,3 +1,9 @@
+/**
+ * ### QExecute Class
+ *  * This class provides methods to execute queries constructed using the QFilterBuilder.
+ * It encapsulates the logic for running and managing these queries efficiently.
+ */
+
 class QExecute<T> {
   /**
    * ## QExecute

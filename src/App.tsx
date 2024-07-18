@@ -1,61 +1,107 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { QFilter } from "./components/alternative-simple/QFilter";
+import QfilterComponent from "./components/QfilterComponent";
 import "./index.css";
-import QFilterBuilder, { and, where } from "./lib";
-// import QFilterBuilder from "./lib/QFilterBuilder";
-// import { and, where } from "./lib/utils/groupItems";
-// import { and, group, or, where } from "./lib/utils/groupItems";
+import QFilterBuilder from "./lib";
+import { FilterGroup, Join } from "./lib/types";
 
-type Test = { name: string; age: number; city: string; company?: Company };
-type Company = { name: string; arr: string[]; company2?: Company2 };
-type Company2 = { tin: string };
+type User = {
+  name: string;
+  age: number;
+  company?: { name: string; subgroup?: { subname: string } };
+  a?: FilterGroup[];
+};
+
 const App = () => {
-  const users: Array<Test> = [
+  const builder = new QFilterBuilder<User>();
+  // .condition("name", "Contains", "k")
+  // .group([
+  //   condition("company?.name", "Contains", "j"),
+  //   group([
+  //     condition("company?.name", "Contains", "j"),
+  //     group([condition("company?.name", "Contains", "j")]),
+  //   ]),
+  // ]);
+
+  const users: User[] = [
     {
-      name: "Jhael",
+      name: "jhael",
       age: 20,
-      city: "DN",
-      company: { name: "Jhael", arr: ["s", "maria", "natilia"] },
+      company: {
+        name: "FMP",
+      },
+      a: [],
     },
-    { name: "Jhael", age: 21, city: "Santiago" },
-    { name: "Galva", age: 26, city: "SD" },
-    { name: "Galva", age: 26, city: "SDE" },
-    { name: "Thomas", age: 20, city: "SDN" },
-    { name: "Sthifer", age: 25, city: "SDN" },
-    { name: "Enmanuel", age: 19, city: "SDO" },
-    { name: "Jhon", age: 21, city: "SDO" },
-    { name: "Francely", age: 21, city: "SDO" },
+    {
+      name: "Miguel",
+      age: 26,
+      company: {
+        name: "FMP",
+        subgroup: {
+          subname: "Shit what i've done with my life ",
+        },
+      },
+    },
   ];
 
-  const builder = new QFilterBuilder<Test>()
-    .where("name", "Contains", "O")
-    .and()
-    .where("city", "Equal", "SDO")
-    .or()
-    .group([where("name", "Contains", "f"), and(), where("age", ">", 20)]);
+  const keys: any[] = [];
 
-  const id = builder.getFilters[4]?.children?.[2]?.id;
+  console.log(typeof keys, keys instanceof Object);
 
-  builder.add(id ?? "", [where("age", "<", 25), and()]);
+  const getAllKeys = <T,>(item: T, fatherKey?: string) => {
+    const father = fatherKey ?? "";
 
-  console.log(builder.build().filter(users));
+    const keysArr = Object.keys(item as Array<keyof T>);
+    // keysArr
+    for (const key of keysArr) {
+      const itemValue = item[key as keyof T];
 
-  // .where("company?.arr.length", "Equal", 0)
-  // .or()
-  // .where("company", "Equal", undefined);
+      if (itemValue instanceof Array)
+        keys.push(`${father}${father.length > 0 ? `?.${key}` : key}.length`);
+      else if (itemValue instanceof Object)
+        getAllKeys(itemValue, father.length > 0 ? `${father}?.${key}` : key);
 
-  // users.filter((item) => item.company.name);
+      keys.push(`${father}${father.length > 0 ? `?.${key}` : key}`);
+    }
+  };
 
-  console.log(builder.build().filter(users));
+  users.forEach((x) => {
+    getAllKeys(x);
+  });
 
+  console.log(Array.from(new Set(keys)) as Join<User>[]);
+
+  // console.log(Object.keys(users));
   return (
-    <div className="w-full h-screen bg-terciary-950 flex justify-center ">
-      <div className="bg-black/50 w-full p-3 rounded-md pt-20 flex justify-center ">
-        <h1
-          className="text-9xl font-medium bg-gradient-to-br from-primary-600 
-        to-secondary-500 inline-block h-fit text-transparent bg-clip-text p-2.5"
-        >
-          QFilter
-        </h1>
+    <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
+      <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
+        <div className="mx-auto flex">
+          <h1
+            className="text-8xl lg:text-9xl font-medium bg-gradient-to-br from-primary-600 mx-auto
+          to-secondary-500 inline-block h-fit text-transparent bg-clip-text p-2.5"
+          >
+            QFilter
+          </h1>
+        </div>
+
+        <div className="lg:w-6/12 mx-auto mt-10 ">
+          <QFilter<User>
+            QFilter={builder}
+            columns={[
+              { label: "Name", value: "name" },
+              { label: "Company Name", value: "company?.name" },
+            ]}
+          />
+          <QfilterComponent
+            filterBuilder={builder}
+            config={{
+              columns: [
+                { label: "Name", value: "name" },
+                { label: "Company Name", value: "company?.name" },
+              ],
+            }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,10 @@ import QFilter from "./QFilter";
 import { FilterOperator, FiltersType, GroupCondition, Join, OP } from "./types";
 import { generateUID } from "./utils/operations";
 
+/**
+ * ### QFilterBuilder
+ *
+ */
 class QFilterBuilder<T> {
   private filters: Array<FiltersType<T>> = [];
 
@@ -11,13 +15,13 @@ class QFilterBuilder<T> {
    * Getter for retrieving a readonly copy of the filters array.
    * @returns {ReadonlyArray<FiltersType<T>>} A readonly array of filters.
    */
-  get getFilters(): readonly FiltersType<T>[] {
-    return this.filters.slice() as ReadonlyArray<FiltersType<T>>;
+  get getFilters(): FiltersType<T>[] {
+    return this.filters;
   }
 
   /**
    * Adds a filter condition to the query.
-   * @param {keyof T} field The field on which to apply the filter.
+   * @param {Join<T>} field The field on which to apply the filter.
    * @param {OP} operator The comparison operator for the filter.
    * @param {number | string | boolean} value The value to compare against.
    * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
@@ -25,7 +29,7 @@ class QFilterBuilder<T> {
    * @returns {this} The instance of the class with the added filter condition.
    */
 
-  where(
+  condition(
     field: Join<T>,
     operator: OP,
     value: number | string | boolean | undefined | null,
@@ -40,8 +44,37 @@ class QFilterBuilder<T> {
       parentId,
       type: "comparisonOperator",
     };
-
+    if (
+      this.filters.length > 0 &&
+      this.filters.at(-1)?.type !== "logicalOperator"
+    )
+      this.and();
     this.filters.push(body);
+
+    return this;
+  }
+
+  addConditionUI(
+    field?: Join<T>,
+    operator?: OP,
+    value?: number | string | boolean | undefined | null,
+    parentId: string | number | null = null
+  ): this {
+    const body = {
+      field,
+      operator,
+      value,
+      id: generateUID(),
+      parentId,
+      type: "comparisonOperator",
+    } as any;
+    if (
+      this.filters.length > 0 &&
+      this.filters.at(-1)?.type !== "logicalOperator"
+    )
+      this.and();
+    this.filters.push(body);
+
     return this;
   }
 
@@ -57,6 +90,12 @@ class QFilterBuilder<T> {
       ...filter,
       parentId: id,
     })) as any;
+
+    if (
+      this.filters.length > 0 &&
+      this.filters.at(-1)?.type !== "logicalOperator"
+    )
+      this.and();
 
     this.filters.push({
       id,
@@ -174,13 +213,13 @@ class QFilterBuilder<T> {
   /**
    * Updates a filter condition or group of conditions by ID in the filters array.
    * @param {string | number} id The identifier of the filter condition or group to update.
-   * @param {FiltersType<T>} filter The updated filter object to replace the existing one.
+   * @param {FiltersType<T>} value The updated filter object to replace the existing one.
    * @param {Array<FiltersType<T>>} [filters] Optional array of filters to search within (defaults to this.filters if not provided).
    * @returns {boolean} True if the filter condition or group was successfully updated, false otherwise.
    */
   update(
     id: string | number,
-    filter: FiltersType<T>,
+    value: FiltersType<T>,
     filters?: Array<FiltersType<T>>
   ): boolean {
     const filtersToApply = filters ?? this.filters;
@@ -189,12 +228,12 @@ class QFilterBuilder<T> {
       const item = filtersToApply[i];
 
       if (item.id === id) {
-        filtersToApply.splice(i, 1, filter);
+        filtersToApply.splice(i, 1, value);
         return true;
       }
 
       if (item.type === "group" && item.children) {
-        const updated = this.update(id, filter, item.children);
+        const updated = this.update(id, value, item.children);
         if (updated) return true;
       }
     }
@@ -247,15 +286,6 @@ class QFilterBuilder<T> {
    */
   build(): QFilter<T> {
     return new QFilter(this.filters);
-  }
-
-  // test(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): this {
-  //   return this;
-  // }
-
-  test(test: Join<T>) {
-    console.log(test);
-    return this;
   }
 }
 
