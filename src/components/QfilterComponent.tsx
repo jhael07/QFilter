@@ -22,8 +22,8 @@ const QfilterComponent = <T,>({
   const filters = filterBuilder.getFilters;
 
   const handleDelete = (i: number, arr: any[]) => {
-    if (i !== 0 && arr[i - 1].type === "logicalOperator") arr.splice(i - 1, 2);
-    else if (i === 0 && arr[i + 1]?.type === "logicalOperator") arr.splice(i, 2);
+    if (i !== 0 && arr[i - 1].type === "logicalOperator") arr.splice(i - 1, 1);
+    else if (arr[i + 1]?.type === "logicalOperator") arr.splice(i, 1);
     else arr.splice(i, 1);
     setFiltersChange((prev) => !prev);
   };
@@ -74,7 +74,7 @@ const QfilterComponent = <T,>({
                   <CloseButton onClick={() => handleDelete(i, arr)} />
                 </div>
                 <div className=" rounded-lg">
-                  <FilterBody item={item as FilterOperator<T>} />
+                  <FilterBody QFilter={QFilterBuilder as any} item={item as FilterOperator<T>} />
                 </div>
               </div>
             );

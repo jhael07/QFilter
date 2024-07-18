@@ -13,7 +13,7 @@ const BasicInput = ({ value, setValue, children, onClick, ...rest }: BasicInputP
       <input
         {...rest}
         className="border border-slate-300 rounded-md p-1.5 px-2 text-slate-600 outline-none
-         disabled:bg-slate-100 disabled:hover:cursor-not-allowed w-full text-sm min-w-[10rem]"
+         disabled:bg-slate-200 disabled:hover:cursor-not-allowed w-full text-sm min-w-[10rem]"
         defaultValue={value?.toString()}
         onClick={onClick}
         onChange={(e) => {

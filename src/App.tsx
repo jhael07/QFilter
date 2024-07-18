@@ -3,7 +3,7 @@ import { QFilter } from "./components/alternative-simple/QFilter";
 import QfilterComponent from "./components/QfilterComponent";
 import "./index.css";
 import QFilterBuilder from "./lib";
-import { FilterGroup, Join } from "./lib/types";
+import { FilterGroup } from "./lib/types";
 
 type User = {
   name: string;

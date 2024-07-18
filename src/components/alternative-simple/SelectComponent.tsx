@@ -2,14 +2,12 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { FilterOperator, Join, OP } from "../../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
+import { SelectOption } from "../../types";
 
 const SelectComponent = <T,>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: {
-    options?: Array<{
-      label: string | number;
-      value: string | number | boolean | undefined | null;
-    }>;
+    options?: Array<SelectOption>;
     item: FilterOperator<T>;
     reRenderFn: Dispatch<SetStateAction<boolean>>;
     allowMultiple?: boolean;
@@ -21,21 +19,17 @@ const SelectComponent = <T,>(
   const [selectedValue, setSelectedValue] = useState<{
     hideOptions: boolean;
     value?: string | string[] | number | number[] | boolean | boolean[] | null;
-  }>({ hideOptions: true });
+  }>({ hideOptions: true, value: props.item.field?.toString() ?? "" });
 
   const [labelValue, setLabelValue] = useState<string | number>();
+
+  console.log(props.item);
 
   return (
     <div className="w-full relative">
       <div
         onClick={() => {
           setSelectedValue((prev) => ({ ...prev, hideOptions: !prev?.hideOptions }));
-        }}
-        onBlur={() => {
-          setSelectedValue((prev) => ({
-            ...prev,
-            hideOptions: true,
-          }));
         }}
         className="border min-h-[2.1rem] bg-white hover:bg-slate-50 border-slate-300 rounded-md p-1.5 px-2 
     text-slate-600 outline-none text-left w-full text-sm relative overflow-hidden"
@@ -61,7 +55,7 @@ const SelectComponent = <T,>(
             </div>
           ) : null}
           {options?.map((x, i) => (
-            <>
+            <div key={i}>
               {!allowMultiple ? (
                 <button
                   key={i}
@@ -103,7 +97,7 @@ const SelectComponent = <T,>(
                   {x.label}
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       )}
