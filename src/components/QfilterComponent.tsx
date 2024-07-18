@@ -108,7 +108,7 @@ const QfilterComponent = <T,>({
           return (
             <div
               key={item.id}
-              className=" text-slate-800 font-semibold  shadow-md relative group rounded-md
+              className=" text-slate-800 font-semibold shadow-md relative group rounded-md
                transition-all w-full   h-fit"
             >
               <div className="opacity-0 group-hover:opacity-100 transition-all duration-300">

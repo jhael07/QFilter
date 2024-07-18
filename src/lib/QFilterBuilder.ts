@@ -50,22 +50,16 @@ class QFilterBuilder<T> {
     return this;
   }
 
-  addConditionUI(
-    field?: Join<T>,
-    operator?: OP,
-    value?: number | string | boolean | undefined | null,
-    parentId: string | number | null = null
-  ): this {
+  addConditionUI<T>(filters?: FiltersType<T>[], parentId: string | number | null = null): this {
+    const internalFilters = filters ?? this.filters;
     const body = {
-      field,
-      operator,
-      value,
       id: generateUID(),
       parentId,
       type: "comparisonOperator",
     } as any;
-    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
-    this.filters.push(body);
+    if (internalFilters.length > 0 && internalFilters.at(-1)?.type !== "logicalOperator")
+      this.and();
+    internalFilters.push(body);
 
     return this;
   }

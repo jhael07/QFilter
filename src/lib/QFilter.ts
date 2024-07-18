@@ -36,13 +36,13 @@ class QFilter<T> extends QExecute<T> {
     if (item.type === "comparisonOperator") {
       const { field, operator, value } = item as FilterOperator<T>;
 
-      if (operator === "Equal" || operator === "===") {
+      if (operator === "Equals" || operator === "===") {
         this.buildFilters = this.buildFilters.concat(
           `data.${field.toString()} === ${typeof value === "string" ? `'${value}'` : value}`
         );
         return;
       }
-      if (operator === "NotEqual" || operator === "!==") {
+      if (operator === "NotEquals" || operator === "!==") {
         this.buildFilters = this.buildFilters.concat(
           `data.${field.toString()} !== ${typeof value === "string" ? `'${value}'` : value}`
         );

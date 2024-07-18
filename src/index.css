@@ -14,3 +14,8 @@
 .option-scroll::-webkit-scrollbar-thumb {
   @apply bg-slate-200 rounded-sm  !important;
 }
+
+.addButton {
+  @apply bg-green-400 p-1 px-2 rounded-md text-green-900
+   hover:bg-green-500 active:scale-95 hover:text-green-950 transition-all;
+}

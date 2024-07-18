@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GroupCondition, Join, OP } from "../types";
+import { FilterGroupOperator, FiltersType, GroupCondition, Join, OP } from "../types";
 
 /**
  * Generates a random UID with only 8 characters.
@@ -35,6 +35,36 @@ export const condition = <T>(
   };
 
   return body;
+};
+
+export const addGroupUI = <T>(
+  filters: FiltersType<T>[],
+  parentId: string | number | null = null
+): void => {
+  const body: FilterGroupOperator<T> = {
+    id: generateUID(),
+    parentId,
+    children: [],
+    type: "group",
+  } as any;
+
+  addConditionUI(body.children ?? []);
+
+  if (filters.length > 0 && filters.at(-1)?.type !== "logicalOperator") filters.push(and<T>());
+  filters.push(body);
+};
+
+export const addConditionUI = <T>(
+  filters: FiltersType<T>[],
+  parentId: string | number | null = null
+): void => {
+  const body = {
+    id: generateUID(),
+    parentId,
+    type: "comparisonOperator",
+  } as any;
+  if (filters.length > 0 && filters.at(-1)?.type !== "logicalOperator") filters.push(and<T>());
+  filters.push(body);
 };
 
 /**

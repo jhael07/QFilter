@@ -2,7 +2,7 @@
 import { QFilter } from "./components/alternative-simple/QFilter";
 import QfilterComponent from "./components/QfilterComponent";
 import "./index.css";
-import QFilterBuilder, { condition, group } from "./lib";
+import QFilterBuilder from "./lib";
 import { FilterGroup, Join } from "./lib/types";
 
 type User = {
@@ -48,28 +48,22 @@ const App = () => {
 
   console.log(typeof keys, keys instanceof Object);
 
-  const getAllKeys = <T,>(item: T, fatherKey?: string) => {
-    const father = fatherKey ?? "";
+  // const getKeys = <T,>(item: T, fatherKey?: string) => {
+  //   const father = fatherKey ?? "";
 
-    const keysArr = Object.keys(item as Array<keyof T>);
-    // keysArr
-    for (const key of keysArr) {
-      const itemValue = item[key as keyof T];
+  //   const keysArr = Object.keys(item as Array<keyof T>);
+  //   // keysArr
+  //   for (const key of keysArr) {
+  //     const itemValue = item[key as keyof T];
 
-      if (itemValue instanceof Array)
-        keys.push(`${father}${father.length > 0 ? `?.${key}` : key}.length`);
-      else if (itemValue instanceof Object)
-        getAllKeys(itemValue, father.length > 0 ? `${father}?.${key}` : key);
+  //     if (itemValue instanceof Array)
+  //       keys.push(`${father}${father.length > 0 ? `?.${key}` : key}.length`);
+  //     else if (itemValue instanceof Object)
+  //       getKeys(itemValue, father.length > 0 ? `${father}?.${key}` : key);
 
-      keys.push(`${father}${father.length > 0 ? `?.${key}` : key}`);
-    }
-  };
-
-  users.forEach((x) => {
-    getAllKeys(x);
-  });
-
-  console.log(Array.from(new Set(keys)) as Join<User>[]);
+  //     keys.push(`${father}${father.length > 0 ? `?.${key}` : key}`);
+  //   }
+  // };
 
   // console.log(Object.keys(users));
   return (
@@ -86,10 +80,15 @@ const App = () => {
 
         <div className="lg:w-6/12 mx-auto mt-10 ">
           <QFilter<User>
+            dataSource={users}
             QFilter={builder}
             columns={[
               { label: "Name", value: "name" },
               { label: "Company Name", value: "company?.name" },
+              {
+                label: "Age",
+                value: "age",
+              },
             ]}
           />
           <QfilterComponent
