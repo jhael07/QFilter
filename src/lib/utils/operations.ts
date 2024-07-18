@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GroupCondition, OP } from "../types";
+import { GroupCondition, Join, OP } from "../types";
 
 /**
  * Generates a random UID with only 8 characters.
@@ -10,9 +10,9 @@ import { GroupCondition, OP } from "../types";
 export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
 
 export const where = <T>(
-  field: keyof T,
+  field: Join<T>,
   operator: OP,
-  value: number | string | boolean,
+  value: number | string | boolean | undefined | null,
   id: string | number = crypto.randomUUID().substring(0, 8),
   parentId: string | number | null = null
 ): GroupCondition<T> => {

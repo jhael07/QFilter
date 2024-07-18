@@ -1,44 +1,51 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "./index.css";
-import QFilterBuilder from "./lib/QFilterBuilder";
-import { and, where } from "./lib/utils/groupItems";
+import QFilterBuilder, { and, where } from "./lib";
+// import QFilterBuilder from "./lib/QFilterBuilder";
+// import { and, where } from "./lib/utils/groupItems";
+// import { and, group, or, where } from "./lib/utils/groupItems";
 
-type Test = { name: string; age: number; city: string };
-
+type Test = { name: string; age: number; city: string; company?: Company };
+type Company = { name: string; arr: string[]; company2?: Company2 };
+type Company2 = { tin: string };
 const App = () => {
   const users: Array<Test> = [
-    { name: "Jhael", age: 20, city: "DN" },
+    {
+      name: "Jhael",
+      age: 20,
+      city: "DN",
+      company: { name: "Jhael", arr: ["s", "maria", "natilia"] },
+    },
     { name: "Jhael", age: 21, city: "Santiago" },
     { name: "Galva", age: 26, city: "SD" },
     { name: "Galva", age: 26, city: "SDE" },
     { name: "Thomas", age: 20, city: "SDN" },
     { name: "Sthifer", age: 25, city: "SDN" },
     { name: "Enmanuel", age: 19, city: "SDO" },
+    { name: "Jhon", age: 21, city: "SDO" },
+    { name: "Francely", age: 21, city: "SDO" },
   ];
 
-  const filterBuilder = new QFilterBuilder<Test>()
-    .where("age", "GreaterThanOrEqual", 25)
+  const builder = new QFilterBuilder<Test>()
+    .where("name", "Contains", "O")
     .and()
-    .where("city", "Contains", "E")
+    .where("city", "Equal", "SDO")
     .or()
-    .group([where("age", "<=", 26), and(), where("name", "Contains", "a")]);
-  // .where("name", "Contains", "e")
-  // .and()
-  // .group([where("age", "GreaterThan", 20)]);
+    .group([where("name", "Contains", "f"), and(), where("age", ">", 20)]);
 
-  // const groupId = filterBuilder.getFilters[2]?.id;
+  const id = builder.getFilters[4]?.children?.[2]?.id;
 
-  // filterBuilder.add(groupId ?? "", [and(), where("name", "Contains", "s")]);
+  builder.add(id ?? "", [where("age", "<", 25), and()]);
 
-  // const groupId = filterBuilder.getFilters[4]?.id ?? "";
+  console.log(builder.build().filter(users));
 
-  // filterBuilder.add(groupId, [and(), where("city", "Equal", "Santiago")]);
+  // .where("company?.arr.length", "Equal", 0)
+  // .or()
+  // .where("company", "Equal", undefined);
 
-  // filterBuilder.remove(groupId);
+  // users.filter((item) => item.company.name);
 
-  // const build = filterBuilder.build();
-
-  // console.log(build.filter(users));
+  console.log(builder.build().filter(users));
 
   return (
     <div className="w-full h-screen bg-terciary-950 flex justify-center ">

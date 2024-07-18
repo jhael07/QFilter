@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 class QFilter<T> extends QExecute<T> {
-  buildFilters: string = "";
+  buildFilters?: string;
   private filters: Array<FiltersType<T>> = [];
 
   constructor(filters: Array<FiltersType<T>>) {
@@ -17,14 +17,21 @@ class QFilter<T> extends QExecute<T> {
     this.filters = filters;
   }
 
+  /**
+   * Dynamically generates a filter expression based on the provided filter item.
+   * Modifies the `buildFilters` property of the class instance.
+   * @param {commonFilterProps<T> | FilterOperator<T> | FilterGroupOperator<T> | FilterLogicalOperator<T>} item The filter item to generate the expression for.
+   */
   private generateFilter(
     item:
       | commonFilterProps<T>
       | FilterOperator<T>
       | FilterGroupOperator<T>
       | FilterLogicalOperator<T>
-  ) {
+  ): void {
     if (!item) return;
+
+    if (!this.buildFilters) this.buildFilters = "";
 
     if (item.type === "comparisonOperator") {
       const { field, operator, value } = item as FilterOperator<T>;
@@ -99,7 +106,7 @@ class QFilter<T> extends QExecute<T> {
       if (operator === "Contains") {
         this.buildFilters = this.buildFilters.concat(
           `data.${field.toString()}.toLowerCase().includes('${value
-            .toString()
+            ?.toString()
             .toLowerCase()}')`
         );
         return;
@@ -107,7 +114,7 @@ class QFilter<T> extends QExecute<T> {
       if (operator === "NotContains") {
         this.buildFilters = this.buildFilters.concat(
           `!data.${field.toString()}.toLowerCase().includes('${value
-            .toString()
+            ?.toString()
             .toLowerCase()}')`
         );
         return;
@@ -132,10 +139,16 @@ class QFilter<T> extends QExecute<T> {
     }
   }
 
-  filter(dataSource: T[]) {
-    this.buildFilters = "";
-    this.filters?.forEach((item) => this.generateFilter(item));
-
+  /**
+   * Applies the built filters to the provided dataSource and returns filtered results.
+   * @param {T[]} dataSource The array of data to filter.
+   * @returns {readonly T[]} An array of filtered data matching the applied filters.
+   */
+  filter(dataSource: T[]): readonly T[] {
+    if (!this.buildFilters) {
+      this.buildFilters = "";
+      this.filters?.forEach((item) => this.generateFilter(item));
+    }
     return this.QExecute(this.buildFilters, dataSource);
   }
 }
