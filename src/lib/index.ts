@@ -1,8 +1,15 @@
 import QFilterBuilder from "./QFilterBuilder";
-import QFilter from "./QFilter";
-import { generateUID, and, group, not, or, condition } from "./utils/operations";
+import {
+  generateUID,
+  and,
+  group,
+  not,
+  or,
+  condition,
+} from "./utils/operations";
 import * as Types from "./types";
+import { QFilterComponent } from "@/components/QFilterComponent";
 
-export default QFilterBuilder;
+export default QFilterComponent;
 
-export { QFilterBuilder, QFilter, generateUID, and, group, not, or, condition, Types };
+export { QFilterBuilder, generateUID, and, group, not, or, condition, Types };

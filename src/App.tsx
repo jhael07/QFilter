@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QFilterComponent } from "./components/QFilterComponent";
 import "./index.css";
-import QFilterBuilder from "./lib";
+import { QFilterBuilder } from "./lib";
 import { FilterGroup } from "./lib/types";
 
 type User = {

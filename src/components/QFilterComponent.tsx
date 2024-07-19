@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import QFilterBuilder from "@/lib";
+import { QFilterBuilder } from "@/lib";
 import { ERROR_CODES, QFilterOption } from "@/types";
 import FilterBodyOperations from "@/components/FilterBodyOperations";
 import { FilterOperator } from "@/lib/types";
