@@ -97,17 +97,21 @@ import { QFilterBuilder, condition, and, or, not, group } from "@jrod/qfilter";
 const builder = new QFilterBuilder()
   .condition("name", "Contains", "e")
   .and()
-  .group([
-    condition("age", "GreaterThan", 20),
-    or(),
-    not(condition("city", "Equal", "SD")),
-  ]);
+  .group([condition("age", "GreaterThan", 20), or(), not(condition("city", "Equal", "SD"))]);
 
 const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
 
 console.log(filteredUsers);
-// Output based on complex filter logic
+/*  
+  OUTPUT:
+  { name: "Jhael", age: 20, city: "DN" },
+  { name: "Jhael", age: 21, city: "Santiago" },
+  { name: "Galva", age: 26, city: "SD" },
+  { name: "Galva", age: 26, city: "SDE" },
+  { name: "Thomas", age: 20, city: "SDN" },
+  { name: "Sthifer", age: 25, city: "SDN" },
+   */
 ```
 
 ### UI Usage
@@ -299,10 +303,7 @@ type FilterOperator<T> = {
 #### `FilterBuild<T>`
 
 ```typescript
-type FilterBuild<T> =
-  | FilterGroupOperator<T>
-  | FilterLogicalOperator<T>
-  | FilterOperator<T>;
+type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
 ```
 
 #### `AddFilterFn<T>`
