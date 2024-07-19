@@ -14,7 +14,7 @@ const ColumnValue = <T,>({
   type,
 }: ColumnValueProps<T>): ReactElement<any> => {
   const [inputValue, setInputValue] = useState("");
-  const [isDisable, setIsDisable] = useState(true);
+  const [isDisable, setIsDisable] = useState(false);
 
   const handleEditBtn = () => {
     setIsDisable(false);

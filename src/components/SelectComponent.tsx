@@ -5,6 +5,7 @@ import { FilterOperator, Join, OP } from "../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
 import { SelectOption } from "../types";
+import EmptyFiltersOptions from "./EmptyFilterOptions";
 
 const SelectComponent = <T,>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,19 +40,33 @@ const SelectComponent = <T,>(
   const operatorText = ["LessThan", "LessThanOrEqual", "GreaterThan", "GreaterThanOrEqual"];
 
   const optionsFilter = options?.filter((option) => {
+    // if (props.options[0].)
+    // return operatorSelect.includes(option.label.toString());
     if (props.valueType === "number") return !operatorNumber.includes(option.label.toString());
     if (props.valueType === "text") return !operatorText.includes(option.label.toString());
+    // if (props.valueType && ) return !operatorText.includes(option.label.toString());
 
     return option;
   });
 
   useEffect(() => {
-    setLabelValue(
-      props.item.type === "logicalOperator"
-        ? props.options?.find((x) => x.value === props.item.operator)?.label
-        : labelValue ?? selectedValue?.value?.toString()
-    );
+    if (type === "value") {
+      setLabelValue("");
+    } else {
+      setLabelValue(
+        props.item.type === "logicalOperator"
+          ? props.options?.find((x) => x.value === props.item.operator)?.label
+          : labelValue ?? selectedValue?.value?.toString()
+      );
+    }
   }, []);
+
+  const optionsSelectArr = optionsFilter?.filter((x) =>
+    x.label
+      .toString()
+      .toLowerCase()
+      .includes(filter?.toString().toLowerCase() ?? "")
+  );
 
   return (
     <div className="w-full relative">
@@ -94,14 +109,9 @@ const SelectComponent = <T,>(
               No data
             </div>
           ) : null}
-          {optionsFilter
-            ?.filter((x) =>
-              x.label
-                .toString()
-                .toLowerCase()
-                .includes(filter?.toString().toLowerCase() ?? "")
-            )
-            ?.map((x, i) => (
+
+          {optionsSelectArr && optionsSelectArr?.length > 0 ? (
+            optionsSelectArr?.map((x, i) => (
               <div key={i}>
                 {!allowMultiple ? (
                   <button
@@ -146,7 +156,10 @@ const SelectComponent = <T,>(
                   </div>
                 )}
               </div>
-            ))}
+            ))
+          ) : (
+            <EmptyFiltersOptions />
+          )}
         </div>
       )}
     </div>

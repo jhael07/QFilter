@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { QFilterBuilder } from "../lib";
 import { ERROR_CODES, QFilterOption } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
@@ -17,13 +17,14 @@ type QFilterProps<T> = {
   QFilter: QFilterBuilder<T>;
   columns: Array<QFilterOption<T>>;
   dataSource: Array<T>;
+  result: (data: Array<T>) => void;
 };
 export const QFilterComponent = <T,>({
   QFilter,
   columns,
   dataSource,
+  result,
 }: QFilterProps<T>): ReactElement<any> => {
-  const [filterResult, setFilterResult] = useState<any>();
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
@@ -70,8 +71,7 @@ export const QFilterComponent = <T,>({
   const handleFilter = () => {
     try {
       validation();
-      setFilterResult(QFilter.build().filter(dataSource));
-      setReRender((prev) => !prev);
+      result(QFilter.build().filter(dataSource) as T[]);
     } catch (err: any) {
       alert(err.message ?? "One or more conditions are empty or invalid.");
     }
@@ -80,18 +80,18 @@ export const QFilterComponent = <T,>({
   const handleReset = () => {
     const deleteCount = QFilter.getFilters.length;
     QFilter.getFilters.splice(0, deleteCount);
-    setFilterResult(dataSource);
+    result(dataSource);
     setReRender((prev) => !prev);
   };
 
   return (
-    <div className="w-full bg-slate-50 p-4 mb-2 font-medium rounded-lg overflow-auto  relative">
+    <div className="w-full max-w-7xl bg-slate-50 p-4 mb-2 font-medium rounded-lg   relative">
       <div className="flex gap-x-4 pt-4 pb-4 mb-4 border-b sticky bg-slate-50 -top-4 z-30">
         <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
         <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
       </div>
       <div className="flex flex-col gap-4  ">
-        {filtersArr.length > 0 ? (
+        {filtersArr?.length > 0 ? (
           <FilterBodyOperations
             changesSave={setChangesNotSave}
             filters={filtersArr}
@@ -112,53 +112,7 @@ export const QFilterComponent = <T,>({
             Apply
           </button>
         </div>
-
-        <div className="mt-4 gap-4 grid">
-          {filterResult ? (
-            <Table columns={columns} dataSource={filterResult} />
-          ) : (
-            <Table
-              columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
-              dataSource={dataSource}
-            />
-          )}
-        </div>
       </div>
-    </div>
-  );
-};
-
-const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
-  return (
-    <div className="w-full border border-slate-300 overflow-hidden shadow-sm  rounded-lg">
-      <table className="w-full">
-        <thead className="bg-slate-100">
-          <tr>
-            {columns.map((x) => {
-              return (
-                <th
-                  className="last:border-r-0 border-r text-left px-2 pb-1.5 border-b p-3"
-                  key={x.label}
-                >
-                  {x.label}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-
-        {dataSource.map((x: any) => (
-          <tbody>
-            <tr className="w-full border-b">
-              <>
-                <td className=" border-r text-left px-3 py-1.5">{x["name"]}</td>
-                <td className=" border-r text-left px-3 py-1">{x["company"]?.name}</td>
-                <td className=" border-r-0 text-left px-3 py-1">{x["age"]}</td>
-              </>
-            </tr>
-          </tbody>
-        ))}
-      </table>
     </div>
   );
 };

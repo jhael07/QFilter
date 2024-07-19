@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { QFilterComponent } from "./components/QFilterComponent";
 import "./index.css";
 import { QFilterBuilder } from "./lib";
 import { FilterGroup } from "./lib/types";
+import { QFilterOption } from "./types";
 
 type User = {
   name: string;
@@ -13,11 +14,25 @@ type User = {
 };
 
 const App = (): ReactElement<any, any> => {
-  const builder = new QFilterBuilder<User>();
+  // Create a ref to hold the builder instance
+  const builder = useRef<QFilterBuilder<User> | null>(null);
+
+  // Initialize the builder only if it doesn't already exist
+  if (!builder.current) {
+    builder.current = new QFilterBuilder<User>();
+  }
 
   const users: User[] = [
     {
       name: "jhael",
+      age: 20,
+      company: {
+        name: "FMP",
+      },
+      a: [],
+    },
+    {
+      name: "Tomas",
       age: 20,
       company: {
         name: "FMP",
@@ -36,6 +51,29 @@ const App = (): ReactElement<any, any> => {
     },
   ];
 
+  const columns: Array<QFilterOption<User>> = [
+    { label: "Name", value: "name", type: "text" },
+    {
+      label: "Company Name",
+      value: "company?.name",
+      type: "text",
+      options: [
+        { label: "FMP", value: "FMP" },
+        { label: "Google", value: "Google" },
+        { label: "Microsoft", value: "Microsoft" },
+        { label: "Amazon", value: "Amazon" },
+        { label: "X", value: "X" },
+      ],
+    },
+    {
+      label: "Age",
+      value: "age",
+      type: "number",
+    },
+  ];
+
+  const [dataResult, setDataResult] = useState<Array<User>>([]);
+
   return (
     <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
@@ -48,31 +86,26 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="lg:w-6/12 mx-auto mt-10 ">
+        <div className="w-full mx-auto mt-10 grid place-items-center ">
           <QFilterComponent
+            result={(data) => {
+              setDataResult(data);
+            }}
             dataSource={users}
-            QFilter={builder}
-            columns={[
-              { label: "Name", value: "name", type: "text" },
-              {
-                label: "Company Name",
-                value: "company?.name",
-                type: "text",
-                options: [
-                  { label: "FMP", value: "FMP" },
-                  { label: "Google", value: "Google" },
-                  { label: "Microsoft", value: "Microsoft" },
-                  { label: "Amazon", value: "Amazon" },
-                  { label: "X", value: "X" },
-                ],
-              },
-              {
-                label: "Age",
-                value: "age",
-                type: "number",
-              },
-            ]}
+            QFilter={builder.current}
+            columns={columns}
           />
+
+          <div className="mt-4 gap-4 grid bg-white rounded-md  w-11/12">
+            {dataResult ? (
+              <Table columns={columns} dataSource={dataResult} />
+            ) : (
+              <Table
+                columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
+                dataSource={dataResult}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -80,3 +113,38 @@ const App = (): ReactElement<any, any> => {
 };
 
 export default App;
+
+const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
+  return (
+    <div className="w-full border border-slate-300 overflow-hidden shadow-sm  rounded-lg">
+      <table className="w-full">
+        <thead className="bg-slate-100">
+          <tr>
+            {columns.map((x) => {
+              return (
+                <th
+                  className="last:border-r-0 border-r text-left px-2 pb-1.5 border-b p-3"
+                  key={x.label}
+                >
+                  {x.label}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+
+        {dataSource.map((x: any) => (
+          <tbody>
+            <tr className="w-full border-b">
+              <>
+                <td className=" border-r text-left px-3 py-1.5">{x["name"]}</td>
+                <td className=" border-r text-left px-3 py-1">{x["company"]?.name}</td>
+                <td className=" border-r-0 text-left px-3 py-1">{x["age"]}</td>
+              </>
+            </tr>
+          </tbody>
+        ))}
+      </table>
+    </div>
+  );
+};

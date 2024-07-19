@@ -20,7 +20,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
   ] as any;
 
   return (
-    <div className="grid mx-auto gap-4 w-full">
+    <div className="grid mx-auto gap-4 w-full ">
       {filters?.map((x, i, arr) => {
         const filter: FiltersUI<T> = x as any;
         if (filter.type === "comparisonOperator")
@@ -38,13 +38,15 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
         if (filter.type === "logicalOperator") {
           return (
-            <div key={x.id} className="w-fit max-w-[4.5rem] ">
-              <SelectComponent<T>
-                reRenderFn={setReRender}
-                type="operator"
-                item={x as any}
-                options={logicalOperatorsOptions}
-              />
+            <div className="w-full px-1">
+              <div key={x.id} className="w-fit max-w-[4.5rem]">
+                <SelectComponent<T>
+                  reRenderFn={setReRender}
+                  type="operator"
+                  item={x as any}
+                  options={logicalOperatorsOptions}
+                />
+              </div>
             </div>
           );
         }
@@ -112,26 +114,47 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     label: x,
   })) as any;
 
+  const optionsForSelectFromItem = columns.find((col) => col.value === item.field)?.options;
+
   return (
-    <div className="w-full gap-4 flex flex-wrap lg:flex-nowrap justify-center items-end relative">
+    <div className="w-full gap-4 flex flex-wrap  justify-between  relative">
       <ColumnFilter title="Column">
-        <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} />
+        <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} type="column" />
       </ColumnFilter>
       <ColumnFilter title="Operator">
         <SelectComponent<T>
           reRenderFn={reRenderFn}
           type="operator"
           item={item}
-          options={operatorsOptions}
+          options={
+            optionsForSelectFromItem
+              ? [
+                  { label: "Equals", value: "Equals" },
+                  { label: "NotEquals", value: "NotEquals" },
+                ]
+              : operatorsOptions
+          }
           valueType={columns.find((col) => col.value === item.field)?.type ?? "text"}
         />
       </ColumnFilter>
-      <ColumnValue
-        type={columns.find((col) => col.value === item.field)?.type}
-        changesSave={changesSave}
-        reRenderFn={reRenderFn}
-        filter={item}
-      />
+      {columns.find((col) => col.value === item.field)?.options ? (
+        <ColumnFilter title="Value">
+          <SelectComponent<T>
+            reRenderFn={reRenderFn}
+            type="value"
+            item={item}
+            options={columns.find((col) => col.value === item.field)?.options}
+            valueType={columns.find((col) => col.value === item.field)?.type ?? "text"}
+          />
+        </ColumnFilter>
+      ) : (
+        <ColumnValue
+          type={columns.find((col) => col.value === item.field)?.type}
+          changesSave={changesSave}
+          reRenderFn={reRenderFn}
+          filter={item}
+        />
+      )}
       <CloseButton arr={arr as any} i={i} reRenderFn={reRenderFn} />
     </div>
   );

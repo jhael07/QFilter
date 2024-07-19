@@ -16,6 +16,7 @@ class QExecute<T> {
    */
   protected QExecute(filters: string, dataSource: Array<T>): ReadonlyArray<T> {
     const result: Array<T> = [];
+    console.log(filters);
     const fn = new Function("data", "return " + filters);
 
     for (let i = 0; i < dataSource.length; i++) {
