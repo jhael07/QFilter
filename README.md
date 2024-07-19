@@ -19,10 +19,36 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
 
 ## Installation
 
-Install the library using npm or yarn:
+Install the library using the followind commands:
+
+npm
 
 ```bash
 npx jsr add @jrod/qfilter
+```
+
+deno
+
+```bash
+deno add @jrod/qfilter
+```
+
+yarn
+
+```bash
+yarn dlx jsr add @jrod/qfilter
+```
+
+pnpm
+
+```bash
+pnpm dlx jsr add @jrod/qfilter
+```
+
+bun
+
+```bash
+bunx jsr add @jrod/qfilter
 ```
 
 ## Usage
@@ -32,7 +58,7 @@ npx jsr add @jrod/qfilter
 To start using QFilter, import the necessary components and create filters using the `QFilterBuilder` class:
 
 ```typescript
-import { QFilterBuilder } from "qfilter";
+import { QFilterBuilder } from "@jrod/qfilter";
 
 const users = [
   { name: "Jhael", age: 20, city: "DN" },
@@ -64,7 +90,7 @@ console.log(filteredUsers);
 You can use logical operators and groups to create more complex filters:
 
 ```typescript
-import { QFilterBuilder, where, and, or, not, group } from "qfilter";
+import { QFilterBuilder, where, and, or, not, group } from "@jrod/qfilter";
 
 const builder = new QFilterBuilder()
   .where("name", "Contains", "e")
