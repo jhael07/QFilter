@@ -1,3 +1,6 @@
+Here's the updated README with the UI usage example integrated:
+
+````markdown
 # QFilter
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
@@ -8,10 +11,11 @@ Query library designed for advanced filtering, crafted with ❤ using TypeScript
 - [Usage](#usage)
   - [Basic Usage](#basic-usage)
   - [Advanced Usage](#advanced-usage)
+  - [UI Usage](#ui-usage)
 - [API](#api)
   - [QFilterBuilder](#qfilterbuilder)
   - [QFilter](#qfilter)
-  - [Utilities](#utilities-for-group-filter)
+- [Utilities](#utilities-for-group-filter)
 - [Type Definitions](#types-definitions)
 - [Contributing](#contributing)
 - [License](#license)
@@ -23,6 +27,7 @@ Install the library using npm or yarn:
 ```bash
 npx jsr add @jrod/qfilter
 ```
+````
 
 ## Usage
 
@@ -52,7 +57,10 @@ const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
 
 console.log(filteredUsers);
-// Output: [ { name: 'Jhael', age: 21, city: 'Santiago' }, { name: 'Sthifer', age: 25, city: 'SDN' } ]
+// Output: [
+//   { name: 'Jhael', age: 21, city: 'Santiago' },
+//   { name: 'Sthifer', age: 25, city: 'SDN' }
+// ]
 ```
 
 ### Advanced Usage
@@ -76,6 +84,83 @@ const filteredUsers = QFilter.filter(users);
 
 console.log(filteredUsers);
 // Output based on complex filter logic
+```
+
+### UI Usage
+
+Integrate QFilter in your React components for a more interactive experience:
+
+```typescript
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { QFilter } from "./components/QFilter";
+import "./index.css";
+import QFilterBuilder from "./lib";
+import { FilterGroup } from "./lib/types";
+
+type User = {
+  name: string;
+  age: number;
+  company?: { name: string; subgroup?: { subname: string } };
+  a?: FilterGroup[];
+};
+
+const App = () => {
+  const builder = new QFilterBuilder<User>();
+
+  const users: User[] = [
+    {
+      name: "jhael",
+      age: 20,
+      company: {
+        name: "FMP",
+      },
+      a: [],
+    },
+    {
+      name: "Miguel",
+      age: 26,
+      company: {
+        name: "FMP",
+        subgroup: {
+          subname: "Shit what i've done with my life ",
+        },
+      },
+    },
+  ];
+
+  return (
+    <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
+      <div className="bg-black/50 w-full p-3 rounded-md pt-20 justify-center ">
+        <div className="mx-auto flex">
+          <h1
+            className="text-8xl lg:text-9xl font-medium bg-gradient-to-br from-primary-600 mx-auto
+          to-secondary-500 inline-block h-fit text-transparent bg-clip-text p-2.5"
+          >
+            QFilter
+          </h1>
+        </div>
+
+        <div className="lg:w-6/12 mx-auto mt-10 ">
+          <QFilter
+            dataSource={users}
+            QFilter={builder}
+            columns={[
+              { label: "Name", value: "name", type: "text" },
+              { label: "Company Name", value: "company?.name", type: "text" },
+              {
+                label: "Age",
+                value: "age",
+                type: "number",
+              },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
 ```
 
 ## API
@@ -218,45 +303,50 @@ type FilterBuild<T> =
 type AddFilterFn<T> = (
   id: string | number,
   field: Join<T>,
+
   operator: OP,
-  value: number | string | boolean,
-  parentId: string | number
-) => FilterOperator<T>;
+  value: string | number | boolean,
+  filters: Array<FiltersType<T>>,
+  parentId: string | number | null
+) => Array<FiltersType<T>>;
 ```
 
 #### `GroupCondition<T>`
 
 ```typescript
-type GroupCondition<T> =
-  | FilterOperator<T>
-  | FilterGroupOperator<T>
-  | FilterLogicalOperator<T>
-  | commonFilterProps<T>;
-```
-
-#### `BuildResult<T>`
-
-```typescript
-type BuildResult<T> = {
-  conditions: Readonly<string>;
-  result: ReadonlyArray<T>;
-};
+type GroupCondition<T> = FilterBuild<T> | AddFilterFn<T>;
 ```
 
 #### `FiltersType<T>`
 
 ```typescript
 type FiltersType<T> =
-  | FilterOperator<T>
-  | FilterGroupOperator<T>
+  | FilterBuild<T>
   | FilterLogicalOperator<T>
-  | commonFilterProps<T>;
+  | FilterGroupOperator<T>
+  | FilterOperator<T>
+  | GroupCondition<T>
+  | AddFilterFn<T>;
+```
+
+#### `SelectOption`
+
+```typescript
+type SelectOption = {
+  label: string;
+  value: string | number | boolean;
+};
 ```
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or improvements.
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
 
 ## License
 
 This project is licensed under the MIT License.
+
+```
+
+This README now includes the UI usage example, providing a comprehensive guide for users to implement QFilter in their projects.
+```

@@ -2,11 +2,7 @@
 import { FaLayerGroup } from "react-icons/fa";
 import type { FilterOperator, FiltersUI } from "../lib/types";
 import { addConditionUI, addGroupUI } from "../lib/utils/operations";
-import type {
-  FilterBodyOperationsProps,
-  QFilterOption,
-  SelectOption,
-} from "../types";
+import type { FilterBodyOperationsProps, QFilterOption } from "../types";
 import { operators } from "../utils/string";
 import CloseButton from "./buttons/CloseButton";
 import ColumnFilter from "./ColumnFilter";
