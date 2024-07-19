@@ -38,7 +38,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
         if (filter.type === "logicalOperator") {
           return (
-            <div className="w-full px-1">
+            <div className="w-full">
               <div key={x.id} className="w-fit max-w-[4.5rem]">
                 <SelectComponent<T>
                   reRenderFn={setReRender}
@@ -117,7 +117,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
   const optionsForSelectFromItem = columns.find((col) => col.value === item.field)?.options;
 
   return (
-    <div className="w-full gap-4 flex flex-wrap  justify-between  relative">
+    <div className="w-full gap-4 flex flex-col sm:flex-row   justify-between  relative">
       <ColumnFilter title="Column">
         <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} type="column" />
       </ColumnFilter>

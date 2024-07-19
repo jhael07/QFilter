@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
 import { ERROR_CODES, QFilterOption } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
@@ -12,31 +12,38 @@ import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
 import EmptyFilters from "./EmptyFilters";
 import HeadButton from "./buttons/HeadButton";
+import QFilter from "@/lib/QFilter";
 
 type QFilterProps<T> = {
-  QFilter: QFilterBuilder<T>;
   columns: Array<QFilterOption<T>>;
-  dataSource: Array<T>;
-  result: (data: Array<T>) => void;
+  onFilter: (data: QFilter<T>) => void;
 };
-export const QFilterComponent = <T,>({
-  QFilter,
-  columns,
-  dataSource,
-  result,
-}: QFilterProps<T>): ReactElement<any> => {
+
+/**
+ * QFilterComponent
+ * @template T - The type of data being filtered.
+ * @param {QFilterProps<T>} props - The props for the component.
+ * @returns {ReactElement<any>} The filter component.
+ */
+export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
-  const filtersArr = QFilter.getFilters;
+  // Create a ref to hold the builder instance
+  const QFilter = useRef<QFilterBuilder<T> | null>(null);
+
+  // Initialize the builder only if it doesn't already exist
+  if (!QFilter.current) QFilter.current = new QFilterBuilder<T>();
+
+  const filtersArr = QFilter.current.getFilters;
 
   const handleAddCondition = () => {
-    QFilter.addConditionUI();
+    QFilter.current?.addConditionUI();
     setReRender((prev) => !prev);
   };
 
   const handleAddGroup = () => {
-    QFilter.group([]);
+    QFilter.current?.group([]);
     setReRender((prev) => !prev);
   };
 
@@ -71,16 +78,17 @@ export const QFilterComponent = <T,>({
   const handleFilter = () => {
     try {
       validation();
-      result(QFilter.build().filter(dataSource) as T[]);
+      console.log(QFilter.current?.build().gridify());
+      onFilter(QFilter.current!.build());
     } catch (err: any) {
       alert(err.message ?? "One or more conditions are empty or invalid.");
     }
   };
 
   const handleReset = () => {
-    const deleteCount = QFilter.getFilters.length;
-    QFilter.getFilters.splice(0, deleteCount);
-    result(dataSource);
+    const deleteCount = QFilter.current?.getFilters.length;
+    QFilter.current?.getFilters.splice(0, deleteCount);
+    onFilter(QFilter.current!.build());
     setReRender((prev) => !prev);
   };
 

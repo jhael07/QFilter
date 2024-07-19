@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement, useRef, useState } from "react";
-import { QFilterComponent } from "./components/QFilterComponent";
+import { ReactElement, useState } from "react";
 import "./index.css";
-import { QFilterBuilder } from "./lib";
 import { FilterGroup } from "./lib/types";
 import { QFilterOption } from "./types";
+import QFilterComponent from "./lib";
 
 type User = {
   name: string;
@@ -14,14 +13,6 @@ type User = {
 };
 
 const App = (): ReactElement<any, any> => {
-  // Create a ref to hold the builder instance
-  const builder = useRef<QFilterBuilder<User> | null>(null);
-
-  // Initialize the builder only if it doesn't already exist
-  if (!builder.current) {
-    builder.current = new QFilterBuilder<User>();
-  }
-
   const users: User[] = [
     {
       name: "jhael",
@@ -72,7 +63,7 @@ const App = (): ReactElement<any, any> => {
     },
   ];
 
-  const [dataResult, setDataResult] = useState<Array<User>>([]);
+  const [dataResult, setDataResult] = useState<Array<User>>();
 
   return (
     <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
@@ -88,11 +79,9 @@ const App = (): ReactElement<any, any> => {
 
         <div className="w-full mx-auto mt-10 grid place-items-center ">
           <QFilterComponent
-            result={(data) => {
-              setDataResult(data);
+            onFilter={(data) => {
+              setDataResult(data.filter(users) ?? []);
             }}
-            dataSource={users}
-            QFilter={builder.current}
             columns={columns}
           />
 
@@ -102,7 +91,7 @@ const App = (): ReactElement<any, any> => {
             ) : (
               <Table
                 columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
-                dataSource={dataResult}
+                dataSource={users}
               />
             )}
           </div>
@@ -145,6 +134,11 @@ const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) =
           </tbody>
         ))}
       </table>
+      {dataSource.length < 1 && (
+        <div className="w-full min-h-[16rem] bg-slate-50 flex justify-center items-center text-4xl font-medium text-slate-400">
+          No data
+        </div>
+      )}
     </div>
   );
 };

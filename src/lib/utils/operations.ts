@@ -16,7 +16,7 @@ export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
  * @param {number | string | boolean} value The value to compare against.
  * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
  * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
- * @returns {this} The instance of the class with the added filter condition.
+ * @returns {GroupCondition<T>} returns a group condition object..
  */
 export const condition = <T>(
   field: Join<T>,
@@ -54,6 +54,15 @@ export const addGroupUI = <T>(
   filters.push(body);
 };
 
+/**
+ * Adds a filter condition to the query and the ui
+ * @param {Join<T>} field The field on which to apply the filter.
+ * @param {OP} operator The comparison operator for the filter.
+ * @param {number | string | boolean} value The value to compare against.
+ * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+ * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
+ * @returns {this} The instance of the class with the added filter condition.
+ */
 export const addConditionUI = <T>(
   filters: FiltersType<T>[],
   parentId: string | number | null = null

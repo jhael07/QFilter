@@ -69,7 +69,15 @@ type FiltersType<T> =
 
 type FiltersUI<T> = FilterOperator<T>;
 
+type QFilterGridify = {
+  page?: number;
+  pageSize?: number;
+  orderBy?: string;
+  filter: string;
+};
+
 export {
+  type QFilterGridify,
   type FiltersType,
   type BuildResult,
   type commonFilterProps,
