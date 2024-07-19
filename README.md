@@ -2,7 +2,8 @@
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
 
-![logo](preview-1.png)
+![logo](https://raw.githubusercontent.com/jhael07/QFilter/main/public/img/preview-2.png)
+![tool](https://raw.githubusercontent.com/jhael07/QFilter/main/public/img/preview-1.png)
 
 ## Table of Contents
 
