@@ -10,7 +10,8 @@ import { FilterOperator } from "../lib/types";
 import { errorMessage } from "../utils/errors";
 import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
-import { BiBox } from "react-icons/bi";
+import EmptyFilters from "./EmptyFilters";
+import HeadButton from "./buttons/HeadButton";
 
 type QFilterProps<T> = {
   QFilter: QFilterBuilder<T>;
@@ -76,19 +77,20 @@ export const QFilterComponent = <T,>({
     }
   };
 
+  const handleReset = () => {
+    const deleteCount = QFilter.getFilters.length;
+    QFilter.getFilters.splice(0, deleteCount);
+    setFilterResult(dataSource);
+    setReRender((prev) => !prev);
+  };
+
   return (
-    <div className="w-full bg-slate-50 p-4 mb-2 font-medium rounded-lg overflow-auto">
-      <div className="flex gap-x-2 mt-4 mb-4">
-        <button className="button-simple flex items-center gap-x-1" onClick={handleAddCondition}>
-          <p className="font-semibold text-slate-500">Filter</p>
-          <MdFilterListAlt />
-        </button>
-        <button className="button-simple flex items-center gap-x-2" onClick={handleAddGroup}>
-          <p className="font-semibold text-slate-500">Group</p>
-          <FaLayerGroup />
-        </button>
+    <div className="w-full bg-slate-50 p-4 mb-2 font-medium rounded-lg overflow-auto  relative">
+      <div className="flex gap-x-4 pt-4 pb-4 mb-4 border-b sticky bg-slate-50 -top-4 z-30">
+        <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
+        <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4  ">
         {filtersArr.length > 0 ? (
           <FilterBodyOperations
             changesSave={setChangesNotSave}
@@ -97,31 +99,30 @@ export const QFilterComponent = <T,>({
             columns={columns}
           />
         ) : (
-          <div
-            className="w-full p-10 rounded-md border border-slate-300 bg-slate-100 
-          text-slate-400/70 text-center"
-          >
-            <BiBox className="text-6xl mx-auto text-slate-300" />
-            No filters have been added.
-          </div>
+          <EmptyFilters />
         )}
+      </div>
 
-        <div className="w-full p-2 flex justify-end">
+      <div className="sticky -bottom-4 w-full bg-slate-50 pb-4">
+        <div className="w-full p-2 flex justify-end gap-x-4 border-t pt-4 mt-6">
+          <button className="button-simple w-20" onClick={handleReset}>
+            Reset
+          </button>
           <button className="button-simple w-20" onClick={handleFilter}>
             Apply
           </button>
         </div>
-      </div>
 
-      <div className="mt-4 gap-4 grid">
-        {filterResult ? (
-          <Table columns={columns} dataSource={filterResult} />
-        ) : (
-          <Table
-            columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
-            dataSource={dataSource}
-          />
-        )}
+        <div className="mt-4 gap-4 grid">
+          {filterResult ? (
+            <Table columns={columns} dataSource={filterResult} />
+          ) : (
+            <Table
+              columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
+              dataSource={dataSource}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -129,7 +130,7 @@ export const QFilterComponent = <T,>({
 
 const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
   return (
-    <div className="w-full border border-slate-200 overflow-hidden shadow-sm  rounded-lg">
+    <div className="w-full border border-slate-300 overflow-hidden shadow-sm  rounded-lg">
       <table className="w-full">
         <thead className="bg-slate-100">
           <tr>

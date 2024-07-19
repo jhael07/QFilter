@@ -69,37 +69,37 @@ class QFilter<T> extends QExecute<T> {
       }
       if (operator === "StartsWith") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.startsWith('${value}')`
+          `data.${field.toString()}.toLowerCase().startsWith('${value}'.toLowerCase())`
         );
         return;
       }
       if (operator === "NotStartsWith") {
         this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.startsWith('${value}')`
+          `!data.${field.toString()}.toLowerCase().startsWith('${value}'.toLowerCase())`
         );
         return;
       }
       if (operator === "EndsWith") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.endsWith('${value}')`
+          `data.${field.toString()}.toLowerCase().endsWith('${value}'.toLowerCase())`
         );
         return;
       }
       if (operator === "NotEndsWith") {
         this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.endsWith('${value}')`
+          `!data.${field.toString()}.toLowerCase().endsWith('${value}'.toLowerCase())`
         );
         return;
       }
       if (operator === "Contains") {
         this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
+          `data.${field.toString()}.toLowerCase().includes('${value}'.toLowerCase())`
         );
         return;
       }
       if (operator === "NotContains") {
         this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
+          `!data.${field.toString()}.toLowerCase().includes('${value}.toLowerCase()')`
         );
         return;
       }

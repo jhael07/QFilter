@@ -48,13 +48,24 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="lg:w-7/12 mx-auto mt-10 ">
+        <div className="lg:w-6/12 mx-auto mt-10 ">
           <QFilterComponent
             dataSource={users}
             QFilter={builder}
             columns={[
               { label: "Name", value: "name", type: "text" },
-              { label: "Company Name", value: "company?.name", type: "text" },
+              {
+                label: "Company Name",
+                value: "company?.name",
+                type: "text",
+                options: [
+                  { label: "FMP", value: "FMP" },
+                  { label: "Google", value: "Google" },
+                  { label: "Microsoft", value: "Microsoft" },
+                  { label: "Amazon", value: "Amazon" },
+                  { label: "X", value: "X" },
+                ],
+              },
               {
                 label: "Age",
                 value: "age",

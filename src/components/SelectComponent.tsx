@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dispatch, ReactElement, SetStateAction, useState } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { FilterOperator, Join, OP } from "../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
@@ -44,6 +45,14 @@ const SelectComponent = <T,>(
     return option;
   });
 
+  useEffect(() => {
+    setLabelValue(
+      props.item.type === "logicalOperator"
+        ? props.options?.find((x) => x.value === props.item.operator)?.label
+        : labelValue ?? selectedValue?.value?.toString()
+    );
+  }, []);
+
   return (
     <div className="w-full relative">
       <div
@@ -62,16 +71,11 @@ const SelectComponent = <T,>(
           autoCapitalize="none"
           autoCorrect="none"
           className="outline-none bg-transparent"
-          value={labelValue}
+          value={labelValue ?? ""}
           onChange={(e) => {
             setLabelValue(e.target.value);
             setFilter(e.target.value);
           }}
-          defaultValue={
-            props.item.type === "logicalOperator"
-              ? props.options?.find((x) => x.value === props.item.operator)?.label
-              : labelValue ?? selectedValue?.value?.toString()
-          }
         />
 
         <button className="absolute right-0 top-0 hover:bg-slate-100 bg-slate-100 h-full px-1 border-l border-l-slate-200">
