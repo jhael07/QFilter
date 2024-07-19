@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import QFilterBuilder from "../../lib";
 import { FilterOperator, FiltersUI } from "../../lib/types";
 import { QFilterOption } from "../../types";
@@ -37,7 +37,7 @@ export const QFilter = <T,>({
         </button>
         <button className="p-2 border bg-slate-300">add Group</button>
       </div>
-      {filtersArr?.map((x, i, arr) => {
+      {filtersArr?.map((x, i) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const filter: FiltersUI<T> = x as any;
 
@@ -46,52 +46,20 @@ export const QFilter = <T,>({
             <div key={i} className="w-full gap-x-4 flex border justify-center">
               <SelectComponent<T>
                 reRenderFn={setReRender}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 item={x as any}
                 options={columns}
                 allowMultiple={true}
-                // onClick={() => {
-                //   //QFilter.update(filter.id, { ...filter, value: "example" }, filtersArr);
-                //   setReRender((prev) => !prev);
-                // }}
               />
-              <SelectComponent />
-              <BasicInput
-                setValue={setInputValue}
-                // onClick={() => {
-                //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                //   (x as any).value = inputValue;
-                //   setReRender((prev) => !prev);
-                // }}
-                value={inputValue ?? filter.value}
-              >
+              {/* <SelectComponent /> */}
+              <BasicInput setValue={setInputValue} value={filter.value}>
                 <CustomButton
                   Icon={MdModeEdit}
                   onClick={() => {
-                    // alert("hola");
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    // (x as any).value = inputValue;
-                    // let { value } = x as FilterOperator<T>;
-
-                    // const a = { ...x, value: inputValue } as FilterOperator<T>;
                     (x as FilterOperator<T>).value = inputValue;
-                    // b.value = inputValue;
 
-                    // console.log("b", x, filtersArr, arr, a, a == x);
-                    // value = inputValue;
-                    // arr.splice(i, 1, a);
-                    console.log("a", x, filtersArr, arr);
-
-                    // (x as any).value = inputValue;
                     setReRender((prev) => !prev);
                   }}
                 />
-                {/* 
-                {mode === "edit" ? (
-                  <CustomButton Icon={MdModeEdit} onClick={handleEditFn} />
-                ) : (
-                  <CustomButton Icon={FaSave} onClick={handleSaveFn} />
-                )} */}
               </BasicInput>
             </div>
           );
@@ -125,7 +93,10 @@ const SelectComponent = <T,>(
     <div className="w-full relative">
       <div
         onClick={() => {
-          setSelectedValue((prev) => ({ ...prev, hideOptions: !prev?.hideOptions }));
+          setSelectedValue((prev) => ({
+            ...prev,
+            hideOptions: !prev?.hideOptions,
+          }));
         }}
         className="border min-h-8 bg-white border-slate-300 rounded-md p-1.5 px-2 
     text-slate-600 outline-none text-left
@@ -169,10 +140,13 @@ w-full text-sm relative overflow-hidden"
                   <input
                     type="checkbox"
                     name={x.value}
-                    checked={((selectedValue.value as string[]) ?? []).includes(x.value)}
+                    checked={((selectedValue.value as string[]) ?? []).includes(
+                      x.value
+                    )}
                     onChange={(e) => {
                       setSelectedValue((prev) => {
-                        let values: string[] = (prev.value as string[]) ?? ([] as []);
+                        let values: string[] =
+                          (prev.value as string[]) ?? ([] as []);
 
                         if (e.target.checked) values.push(e.target.name);
                         else values = values.filter((p) => p !== e.target.name);
