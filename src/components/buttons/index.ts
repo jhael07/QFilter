@@ -1,4 +1,9 @@
+import CloseButton from "./CloseButton";
+import { CloseButtonGroup } from "./CloseButtonGroup";
 import CustomButton from "./CustomButton";
-import HeaderButton from "./HeaderButton";
 
-export { CustomButton, HeaderButton };
+export default {
+  CloseButton,
+  CloseButtonGroup,
+  CustomButton,
+};

@@ -4,7 +4,13 @@ import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FilterOperator, FiltersType, Join } from "../lib/types";
 import QFilterBuilder from "../lib";
 
-type QFilterOption<T> = { label: string | number; value: Join<T> };
+type QFilterOption<T> = {
+  label: string | number;
+  value: Join<T>;
+  type?: "number" | "text" | "boolean" | "date";
+  options?: Array<SelectOption>;
+  allowMultiple?: boolean;
+};
 
 type FilterColumnProps<T> = {
   title: string;
@@ -42,16 +48,16 @@ type ColumnValueProps<T> = {
   filter: FilterOperator<T>;
   changesSave: Dispatch<SetStateAction<boolean>>;
   reRenderFn: Function;
+  type?: "number" | "text" | "boolean" | "date";
+  options?: Array<SelectOption>;
+  allowMultiple?: boolean;
 };
 
 type FilterBodyOperationsProps<T> = {
   filters: FiltersType<T>[];
   setReRender: Dispatch<SetStateAction<boolean>>;
   changesSave: Dispatch<SetStateAction<boolean>>;
-  columns?: {
-    label: string | number;
-    value: string | number | boolean | undefined | null;
-  }[];
+  columns?: Array<QFilterOption<T>>;
 };
 
 type SelectOption = {

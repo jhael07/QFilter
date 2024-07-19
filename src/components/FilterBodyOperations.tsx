@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaLayerGroup } from "react-icons/fa";
-import type { FilterOperator, FiltersUI } from "../../lib/types";
-import { addConditionUI, addGroupUI } from "../../lib/utils/operations";
-import type { FilterBodyOperationsProps, SelectOption } from "../../types";
-import { operators } from "../../utils/string";
+import type { FilterOperator, FiltersUI } from "../lib/types";
+import { addConditionUI, addGroupUI } from "../lib/utils/operations";
+import type {
+  FilterBodyOperationsProps,
+  QFilterOption,
+  SelectOption,
+} from "../types";
+import { operators } from "../utils/string";
 import CloseButton from "./buttons/CloseButton";
 import ColumnFilter from "./ColumnFilter";
 import ColumnValue from "./ColumnValue";
@@ -19,15 +23,14 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>) => {
     { value: "||", label: "OR" },
   ] as any;
 
-  console.log(filters.length);
   return (
-    <div className="grid gap-4">
+    <div className="grid mx-auto gap-4 w-full">
       {filters?.map((x, i, arr) => {
         const filter: FiltersUI<T> = x as any;
         if (filter.type === "comparisonOperator")
           return (
             <ComparisonOperator
-              key={i}
+              key={x.id}
               arr={arr}
               i={i}
               changesSave={changesSave}
@@ -39,7 +42,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>) => {
 
         if (filter.type === "logicalOperator") {
           return (
-            <div key={i} className="w-fit min-w-[4.5rem]">
+            <div key={x.id} className="w-fit max-w-[4.5rem] ">
               <SelectComponent<T>
                 reRenderFn={setReRender}
                 type="operator"
@@ -53,7 +56,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>) => {
         if (filter.type === "group" && filter.children)
           return (
             <div
-              key={i}
+              key={x.id}
               className="p-4 pt-6 bg-slate-100 border-l border-t rounded-lg   grid gap-4 relative"
             >
               <div className="w-full flex justify-between items-center pb-4 border-b">
@@ -97,27 +100,30 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>) => {
 
 export default FilterBodyOperations;
 
-const ComparisonOperator = <T,>({
-  item,
-  columns,
-  reRenderFn,
-  changesSave,
-  arr,
-  i,
-}: {
-  columns: Array<SelectOption>;
+type ComparisonOperatorProps<T> = {
+  columns: Array<QFilterOption<T>>;
   reRenderFn: Dispatch<SetStateAction<boolean>>;
   item: FilterOperator<T>;
   changesSave: Dispatch<SetStateAction<boolean>>;
   arr: any[];
   i: number;
-}) => {
-  const operatorsOptions = Object.keys(operators).map((x) => ({ value: x, label: x })) as any;
-  console.log("reRender comparison operator");
+};
+const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
+  const { item, columns, reRenderFn, changesSave, arr, i } = props;
+
+  const operatorsOptions = Object.keys(operators).map((x) => ({
+    value: x,
+    label: x,
+  })) as any;
+
   return (
-    <div className="w-full gap-x-4 flex justify-center items-end relative">
+    <div className="w-full gap-4 flex flex-wrap lg:flex-nowrap justify-center items-end relative">
       <ColumnFilter title="Column">
-        <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} />
+        <SelectComponent<T>
+          reRenderFn={reRenderFn}
+          item={item}
+          options={columns}
+        />
       </ColumnFilter>
       <ColumnFilter title="Operator">
         <SelectComponent<T>
@@ -127,8 +133,13 @@ const ComparisonOperator = <T,>({
           options={operatorsOptions}
         />
       </ColumnFilter>
-      <ColumnValue changesSave={changesSave} reRenderFn={reRenderFn} filter={item} />
-      <CloseButton arr={arr} i={i} reRenderFn={reRenderFn} />
+      <ColumnValue
+        type={columns.find((col) => col.value === item.field)?.type}
+        changesSave={changesSave}
+        reRenderFn={reRenderFn}
+        filter={item}
+      />
+      <CloseButton arr={arr as any} i={i} reRenderFn={reRenderFn} />
     </div>
   );
 };

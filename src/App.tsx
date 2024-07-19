@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QFilter } from "./components/alternative-simple/QFilter";
-import QfilterComponent from "./components/QfilterComponent";
+import { QFilter } from "./components/QFilter";
 import "./index.css";
 import QFilterBuilder from "./lib";
 import { FilterGroup } from "./lib/types";
@@ -36,8 +35,6 @@ const App = () => {
     },
   ];
 
-  const keys: any[] = [];
-
   return (
     <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
@@ -51,26 +48,18 @@ const App = () => {
         </div>
 
         <div className="lg:w-6/12 mx-auto mt-10 ">
-          <QFilter<User>
+          <QFilter
             dataSource={users}
             QFilter={builder}
             columns={[
-              { label: "Name", value: "name" },
-              { label: "Company Name", value: "company?.name" },
+              { label: "Name", value: "name", type: "text" },
+              { label: "Company Name", value: "company?.name", type: "text" },
               {
                 label: "Age",
                 value: "age",
+                type: "number",
               },
             ]}
-          />
-          <QfilterComponent
-            filterBuilder={builder}
-            config={{
-              columns: [
-                { label: "Name", value: "name" },
-                { label: "Company Name", value: "company?.name" },
-              ],
-            }}
           />
         </div>
       </div>

@@ -65,7 +65,11 @@ import { QFilterBuilder, where, and, or, not, group } from "qfilter";
 const builder = new QFilterBuilder()
   .where("name", "Contains", "e")
   .and()
-  .group([where("age", "GreaterThan", 20), or(), not(where("city", "Equal", "SD"))]);
+  .group([
+    where("age", "GreaterThan", 20),
+    or(),
+    not(where("city", "Equal", "SD")),
+  ]);
 
 const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
@@ -202,7 +206,10 @@ type FilterOperator<T> = {
 #### `FilterBuild<T>`
 
 ```typescript
-type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
+type FilterBuild<T> =
+  | FilterGroupOperator<T>
+  | FilterLogicalOperator<T>
+  | FilterOperator<T>;
 ```
 
 #### `AddFilterFn<T>`
@@ -230,7 +237,10 @@ type GroupCondition<T> =
 #### `BuildResult<T>`
 
 ```typescript
-type BuildResult<T> = { conditions: Readonly<string>; result: ReadonlyArray<T> };
+type BuildResult<T> = {
+  conditions: Readonly<string>;
+  result: ReadonlyArray<T>;
+};
 ```
 
 #### `FiltersType<T>`
