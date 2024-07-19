@@ -25,8 +25,6 @@ Install the library using npm or yarn:
 npx jsr add @jrod/qfilter
 ```
 
-````
-
 ## Usage
 
 ### Basic Usage
@@ -345,4 +343,7 @@ Contributions are welcome! Please open an issue or submit a pull request on GitH
 This project is licensed under the MIT License.
 
 ```
-````
+
+
+
+```
