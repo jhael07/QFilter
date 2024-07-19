@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QFilter } from "./components/alternative-simple/QFilter";
-import QfilterComponent from "./components/QfilterComponent";
+import { ReactElement } from "react";
+import { QFilterComponent } from "./components/QFilterComponent";
 import "./index.css";
-import QFilterBuilder from "./lib";
+import { QFilterBuilder } from "./lib";
 import { FilterGroup } from "./lib/types";
 
 type User = {
@@ -12,16 +12,8 @@ type User = {
   a?: FilterGroup[];
 };
 
-const App = () => {
+const App = (): ReactElement<any, any> => {
   const builder = new QFilterBuilder<User>();
-  // .condition("name", "Contains", "k")
-  // .group([
-  //   condition("company?.name", "Contains", "j"),
-  //   group([
-  //     condition("company?.name", "Contains", "j"),
-  //     group([condition("company?.name", "Contains", "j")]),
-  //   ]),
-  // ]);
 
   const users: User[] = [
     {
@@ -44,28 +36,6 @@ const App = () => {
     },
   ];
 
-  const keys: any[] = [];
-
-  console.log(typeof keys, keys instanceof Object);
-
-  // const getKeys = <T,>(item: T, fatherKey?: string) => {
-  //   const father = fatherKey ?? "";
-
-  //   const keysArr = Object.keys(item as Array<keyof T>);
-  //   // keysArr
-  //   for (const key of keysArr) {
-  //     const itemValue = item[key as keyof T];
-
-  //     if (itemValue instanceof Array)
-  //       keys.push(`${father}${father.length > 0 ? `?.${key}` : key}.length`);
-  //     else if (itemValue instanceof Object)
-  //       getKeys(itemValue, father.length > 0 ? `${father}?.${key}` : key);
-
-  //     keys.push(`${father}${father.length > 0 ? `?.${key}` : key}`);
-  //   }
-  // };
-
-  // console.log(Object.keys(users));
   return (
     <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
@@ -79,26 +49,18 @@ const App = () => {
         </div>
 
         <div className="lg:w-6/12 mx-auto mt-10 ">
-          <QFilter<User>
+          <QFilterComponent
             dataSource={users}
             QFilter={builder}
             columns={[
-              { label: "Name", value: "name" },
-              { label: "Company Name", value: "company?.name" },
+              { label: "Name", value: "name", type: "text" },
+              { label: "Company Name", value: "company?.name", type: "text" },
               {
                 label: "Age",
                 value: "age",
+                type: "number",
               },
             ]}
-          />
-          <QfilterComponent
-            filterBuilder={builder}
-            config={{
-              columns: [
-                { label: "Name", value: "name" },
-                { label: "Company Name", value: "company?.name" },
-              ],
-            }}
           />
         </div>
       </div>

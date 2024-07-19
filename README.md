@@ -2,26 +2,55 @@
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
 
+![logo](https://raw.githubusercontent.com/jhael07/QFilter/main/public/img/preview-2.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
   - [Basic Usage](#basic-usage)
   - [Advanced Usage](#advanced-usage)
+  - [UI Usage](#ui-usage)
 - [API](#api)
   - [QFilterBuilder](#qfilterbuilder)
   - [QFilter](#qfilter)
-  - [Utilities](#utilities-for-group-filter)
+- [Utilities](#utilities-for-group-filter)
 - [Type Definitions](#types-definitions)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
 
-Install the library using npm or yarn:
+Install the library using the followind commands:
+
+npm
 
 ```bash
 npx jsr add @jrod/qfilter
+```
+
+deno
+
+```bash
+deno add @jrod/qfilter
+```
+
+yarn
+
+```bash
+yarn dlx jsr add @jrod/qfilter
+```
+
+pnpm
+
+```bash
+pnpm dlx jsr add @jrod/qfilter
+```
+
+bun
+
+```bash
+bunx jsr add @jrod/qfilter
 ```
 
 ## Usage
@@ -31,7 +60,7 @@ npx jsr add @jrod/qfilter
 To start using QFilter, import the necessary components and create filters using the `QFilterBuilder` class:
 
 ```typescript
-import { QFilterBuilder } from "qfilter";
+import { QFilterBuilder } from "@jrod/qfilter";
 
 const users = [
   { name: "Jhael", age: 20, city: "DN" },
@@ -44,15 +73,18 @@ const users = [
 ];
 
 const builder = new QFilterBuilder()
-  .where("name", "Contains", "e")
+  .condition("name", "Contains", "e")
   .and()
-  .where("age", "GreaterThan", 20);
+  .condition("age", "GreaterThan", 20);
 
 const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
 
 console.log(filteredUsers);
-// Output: [ { name: 'Jhael', age: 21, city: 'Santiago' }, { name: 'Sthifer', age: 25, city: 'SDN' } ]
+// Output: [
+//   { name: 'Jhael', age: 21, city: 'Santiago' },
+//   { name: 'Sthifer', age: 25, city: 'SDN' }
+// ]
 ```
 
 ### Advanced Usage
@@ -60,12 +92,16 @@ console.log(filteredUsers);
 You can use logical operators and groups to create more complex filters:
 
 ```typescript
-import { QFilterBuilder, where, and, or, not, group } from "qfilter";
+import { QFilterBuilder, condition, and, or, not, group } from "@jrod/qfilter";
 
 const builder = new QFilterBuilder()
-  .where("name", "Contains", "e")
+  .condition("name", "Contains", "e")
   .and()
-  .group([where("age", "GreaterThan", 20), or(), not(where("city", "Equal", "SD"))]);
+  .group([
+    condition("age", "GreaterThan", 20),
+    or(),
+    not(condition("city", "Equal", "SD")),
+  ]);
 
 const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
@@ -74,13 +110,74 @@ console.log(filteredUsers);
 // Output based on complex filter logic
 ```
 
+### UI Usage
+
+Integrate QFilter in your React components for a more interactive experience:
+
+```typescript
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { QFilterComponent } from "@jrod/qfilter";
+
+type User = {
+  name: string;
+  age: number;
+  company?: { name: string; subgroup?: { subname: string } };
+  a?: FilterGroup[];
+};
+
+const App = () => {
+  const builder = new QFilterBuilder<User>();
+
+  const users: User[] = [
+    {
+      name: "jhael",
+      age: 20,
+      company: {
+        name: "FMP",
+      },
+      a: [],
+    },
+    {
+      name: "Miguel",
+      age: 26,
+      company: {
+        name: "FMP",
+        subgroup: {
+          subname: "Shit what i've done with my life ",
+        },
+      },
+    },
+  ];
+
+  return (
+    <QFilterComponent
+      dataSource={users}
+      QFilter={builder}
+      columns={[
+        { label: "Name", value: "name", type: "text" },
+        { label: "Company Name", value: "company?.name", type: "text" },
+        {
+          label: "Age",
+          value: "age",
+          type: "number",
+        },
+      ]}
+    />
+  );
+};
+
+export default App;
+```
+
+![tool](https://raw.githubusercontent.com/jhael07/QFilter/main/public/img/preview-1.png)
+
 ## API
 
 ### QFilterBuilder
 
 | Method Signature | Params                                                                                                                                                        | Description                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| where            | field: `Join<T>`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
+| condition        | field: `Join<T>`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
 | group            | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
 | add              | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
 | remove           | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
@@ -98,22 +195,22 @@ Applies the filters to the given data source and returns the filtered data.
 
 ## Utilities for group filter
 
-| Method Signature                              | Description                   |
-| --------------------------------------------- | ----------------------------- |
-| `generateUID()`                               | Generates a random UID.       |
-| `where(field, operator, value, id, parentId)` | Creates a where filter.       |
-| `group(filters)`                              | Creates a group of filters.   |
-| `and()`                                       | Creates a logical AND filter. |
-| `or()`                                        | Creates a logical OR filter.  |
-| `not()`                                       | Creates a logical NOT filter. |
+| Method Signature                                  | Description                   |
+| ------------------------------------------------- | ----------------------------- |
+| `generateUID()`                                   | Generates a random UID.       |
+| `condition(field, operator, value, id, parentId)` | Creates a condition filter.   |
+| `group(filters)`                                  | Creates a group of filters.   |
+| `and()`                                           | Creates a logical AND filter. |
+| `or()`                                            | Creates a logical OR filter.  |
+| `not()`                                           | Creates a logical NOT filter. |
 
 ## Example
 
 ```typescript
 .group([
-  where("age", "GreaterThan", 20),
+  condition("age", "GreaterThan", 20),
   or(),
-  not(where("city", "Equal", "SD"), and(), group([where("age", "GreaterThan", 20)])),
+  not(condition("city", "Equal", "SD"), and(), group([condition("age", "GreaterThan", 20)])),
 ]);
 ```
 
@@ -202,7 +299,10 @@ type FilterOperator<T> = {
 #### `FilterBuild<T>`
 
 ```typescript
-type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | FilterOperator<T>;
+type FilterBuild<T> =
+  | FilterGroupOperator<T>
+  | FilterLogicalOperator<T>
+  | FilterOperator<T>;
 ```
 
 #### `AddFilterFn<T>`
@@ -211,41 +311,44 @@ type FilterBuild<T> = FilterGroupOperator<T> | FilterLogicalOperator<T> | Filter
 type AddFilterFn<T> = (
   id: string | number,
   field: Join<T>,
+
   operator: OP,
-  value: number | string | boolean,
-  parentId: string | number
-) => FilterOperator<T>;
+  value: string | number | boolean,
+  filters: Array<FiltersType<T>>,
+  parentId: string | number | null
+) => Array<FiltersType<T>>;
 ```
 
 #### `GroupCondition<T>`
 
 ```typescript
-type GroupCondition<T> =
-  | FilterOperator<T>
-  | FilterGroupOperator<T>
-  | FilterLogicalOperator<T>
-  | commonFilterProps<T>;
-```
-
-#### `BuildResult<T>`
-
-```typescript
-type BuildResult<T> = { conditions: Readonly<string>; result: ReadonlyArray<T> };
+type GroupCondition<T> = FilterBuild<T> | AddFilterFn<T>;
 ```
 
 #### `FiltersType<T>`
 
 ```typescript
 type FiltersType<T> =
-  | FilterOperator<T>
-  | FilterGroupOperator<T>
+  | FilterBuild<T>
   | FilterLogicalOperator<T>
-  | commonFilterProps<T>;
+  | FilterGroupOperator<T>
+  | FilterOperator<T>
+  | GroupCondition<T>
+  | AddFilterFn<T>;
+```
+
+#### `SelectOption`
+
+```typescript
+type SelectOption = {
+  label: string;
+  value: string | number | boolean;
+};
 ```
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or improvements.
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
 
 ## License
 

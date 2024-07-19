@@ -44,20 +44,30 @@ class QFilterBuilder<T> {
       parentId,
       type: "comparisonOperator",
     };
-    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
+    if (
+      this.filters.length > 0 &&
+      this.filters.at(-1)?.type !== "logicalOperator"
+    )
+      this.and();
     this.filters.push(body);
 
     return this;
   }
 
-  addConditionUI<T>(filters?: FiltersType<T>[], parentId: string | number | null = null): this {
+  addConditionUI<T>(
+    filters?: FiltersType<T>[],
+    parentId: string | number | null = null
+  ): this {
     const internalFilters = filters ?? this.filters;
     const body = {
       id: generateUID(),
       parentId,
       type: "comparisonOperator",
     } as any;
-    if (internalFilters.length > 0 && internalFilters.at(-1)?.type !== "logicalOperator")
+    if (
+      internalFilters.length > 0 &&
+      internalFilters.at(-1)?.type !== "logicalOperator"
+    )
       this.and();
     internalFilters.push(body);
 
@@ -72,9 +82,16 @@ class QFilterBuilder<T> {
   group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this {
     const id = generateUID();
 
-    const children = filters?.map((filter: any) => ({ ...filter, parentId: id })) as any;
+    const children = filters?.map((filter: any) => ({
+      ...filter,
+      parentId: id,
+    })) as any;
 
-    if (this.filters.length > 0 && this.filters.at(-1)?.type !== "logicalOperator") this.and();
+    if (
+      this.filters.length > 0 &&
+      this.filters.at(-1)?.type !== "logicalOperator"
+    )
+      this.and();
 
     this.filters.push({
       id,
@@ -176,7 +193,8 @@ class QFilterBuilder<T> {
       const item = itemsToFilter[i];
       if (item.id === id) {
         //  this will remove the item and modified the original array
-        if (itemsToFilter[i - 1]?.type === "logicalOperator") itemsToFilter.splice(i - 1, 2);
+        if (itemsToFilter[i - 1]?.type === "logicalOperator")
+          itemsToFilter.splice(i - 1, 2);
         else itemsToFilter.splice(i, 1);
         return true;
       }
@@ -195,7 +213,11 @@ class QFilterBuilder<T> {
    * @param {Array<FiltersType<T>>} [filters] Optional array of filters to search within (defaults to this.filters if not provided).
    * @returns {boolean} True if the filter condition or group was successfully updated, false otherwise.
    */
-  update(id: string | number, value: FiltersType<T>, filters?: Array<FiltersType<T>>): boolean {
+  update(
+    id: string | number,
+    value: FiltersType<T>,
+    filters?: Array<FiltersType<T>>
+  ): boolean {
     const filtersToApply = filters ?? this.filters;
 
     for (let i = 0; i < filtersToApply.length; i++) {

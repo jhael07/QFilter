@@ -14,7 +14,7 @@ class QExecute<T> {
    * @param {Array<T>} dataSource - An array of items to be filtered.
    * @returns {Array<T>} An array of items that match the filter conditions.
    */
-  protected ApplyFilters(filters: string, dataSource: Array<T>): ReadonlyArray<T> {
+  protected QExecute(filters: string, dataSource: Array<T>): ReadonlyArray<T> {
     const result: Array<T> = [];
 
     const fn = new Function("data", "return " + filters);
