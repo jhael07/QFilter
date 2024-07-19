@@ -14,3 +14,8 @@
 .option-scroll::-webkit-scrollbar-thumb {
   @apply bg-slate-200 rounded-sm  !important;
 }
+
+.button-simple {
+  @apply p-1.5 rounded-md text-slate-600 border border-slate-300
+    active:scale-95 hover:text-slate-800 transition-all;
+}

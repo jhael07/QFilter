@@ -7,3 +7,18 @@ const logicalOperationCondition = (type: LogicalOperator) => {
 };
 
 export { logicalOperationCondition };
+
+export enum operators {
+  "Equals" = "Equals",
+  "NotEquals" = "NotEquals",
+  "LessThan" = "LessThan",
+  "GreaterThan" = "GreaterThan",
+  "GreaterThanOrEqual" = "GreaterThanOrEqual",
+  "LessThanOrEqual" = "LessThanOrEqual",
+  "Contains" = "Contains",
+  "NotContains" = "NotContains",
+  "StartsWith" = "StartsWith",
+  "NotStartsWith" = "NotStartsWith",
+  "EndsWith" = "EndsWith",
+  "NotEndsWith" = "NotEndsWith",
+}

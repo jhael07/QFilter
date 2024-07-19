@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type OP =
-  | "Equal"
-  | "NotEqual"
+  | "Equals"
+  | "NotEquals"
   | "LessThan"
   | "GreaterThan"
   | "GreaterThanOrEqual"
