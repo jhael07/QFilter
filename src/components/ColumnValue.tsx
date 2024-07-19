@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { ColumnValueProps } from "@/types";
+import { ColumnValueProps } from "../types";
 import ColumnFilter from "./ColumnFilter";
 import { BasicInput } from "./form";
 import { MdModeEdit } from "react-icons/md";
