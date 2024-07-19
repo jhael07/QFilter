@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dispatch, SetStateAction, useState } from "react";
 import { FilterOperator, Join, OP } from "../../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -21,9 +22,9 @@ const SelectComponent = <T,>(
     value?: string | string[] | number | number[] | boolean | boolean[] | null;
   }>({ hideOptions: true, value: props.item.field?.toString() ?? "" });
 
-  const [labelValue, setLabelValue] = useState<string | number>();
+  console.log(props.item.field, "select component");
 
-  console.log(props.item);
+  const [_labelValue, setLabelValue] = useState<string | number>();
 
   return (
     <div className="w-full relative">
@@ -36,7 +37,7 @@ const SelectComponent = <T,>(
       >
         {props.item.type === "logicalOperator"
           ? props.options?.find((x) => x.value === props.item.operator)?.label
-          : labelValue ?? selectedValue?.value}
+          : selectedValue?.value}
 
         <button className="absolute right-0 top-0 hover:bg-slate-100 bg-slate-100 h-full px-1 border-l border-l-slate-200">
           {!selectedValue?.hideOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}

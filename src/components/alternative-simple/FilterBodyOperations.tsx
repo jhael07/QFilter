@@ -113,7 +113,7 @@ const ComparisonOperator = <T,>({
   i: number;
 }) => {
   const operatorsOptions = Object.keys(operators).map((x) => ({ value: x, label: x })) as any;
-  console.log("reRender comparison operator");
+  console.log("reRender comparison operator", item.field);
   return (
     <div className="w-full gap-x-4 flex justify-center items-end relative">
       <ColumnFilter title="Column">
