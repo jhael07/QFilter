@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QFilter } from "./components/QFilter";
+import { QFilterComponent } from "./components/QFilterComponent";
 import "./index.css";
 import QFilterBuilder from "./lib";
 import { FilterGroup } from "./lib/types";
@@ -48,7 +48,7 @@ const App = () => {
         </div>
 
         <div className="lg:w-6/12 mx-auto mt-10 ">
-          <QFilter
+          <QFilterComponent
             dataSource={users}
             QFilter={builder}
             columns={[

@@ -17,7 +17,7 @@ type QFilterProps<T> = {
   columns: Array<QFilterOption<T>>;
   dataSource: Array<T>;
 };
-export const QFilter = <T,>({
+export const QFilterComponent = <T,>({
   QFilter,
   columns,
   dataSource,
