@@ -1,6 +1,3 @@
-Here's the updated README with the UI usage example integrated:
-
-````markdown
 # QFilter
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
@@ -27,6 +24,7 @@ Install the library using npm or yarn:
 ```bash
 npx jsr add @jrod/qfilter
 ```
+
 ````
 
 ## Usage
@@ -347,6 +345,4 @@ Contributions are welcome! Please open an issue or submit a pull request on GitH
 This project is licensed under the MIT License.
 
 ```
-
-This README now includes the UI usage example, providing a comprehensive guide for users to implement QFilter in their projects.
-```
+````
