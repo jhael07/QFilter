@@ -129,6 +129,9 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
           type="operator"
           item={item}
           options={operatorsOptions}
+          valueType={
+            columns.find((col) => col.value === item.field)?.type ?? "text"
+          }
         />
       </ColumnFilter>
       <ColumnValue

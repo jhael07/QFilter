@@ -12,6 +12,7 @@ const SelectComponent = <T,>(
     reRenderFn: Dispatch<SetStateAction<boolean>>;
     allowMultiple?: boolean;
     type?: "column" | "operator" | "value";
+    valueType?: "number" | "text" | "date" | "boolean";
   }
 ): ReactElement<any> => {
   const { options, allowMultiple = false, type = "column" } = props;
