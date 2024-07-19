@@ -9,10 +9,12 @@ import ColumnFilter from "./ColumnFilter";
 import ColumnValue from "./ColumnValue";
 import SelectComponent from "./SelectComponent";
 import { MdFilterListAlt } from "react-icons/md";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import { CloseButtonGroup } from "./buttons/CloseButtonGroup";
 
-const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>) => {
+const FilterBodyOperations = <T,>(
+  props: FilterBodyOperationsProps<T>
+): ReactElement<any> => {
   const { filters, setReRender, columns, changesSave } = props;
   const logicalOperatorsOptions = [
     { value: "&&", label: "AND" },

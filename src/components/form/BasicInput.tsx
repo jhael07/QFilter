@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
 
 type BasicInputProps = {
   children: ReactNode;
@@ -13,7 +13,7 @@ const BasicInput = ({
   children,
   onClick,
   ...rest
-}: BasicInputProps) => {
+}: BasicInputProps): ReactElement<any> => {
   return (
     <div className="flex gap-x-2 items-center w-full">
       <input

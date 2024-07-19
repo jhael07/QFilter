@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactElement } from "react";
 import { QFilterComponent } from "./components/QFilterComponent";
 import "./index.css";
 import { QFilterBuilder } from "./lib";
@@ -11,7 +12,7 @@ type User = {
   a?: FilterGroup[];
 };
 
-const App = () => {
+const App = (): ReactElement<any, any> => {
   const builder = new QFilterBuilder<User>();
 
   const users: User[] = [

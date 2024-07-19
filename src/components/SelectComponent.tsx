@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, ReactElement, SetStateAction, useState } from "react";
 import { FilterOperator, Join, OP } from "../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
@@ -13,7 +13,7 @@ const SelectComponent = <T,>(
     allowMultiple?: boolean;
     type?: "column" | "operator" | "value";
   }
-) => {
+): ReactElement<any> => {
   const { options, allowMultiple = false, type = "column" } = props;
 
   const [selectedValue, setSelectedValue] = useState<{

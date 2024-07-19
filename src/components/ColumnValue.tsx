@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { ColumnValueProps } from "../types";
 import ColumnFilter from "./ColumnFilter";
 import { BasicInput } from "./form";
@@ -12,7 +12,7 @@ const ColumnValue = <T,>({
   changesSave,
   reRenderFn,
   type,
-}: ColumnValueProps<T>) => {
+}: ColumnValueProps<T>): ReactElement<any> => {
   const [inputValue, setInputValue] = useState("");
   const [isDisable, setIsDisable] = useState(true);
 

@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { QFilterBuilder } from "../lib";
 import { ERROR_CODES, QFilterOption } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
@@ -21,7 +21,7 @@ export const QFilterComponent = <T,>({
   QFilter,
   columns,
   dataSource,
-}: QFilterProps<T>) => {
+}: QFilterProps<T>): ReactElement<any> => {
   const [filterResult, setFilterResult] = useState<any>();
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
