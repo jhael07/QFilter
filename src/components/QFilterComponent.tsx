@@ -43,9 +43,7 @@ export const QFilterComponent = <T,>({
       const item: FilterOperator<any> = x as any;
 
       const column = columns.find(
-        (col) =>
-          col.value === item?.field?.toString() &&
-          item.type === "comparisonOperator"
+        (col) => col.value === item?.field?.toString() && item.type === "comparisonOperator"
       );
 
       if (!item.children) {
@@ -53,19 +51,13 @@ export const QFilterComponent = <T,>({
           throw Error(errorMessage(ERROR_CODES.EmptyColumn));
 
         if (!item.operator)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
 
         if (!item.value)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
       } else {
         if (item.children && item.children.length === 0)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
 
         validation(item.children);
       }
@@ -87,17 +79,11 @@ export const QFilterComponent = <T,>({
   return (
     <div className="w-full bg-slate-50 p-4 mb-2 font-medium rounded-lg overflow-auto">
       <div className="flex gap-x-2 mt-4 mb-4">
-        <button
-          className="button-simple flex items-center gap-x-1"
-          onClick={handleAddCondition}
-        >
+        <button className="button-simple flex items-center gap-x-1" onClick={handleAddCondition}>
           <p className="font-semibold text-slate-500">Filter</p>
           <MdFilterListAlt />
         </button>
-        <button
-          className="button-simple flex items-center gap-x-2"
-          onClick={handleAddGroup}
-        >
+        <button className="button-simple flex items-center gap-x-2" onClick={handleAddGroup}>
           <p className="font-semibold text-slate-500">Group</p>
           <FaLayerGroup />
         </button>
@@ -111,7 +97,10 @@ export const QFilterComponent = <T,>({
             columns={columns}
           />
         ) : (
-          <div className="w-full p-4 rounded-md border border-slate-300 bg-slate-100 text-slate-400/70 text-center">
+          <div
+            className="w-full p-10 rounded-md border border-slate-300 bg-slate-100 
+          text-slate-400/70 text-center"
+          >
             <BiBox className="text-6xl mx-auto text-slate-300" />
             No filters have been added.
           </div>
@@ -119,7 +108,7 @@ export const QFilterComponent = <T,>({
 
         <div className="w-full p-2 flex justify-end">
           <button className="button-simple w-20" onClick={handleFilter}>
-            Filter
+            Apply
           </button>
         </div>
       </div>
@@ -129,11 +118,7 @@ export const QFilterComponent = <T,>({
           <Table columns={columns} dataSource={filterResult} />
         ) : (
           <Table
-            columns={[
-              { label: "Name" },
-              { label: "Company Name" },
-              { label: "Age" },
-            ]}
+            columns={[{ label: "Name" }, { label: "Company Name" }, { label: "Age" }]}
             dataSource={dataSource}
           />
         )}
@@ -142,13 +127,7 @@ export const QFilterComponent = <T,>({
   );
 };
 
-const Table = ({
-  columns,
-  dataSource,
-}: {
-  columns: any[];
-  dataSource: any[];
-}) => {
+const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
   return (
     <div className="w-full border border-slate-200 overflow-hidden shadow-sm  rounded-lg">
       <table className="w-full">
@@ -172,9 +151,7 @@ const Table = ({
             <tr className="w-full border-b">
               <>
                 <td className=" border-r text-left px-3 py-1.5">{x["name"]}</td>
-                <td className=" border-r text-left px-3 py-1">
-                  {x["company"]?.name}
-                </td>
+                <td className=" border-r text-left px-3 py-1">{x["company"]?.name}</td>
                 <td className=" border-r-0 text-left px-3 py-1">{x["age"]}</td>
               </>
             </tr>

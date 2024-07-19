@@ -48,7 +48,7 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="lg:w-6/12 mx-auto mt-10 ">
+        <div className="lg:w-7/12 mx-auto mt-10 ">
           <QFilterComponent
             dataSource={users}
             QFilter={builder}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, ReactElement, SetStateAction, useState } from "react";
 import { FilterOperator, Join, OP } from "../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -25,6 +26,24 @@ const SelectComponent = <T,>(
   const [labelValue, setLabelValue] = useState<string | number>();
   const [filter, setFilter] = useState<string>("");
 
+  const operatorNumber = [
+    "Contains",
+    "NotContains",
+    "StartsWith",
+    "NotStartsWith",
+    "EndsWith",
+    "NotEndsWith",
+  ];
+
+  const operatorText = ["LessThan", "LessThanOrEqual", "GreaterThan", "GreaterThanOrEqual"];
+
+  const optionsFilter = options?.filter((option) => {
+    if (props.valueType === "number") return !operatorNumber.includes(option.label.toString());
+    if (props.valueType === "text") return !operatorText.includes(option.label.toString());
+
+    return option;
+  });
+
   return (
     <div className="w-full relative">
       <div
@@ -50,8 +69,7 @@ const SelectComponent = <T,>(
           }}
           defaultValue={
             props.item.type === "logicalOperator"
-              ? props.options?.find((x) => x.value === props.item.operator)
-                  ?.label
+              ? props.options?.find((x) => x.value === props.item.operator)?.label
               : labelValue ?? selectedValue?.value?.toString()
           }
         />
@@ -72,7 +90,7 @@ const SelectComponent = <T,>(
               No data
             </div>
           ) : null}
-          {options
+          {optionsFilter
             ?.filter((x) =>
               x.label
                 .toString()
@@ -85,10 +103,8 @@ const SelectComponent = <T,>(
                   <button
                     key={i}
                     onClick={() => {
-                      if (type === "column")
-                        props.item.field = x.value as Join<T>;
-                      if (type === "operator")
-                        props.item.operator = x.value as OP;
+                      if (type === "column") props.item.field = x.value as Join<T>;
+                      if (type === "operator") props.item.operator = x.value as OP;
                       if (type === "value") props.item.value = x.value;
 
                       setSelectedValue((prev) => ({
@@ -108,17 +124,15 @@ const SelectComponent = <T,>(
                     <input
                       type="checkbox"
                       name={x.value?.toString()}
-                      checked={(
-                        (selectedValue.value as string[]) ?? []
-                      ).includes(x.value?.toString() ?? "")}
+                      checked={((selectedValue.value as string[]) ?? []).includes(
+                        x.value?.toString() ?? ""
+                      )}
                       onChange={(e) => {
                         setSelectedValue((prev) => {
-                          let values: string[] =
-                            (prev.value as string[]) ?? ([] as []);
+                          let values: string[] = (prev.value as string[]) ?? ([] as []);
 
                           if (e.target.checked) values.push(e.target.name);
-                          else
-                            values = values.filter((p) => p !== e.target.name);
+                          else values = values.filter((p) => p !== e.target.name);
 
                           return { ...prev, value: values };
                         });
