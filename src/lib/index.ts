@@ -8,7 +8,7 @@ import {
   condition,
 } from "./utils/operations";
 import * as Types from "./types";
-import { QFilterComponent } from "@/components/QFilterComponent";
+import { QFilterComponent } from "../components/QFilterComponent";
 
 export default QFilterComponent;
 
