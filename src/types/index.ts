@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FilterOperator, FiltersType, Join } from "../lib/types";
-import QFilterBuilder from "../lib";
+import { QFilterBuilder } from "../lib";
 
 type QFilterOption<T> = {
   label: string | number;

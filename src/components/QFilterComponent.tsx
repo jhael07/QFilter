@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { QFilterBuilder } from "@/lib";
-import { ERROR_CODES, QFilterOption } from "@/types";
-import FilterBodyOperations from "@/components/FilterBodyOperations";
-import { FilterOperator } from "@/lib/types";
-import { errorMessage } from "@/utils/errors";
+import { QFilterBuilder } from "../lib";
+import { ERROR_CODES, QFilterOption } from "../types";
+import FilterBodyOperations from "../components/FilterBodyOperations";
+import { FilterOperator } from "../lib/types";
+import { errorMessage } from "../utils/errors";
 import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
 import { BiBox } from "react-icons/bi";
