@@ -80,6 +80,7 @@ const App = (): ReactElement<any, any> => {
         <div className="w-full mx-auto mt-10 grid place-items-center ">
           <QFilterComponent
             onFilter={(data) => {
+              data.gridify();
               setDataResult(data.filter(users) ?? []);
             }}
             columns={columns}
