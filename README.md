@@ -150,7 +150,7 @@ const App = () => {
   ];
 
   return (
-    <QFilter
+    <QFilterComponent
       dataSource={users}
       QFilter={builder}
       columns={[
