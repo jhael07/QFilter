@@ -73,9 +73,9 @@ const users = [
 ];
 
 const builder = new QFilterBuilder()
-  .where("name", "Contains", "e")
+  .condition("name", "Contains", "e")
   .and()
-  .where("age", "GreaterThan", 20);
+  .condition("age", "GreaterThan", 20);
 
 const QFilter = builder.build();
 const filteredUsers = QFilter.filter(users);
@@ -92,15 +92,15 @@ console.log(filteredUsers);
 You can use logical operators and groups to create more complex filters:
 
 ```typescript
-import { QFilterBuilder, where, and, or, not, group } from "@jrod/qfilter";
+import { QFilterBuilder, condition, and, or, not, group } from "@jrod/qfilter";
 
 const builder = new QFilterBuilder()
-  .where("name", "Contains", "e")
+  .condition("name", "Contains", "e")
   .and()
   .group([
-    where("age", "GreaterThan", 20),
+    condition("age", "GreaterThan", 20),
     or(),
-    not(where("city", "Equal", "SD")),
+    not(condition("city", "Equal", "SD")),
   ]);
 
 const QFilter = builder.build();
@@ -177,7 +177,7 @@ export default App;
 
 | Method Signature | Params                                                                                                                                                        | Description                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| where            | field: `Join<T>`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
+| condition        | field: `Join<T>`<br>operator: `OP`<br>value: `number` \| `string` \| `boolean`<br>id: `string` \| `number`<br>parentId: `string` \| `number` \| `null`        | Adds a comparison filter.                |
 | group            | filters:`Array<GroupCondition<T>` \| `Array<GroupCondition<T>>>`                                                                                              | Creates a group of filters.              |
 | add              | id: `string` \| `number`<br>filtersToAdd: `Array<FiltersType<T>>`<br>position: `"after"` \| `"before"`<br>filtersArr?: `Array<FiltersType<T>>` \| `undefined` | Adds filters at a specified position.    |
 | remove           | id: `string` \| `number`<br>filters?: `Array<FiltersType<T>>`                                                                                                 | Removes filters by ID.                   |
@@ -195,22 +195,22 @@ Applies the filters to the given data source and returns the filtered data.
 
 ## Utilities for group filter
 
-| Method Signature                              | Description                   |
-| --------------------------------------------- | ----------------------------- |
-| `generateUID()`                               | Generates a random UID.       |
-| `where(field, operator, value, id, parentId)` | Creates a where filter.       |
-| `group(filters)`                              | Creates a group of filters.   |
-| `and()`                                       | Creates a logical AND filter. |
-| `or()`                                        | Creates a logical OR filter.  |
-| `not()`                                       | Creates a logical NOT filter. |
+| Method Signature                                  | Description                   |
+| ------------------------------------------------- | ----------------------------- |
+| `generateUID()`                                   | Generates a random UID.       |
+| `condition(field, operator, value, id, parentId)` | Creates a condition filter.   |
+| `group(filters)`                                  | Creates a group of filters.   |
+| `and()`                                           | Creates a logical AND filter. |
+| `or()`                                            | Creates a logical OR filter.  |
+| `not()`                                           | Creates a logical NOT filter. |
 
 ## Example
 
 ```typescript
 .group([
-  where("age", "GreaterThan", 20),
+  condition("age", "GreaterThan", 20),
   or(),
-  not(where("city", "Equal", "SD"), and(), group([where("age", "GreaterThan", 20)])),
+  not(condition("city", "Equal", "SD"), and(), group([condition("age", "GreaterThan", 20)])),
 ]);
 ```
 
