@@ -2,6 +2,8 @@
 
 Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛
 
+![logo](preview-1.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
