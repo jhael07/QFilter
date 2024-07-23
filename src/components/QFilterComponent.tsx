@@ -12,7 +12,7 @@ import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
 import EmptyFilters from "./EmptyFilters";
 import HeadButton from "./buttons/HeadButton";
-import QFilter from "@/lib/QFilter";
+import QFilter from "../lib/QFilter";
 
 type QFilterProps<T> = {
   columns: Array<QFilterOption<T>>;
