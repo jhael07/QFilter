@@ -1,5 +1,5 @@
 {
-  "name": "qfilter",
+  "name": "@jehlicot07/qfilter",
   "main": "dist/qfilter.umd.cjs",
   "module": "dist/qfilter.js",
   "exports": {
@@ -17,7 +17,8 @@
     "pub": "npx jsr publish",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "npm run build && npm publish"
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
