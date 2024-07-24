@@ -1,10 +1,19 @@
 {
   "name": "qfilter",
-  "private": true,
-  "version": "0.0.0",
+  "main": "dist/qfilter.umd.cjs",
+  "module": "dist/qfilter.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qfilter.js",
+      "require": "./dist/qfilter.umd.cjs"
+    }
+  },
+  "private": false,
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "rollup:build": "rollup -c ",
     "pub": "npx jsr publish",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -12,12 +21,21 @@
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-intersection-observer": "^9.13.0",
-    "rollup": "^4.19.0"
+    "rollup": "^4.19.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-postcss": "^4.0.2"
   },
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
