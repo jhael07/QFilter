@@ -3,18 +3,17 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "rollup:build": "rollup -c ",
+    "publish": "rollup -c && npm publish",
     "pub": "npx jsr publish",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "publish": "npm run build && npm publish"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
