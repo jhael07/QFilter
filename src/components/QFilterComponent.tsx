@@ -25,10 +25,7 @@ type QFilterProps<T> = {
  * @param {QFilterProps<T>} props - The props for the component.
  * @returns {ReactElement<any>} The filter component.
  */
-export const QFilterComponent = <T,>({
-  columns,
-  onFilter,
-}: QFilterProps<T>): ReactElement<any> => {
+export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
@@ -55,9 +52,7 @@ export const QFilterComponent = <T,>({
       const item: FilterOperator<any> = x as any;
 
       const column = columns.find(
-        (col) =>
-          col.value === item?.field?.toString() &&
-          item.type === "comparisonOperator"
+        (col) => col.value === item?.field?.toString() && item.type === "comparisonOperator"
       );
 
       if (!item.children) {
@@ -65,19 +60,13 @@ export const QFilterComponent = <T,>({
           throw Error(errorMessage(ERROR_CODES.EmptyColumn));
 
         if (!item.operator)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
 
         if (!item.value)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
       } else {
         if (item.children && item.children.length === 0)
-          throw Error(
-            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
-          );
+          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
 
         validation(item.children);
       }
@@ -104,20 +93,12 @@ export const QFilterComponent = <T,>({
   };
 
   return (
-    <div className="w-full max-w-7xl bg-slate-50 p-4 mb-2 font-medium rounded-lg   relative">
-      <div className="flex gap-x-4 pt-4 pb-4 mb-4 border-b sticky bg-slate-50 -top-4 z-30">
-        <HeadButton
-          title="Filter"
-          Icon={MdFilterListAlt}
-          onClick={handleAddCondition}
-        />
-        <HeadButton
-          title="Group"
-          Icon={FaLayerGroup}
-          onClick={handleAddGroup}
-        />
+    <div className="q-filter-container">
+      <div className="q-filter-container-header">
+        <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
+        <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
       </div>
-      <div className="flex flex-col gap-4  ">
+      <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
           <FilterBodyOperations
             changesSave={setChangesNotSave}
@@ -130,16 +111,23 @@ export const QFilterComponent = <T,>({
         )}
       </div>
 
-      <div className="sticky -bottom-4 w-full bg-slate-50 pb-4">
-        <div className="w-full p-2 flex justify-end gap-x-4 border-t pt-4 mt-6">
-          <button className="button-simple w-20" onClick={handleReset}>
-            Reset
-          </button>
-          <button className="button-simple w-20" onClick={handleFilter}>
-            Apply
-          </button>
+      <div className="q-filter-footer_container">
+        <div className="q-filter-footer_content">
+          <FooterButton title="Reset" onClick={handleReset} />
+          <FooterButton title="Apply" onClick={handleFilter} />
         </div>
       </div>
     </div>
+  );
+};
+
+const FooterButton = ({
+  title,
+  ...rest
+}: { title: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+  return (
+    <button className="button-simple" style={{ width: "5rem" }} {...rest}>
+      {title}
+    </button>
   );
 };

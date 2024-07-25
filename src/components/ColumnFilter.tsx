@@ -9,8 +9,8 @@ const ColumnFilter = ({
   children: ReactNode;
 }): ReactElement<any> => {
   return (
-    <div className="w-full grid gap-1 ">
-      <p className="text-slate-500">{title}:</p>
+    <div className="column-filter_container">
+      <p className="column-filter_text">{title}:</p>
       {children}
     </div>
   );

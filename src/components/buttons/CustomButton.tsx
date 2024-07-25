@@ -8,7 +8,7 @@ const CustomButton = ({
   Icon: ElementType;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>): ReactElement<any> => {
   return (
-    <button {...rest} className="px-2 w-fit ">
+    <button {...rest} className="q-filter-custom-button ">
       <Icon className="text-slate-500 text-base hover:text-slate-600  duration-300" />
     </button>
   );

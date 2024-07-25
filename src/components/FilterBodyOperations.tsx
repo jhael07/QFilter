@@ -20,7 +20,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
   ] as any;
 
   return (
-    <div className="grid mx-auto gap-4 w-full ">
+    <div className="q-filter-operation-container">
       {filters?.map((x, i, arr) => {
         const filter: FiltersUI<T> = x as any;
         if (filter.type === "comparisonOperator")
@@ -53,11 +53,8 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
         if (filter.type === "group" && filter.children)
           return (
-            <div
-              key={x.id}
-              className="p-4 pt-6 bg-slate-100 border-l border-t rounded-lg   grid gap-4 relative"
-            >
-              <div className="w-full flex justify-between items-center pb-4 border-b">
+            <div key={x.id} className="q-filter-group_container">
+              <div className="q-filter-group-header">
                 <p>Group:</p>
                 <div className="flex gap-x-3 text-sm font-medium">
                   <button
@@ -115,9 +112,13 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
   })) as any;
 
   const optionsForSelectFromItem = columns.find((col) => col.value === item.field)?.options;
+  const defaultOptions = [
+    { label: "Equals", value: "Equals" },
+    { label: "NotEquals", value: "NotEquals" },
+  ];
 
   return (
-    <div className="w-full gap-4 flex flex-col sm:flex-row   justify-between  relative">
+    <div className="comparison-operator_container">
       <ColumnFilter title="Column">
         <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} type="column" />
       </ColumnFilter>
@@ -126,14 +127,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
           reRenderFn={reRenderFn}
           type="operator"
           item={item}
-          options={
-            optionsForSelectFromItem
-              ? [
-                  { label: "Equals", value: "Equals" },
-                  { label: "NotEquals", value: "NotEquals" },
-                ]
-              : operatorsOptions
-          }
+          options={optionsForSelectFromItem ? defaultOptions : operatorsOptions}
           valueType={columns.find((col) => col.value === item.field)?.type ?? "text"}
         />
       </ColumnFilter>

@@ -6,8 +6,8 @@ const HeadButton = ({
   ...rest
 }: { Icon: ElementType; title: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <button className="button-simple flex items-center gap-x-1.5" {...rest}>
-      <p className="font-semibold text-slate-500">{title}</p>
+    <button className="q-filter-header-btn button-simple" {...rest}>
+      <p className="q-filter-header-text">{title}</p>
       <Icon />
     </button>
   );

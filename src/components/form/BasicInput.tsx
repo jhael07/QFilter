@@ -1,26 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dispatch, ReactElement, ReactNode, SetStateAction } from "react";
 
-type BasicInputProps = {
-  children: ReactNode;
-  onClick?: React.MouseEventHandler<HTMLInputElement> | undefined;
-  setValue?: Dispatch<SetStateAction<string>>;
-  value?: ReactNode | string | number | boolean | null;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+import { ReactElement } from "react";
+import type { BasicInputProps } from "./types";
 
-const BasicInput = ({
-  value,
-  setValue,
-  children,
-  onClick,
-  ...rest
-}: BasicInputProps): ReactElement<any> => {
+const BasicInput = (props: BasicInputProps): ReactElement<any> => {
+  const { value, setValue, children, onClick, ...rest } = props;
+
   return (
-    <div className="flex gap-x-2 items-center w-full">
+    <div className="q-filter-input_container">
       <input
         {...rest}
-        className="border border-slate-300 rounded-md p-1.5 px-2 text-slate-600 outline-none
-         disabled:bg-slate-200 disabled:hover:cursor-not-allowed w-full text-sm min-w-[8rem]"
+        className="q-filter-input-value"
         defaultValue={value?.toString()}
         onClick={onClick}
         onChange={(e) => {
