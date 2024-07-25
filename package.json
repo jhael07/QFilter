@@ -3,15 +3,14 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "publish": "rollup -c && npm publish",
+    "build": "rollup -c && npm publish",
     "pub": "npx jsr publish",
-    "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -33,8 +32,7 @@
   ],
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+   
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -49,5 +47,9 @@
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
