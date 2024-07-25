@@ -1,8 +1,10 @@
 {
-  "name": "filter",
+  "name": "@jrod/qfilter",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Jhael Antonio Rodriguez",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "pub": "npx jsr publish",
