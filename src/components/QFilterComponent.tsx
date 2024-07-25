@@ -25,7 +25,10 @@ type QFilterProps<T> = {
  * @param {QFilterProps<T>} props - The props for the component.
  * @returns {ReactElement<any>} The filter component.
  */
-export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): ReactElement<any> => {
+export const QFilterComponent = <T,>({
+  columns,
+  onFilter,
+}: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
@@ -52,7 +55,9 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
       const item: FilterOperator<any> = x as any;
 
       const column = columns.find(
-        (col) => col.value === item?.field?.toString() && item.type === "comparisonOperator"
+        (col) =>
+          col.value === item?.field?.toString() &&
+          item.type === "comparisonOperator"
       );
 
       if (!item.children) {
@@ -60,13 +65,19 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
           throw Error(errorMessage(ERROR_CODES.EmptyColumn));
 
         if (!item.operator)
-          throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
+          throw Error(
+            errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString())
+          );
 
         if (!item.value)
-          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
+          throw Error(
+            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
+          );
       } else {
         if (item.children && item.children.length === 0)
-          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
+          throw Error(
+            errorMessage(ERROR_CODES.EmptyValue, column?.label.toString())
+          );
 
         validation(item.children);
       }
@@ -95,8 +106,16 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
   return (
     <div className="w-full max-w-7xl bg-slate-50 p-4 mb-2 font-medium rounded-lg   relative">
       <div className="flex gap-x-4 pt-4 pb-4 mb-4 border-b sticky bg-slate-50 -top-4 z-30">
-        <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
-        <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
+        <HeadButton
+          title="Filter"
+          Icon={MdFilterListAlt}
+          onClick={handleAddCondition}
+        />
+        <HeadButton
+          title="Group"
+          Icon={FaLayerGroup}
+          onClick={handleAddGroup}
+        />
       </div>
       <div className="flex flex-col gap-4  ">
         {filtersArr?.length > 0 ? (

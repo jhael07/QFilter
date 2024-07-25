@@ -5,7 +5,6 @@ import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import packageJson from "./package.json" assert { type: "json" };
 import external from "rollup-plugin-peer-deps-external";
-import css from "rollup-plugin-import-css";
 
 export default [
   {
@@ -17,7 +16,6 @@ export default [
 
     plugins: [
       external(),
-      css(),
       resolve(),
       commonjs(),
       typescript({
@@ -26,8 +24,6 @@ export default [
       }),
       postcss({
         extensions: [".css"],
-        inject: true,
-        extract: false,
       }),
     ],
   },

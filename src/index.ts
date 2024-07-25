@@ -9,7 +9,7 @@ import {
 } from "./lib/utils/operations";
 import * as Types from "./types";
 import { QFilterComponent } from "./components/QFilterComponent";
-
 export default QFilterComponent;
+import "./index.css";
 
 export { QFilterBuilder, generateUID, and, group, not, or, condition, Types };

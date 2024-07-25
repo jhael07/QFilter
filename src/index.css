@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -18,4 +18,4 @@
 .button-simple {
   @apply p-1.5 rounded-md text-slate-600 border border-slate-300
     active:scale-95 hover:text-slate-800 transition-all;
-}
+} */

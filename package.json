@@ -3,15 +3,16 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "private": false,
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "rollup -c && npm publish",
     "pub": "npx jsr publish",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "build": "rollup -c && npm publish",
+    "local": "rollup -c",
     "preview": "vite preview"
   },
   "dependencies": {
