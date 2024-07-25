@@ -1,5 +1,5 @@
 import { IoClose } from "react-icons/io5";
-import type { CloseButtonProps } from "@/types";
+import type { CloseButtonProps } from "../../types";
 import { ReactElement } from "react";
 
 const CloseButton = ({
