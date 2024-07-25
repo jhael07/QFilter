@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import packageJson from "./package.json" assert { type: "json" };
+import external from "rollup-plugin-peer-deps-external";
 
 export default [
   {
@@ -14,6 +15,7 @@ export default [
     ],
 
     plugins: [
+      external(),
       resolve(),
       commonjs(),
       typescript({
