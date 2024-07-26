@@ -13,34 +13,34 @@ type User = {
 };
 
 const App = (): ReactElement<any, any> => {
-  const users: User[] = [
-    {
-      name: "jhael",
-      age: 20,
-      company: {
-        name: "FMP",
-      },
-      a: [],
-    },
-    {
-      name: "Tomas",
-      age: 20,
-      company: {
-        name: "FMP",
-      },
-      a: [],
-    },
-    {
-      name: "Miguel",
-      age: 26,
-      company: {
-        name: "FMP",
-        subgroup: {
-          subname: "Shit what i've done with my life ",
-        },
-      },
-    },
-  ];
+  // const users: User[] = [
+  //   {
+  //     name: "jhael",
+  //     age: 20,
+  //     company: {
+  //       name: "FMP",
+  //     },
+  //     a: [],
+  //   },
+  //   {
+  //     name: "Tomas",
+  //     age: 20,
+  //     company: {
+  //       name: "FMP",
+  //     },
+  //     a: [],
+  //   },
+  //   {
+  //     name: "Miguel",
+  //     age: 26,
+  //     company: {
+  //       name: "FMP",
+  //       subgroup: {
+  //         subname: "Shit what i've done with my life ",
+  //       },
+  //     },
+  //   },
+  // ];
 
   const columns: Array<QFilterOption<User>> = [
     { label: "Name", value: "name", type: "text" },
@@ -63,10 +63,10 @@ const App = (): ReactElement<any, any> => {
     },
   ];
 
-  const [ setDataResult] = useState<Array<User>>();
+  // const [ setDataResult] = useState<Array<User>>();
 
   return (
-    <div className="w-full min-h-screen bg-terciary-950 flex justify-center  ">
+    <div className="w-full min-h-screen h-full bg-terciary-950 flex justify-center  ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center relative">
         <div className="mx-auto flex">
           <h1
@@ -77,11 +77,11 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="w-fit fixed right-0 ">
+        <div className="h-96 w-[28rem] ">
           <QFilterComponent
             onFilter={(data) => {
               data.gridify();
-              setDataResult(data.filter(users) ?? []);
+              // setDataResult(data.filter(users) ?? []);
             }}
             columns={columns}
           />
@@ -96,7 +96,9 @@ const App = (): ReactElement<any, any> => {
               />
             )}
           </div> */}
+ 
         </div>
+
       </div>
     </div>
   );
@@ -104,42 +106,42 @@ const App = (): ReactElement<any, any> => {
 
 export default App;
 
-const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
-  return (
-    <div className="w-full border border-slate-300 overflow-hidden shadow-sm  rounded-lg">
-      <table className="w-full">
-        <thead className="bg-slate-100">
-          <tr>
-            {columns.map((x) => {
-              return (
-                <th
-                  className="last:border-r-0 border-r text-left px-2 pb-1.5 border-b p-3"
-                  key={x.label}
-                >
-                  {x.label}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
+// const Table = ({ columns, dataSource }: { columns: any[]; dataSource: any[] }) => {
+//   return (
+//     <div className="w-full border border-slate-300 overflow-hidden shadow-sm  rounded-lg">
+//       <table className="w-full">
+//         <thead className="bg-slate-100">
+//           <tr>
+//             {columns.map((x) => {
+//               return (
+//                 <th
+//                   className="last:border-r-0 border-r text-left px-2 pb-1.5 border-b p-3"
+//                   key={x.label}
+//                 >
+//                   {x.label}
+//                 </th>
+//               );
+//             })}
+//           </tr>
+//         </thead>
 
-        {dataSource.map((x: any) => (
-          <tbody>
-            <tr className="w-full border-b">
-              <>
-                <td className=" border-r text-left px-3 py-1.5">{x["name"]}</td>
-                <td className=" border-r text-left px-3 py-1">{x["company"]?.name}</td>
-                <td className=" border-r-0 text-left px-3 py-1">{x["age"]}</td>
-              </>
-            </tr>
-          </tbody>
-        ))}
-      </table>
-      {dataSource.length < 1 && (
-        <div className="w-full min-h-[16rem] bg-slate-50 flex justify-center items-center text-4xl font-medium text-slate-400">
-          No data
-        </div>
-      )}
-    </div>
-  );
-};
+//         {dataSource.map((x: any) => (
+//           <tbody>
+//             <tr className="w-full border-b">
+//               <>
+//                 <td className=" border-r text-left px-3 py-1.5">{x["name"]}</td>
+//                 <td className=" border-r text-left px-3 py-1">{x["company"]?.name}</td>
+//                 <td className=" border-r-0 text-left px-3 py-1">{x["age"]}</td>
+//               </>
+//             </tr>
+//           </tbody>
+//         ))}
+//       </table>
+//       {dataSource.length < 1 && (
+//         <div className="w-full min-h-[16rem] bg-slate-50 flex justify-center items-center text-4xl font-medium text-slate-400">
+//           No data
+//         </div>
+//       )}
+//     </div>
+//   );
+// };

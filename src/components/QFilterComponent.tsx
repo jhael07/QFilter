@@ -93,6 +93,7 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
   };
 
   return (
+    <div className="h-full overflow-y-scroll bg-slate-50 ">
     <div className="q-filter-container">
       <div className="q-filter-container-header">
         <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
@@ -118,6 +119,8 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
         </div>
       </div>
     </div>
+    </div>
+
   );
 };
 

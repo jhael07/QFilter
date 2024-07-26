@@ -82,7 +82,7 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
           autoComplete="none"
           autoCapitalize="none"
           autoCorrect="none"
-          style={{ width: "100%s" }}
+          style={{ width: "100%" }}
           className="q-filter-outline-none q-filter-bg-transparent "
           value={labelValue ?? ""}
           onChange={(e) => {
