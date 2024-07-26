@@ -63,11 +63,11 @@ const App = (): ReactElement<any, any> => {
     },
   ];
 
-  const [dataResult, setDataResult] = useState<Array<User>>();
+  const [ setDataResult] = useState<Array<User>>();
 
   return (
-    <div className="w-full min-h-screen bg-terciary-950 flex justify-center ">
-      <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center ">
+    <div className="w-full min-h-screen bg-terciary-950 flex justify-center  ">
+      <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center relative">
         <div className="mx-auto flex">
           <h1
             className="text-8xl lg:text-9xl font-medium bg-gradient-to-br from-primary-600 mx-auto
@@ -77,7 +77,7 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="w-full mx-auto mt-10 grid place-items-center ">
+        <div className="w-fit fixed right-0 ">
           <QFilterComponent
             onFilter={(data) => {
               data.gridify();
@@ -86,7 +86,7 @@ const App = (): ReactElement<any, any> => {
             columns={columns}
           />
 
-          <div className="mt-4 gap-4 grid bg-white rounded-md  w-11/12">
+          {/* <div className="mt-4 gap-4 grid bg-white rounded-md  w-11/12">
             {dataResult ? (
               <Table columns={columns} dataSource={dataResult} />
             ) : (
@@ -95,7 +95,7 @@ const App = (): ReactElement<any, any> => {
                 dataSource={users}
               />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

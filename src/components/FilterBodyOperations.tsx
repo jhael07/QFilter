@@ -56,7 +56,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
             <div key={x.id} className="q-filter-group_container">
               <div className="q-filter-group-header">
                 <p>Group:</p>
-                <div className="flex gap-x-3 text-sm font-medium">
+                <div className="q-filter-group-button">
                   <button
                     className="button-simple"
                     onClick={() => {
