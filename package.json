@@ -27,7 +27,8 @@
     "rollup-plugin-import-css": "^3.5.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "tw-to-css": "^0.0.12"
   },
   "files": [
     "dist"

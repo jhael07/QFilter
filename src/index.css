@@ -16,8 +16,19 @@
 }
 
 .button-simple {
-  @apply p-1.5 rounded-md text-slate-600 border border-slate-300
-    active:scale-95 hover:text-slate-800 transition-all;
+  padding: 0.375rem; /* p-1.5 */
+  border-radius: 0.375rem; /* rounded-md */
+  color: #4B5563; /* text-slate-600 */
+  border: 1px solid #D1D5DB; /* border and border-slate-300 */
+  transition: all 0.2s ease-in-out; /* transition-all */
+}
+
+.button-simple:hover {
+  color: #1F2937; /* hover:text-slate-800 */
+}
+
+.button-simple:active {
+  transform: scale(0.95); /* active:scale-95 */
 }
 
 .q-filter-container {
@@ -198,6 +209,12 @@
   color: #64748b; /* text-slate-500 */
 }
 
+
+.q-filter-select_input:hover{
+  background-color: #eceef0;
+}
+
+
 .q-filter-select_input:last-child {
   border-bottom: none; /* last:border-b-0 */
 }
@@ -275,4 +292,24 @@
 
 .q-filter-group-close:hover .q-filter-close-icon {
   color: #ef4444; /* group-hover:text-red-500 */
+}
+
+
+.q-filter-body {
+  margin-left: 0.5rem; /* ml-2 */
+  display: flex; /* flex */
+  flex-direction: column; /* flex-col */
+  gap: 1rem; /* gap-4 */
+}
+
+.q-filter-close-button {
+  position: absolute; /* absolute */
+  right: 0; /* right-0 */
+  top: 0; /* top-0 */
+}
+
+.q-filter-close-icon-button {
+  font-size: 1rem; /* text-base */
+  color: #4B5563; /* text-slate-700 */
+  height: fit-content; /* h-fit */
 }

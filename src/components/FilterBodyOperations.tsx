@@ -38,8 +38,8 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
         if (filter.type === "logicalOperator") {
           return (
-            <div className="w-full">
-              <div key={x.id} className="w-fit max-w-[4.5rem]">
+            <div className={("w-full")}>
+              <div key={x.id} className={("w-fit max-w-[4.5rem]")}>
                 <SelectComponent<T>
                   reRenderFn={setReRender}
                   type="operator"
@@ -83,7 +83,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
                   />
                 </div>
               </div>
-              <div className="ml-2 flex flex-col gap-4">
+              <div className="q-filter-body ">
                 <FilterBodyOperations {...props} filters={filter.children} />
               </div>
             </div>
