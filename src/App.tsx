@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import "./index.css";
 import { FilterGroup } from "./lib/types";
 import { QFilterOption } from "./types";
@@ -65,6 +65,8 @@ const App = (): ReactElement<any, any> => {
 
   // const [ setDataResult] = useState<Array<User>>();
 
+
+
   return (
     <div className="w-full min-h-screen h-full bg-terciary-950 flex justify-center  ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center relative">
@@ -77,11 +79,13 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="h-96 w-[28rem] ">
+        <div className="h-96 w-96 ">
           <QFilterComponent
+            onReset={()=>{
+              console.log("klk mi loco")
+            }}
             onFilter={(data) => {
               data.gridify();
-              // setDataResult(data.filter(users) ?? []);
             }}
             columns={columns}
           />

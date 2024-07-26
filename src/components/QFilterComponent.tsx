@@ -13,10 +13,13 @@ import { FaLayerGroup } from "react-icons/fa";
 import EmptyFilters from "./EmptyFilters";
 import HeadButton from "./buttons/HeadButton";
 import QFilter from "../lib/QFilter";
+import { IoClose } from "react-icons/io5";
 
 type QFilterProps<T> = {
   columns: Array<QFilterOption<T>>;
   onFilter: (data: QFilter<T>) => void;
+  onReset?: () => void;
+  onClose?: () => void;
 };
 
 /**
@@ -25,15 +28,14 @@ type QFilterProps<T> = {
  * @param {QFilterProps<T>} props - The props for the component.
  * @returns {ReactElement<any>} The filter component.
  */
-export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): ReactElement<any> => {
+export const QFilterComponent = <T,>({ columns, onFilter,onReset ,onClose}: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
-  // Create a ref to hold the builder instance
-  const QFilter = useRef<QFilterBuilder<T> | null>(null);
-
-  // Initialize the builder only if it doesn't already exist
-  if (!QFilter.current) QFilter.current = new QFilterBuilder<T>();
+  
+  const QFilter = useRef<QFilterBuilder<T> | null>(null); // Create a ref to hold the builder instance
+  
+  if (!QFilter.current) QFilter.current = new QFilterBuilder<T>(); // Initialize the builder only if it doesn't already exist
 
   const filtersArr = QFilter.current.getFilters;
 
@@ -88,16 +90,21 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
   const handleReset = () => {
     const deleteCount = QFilter.current?.getFilters.length;
     QFilter.current?.getFilters.splice(0, deleteCount);
-    onFilter(QFilter.current!.build());
+    QFilter.current!.build();
     setReRender((prev) => !prev);
+    onReset?.()
   };
 
   return (
-    <div className="h-full overflow-y-scroll bg-slate-50 ">
     <div className="q-filter-container">
       <div className="q-filter-container-header">
+        <div style={{display:"flex", gap:10}}>
         <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
         <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
+        </div>
+       {onClose &&  <button onClick={onClose} className=" q-filter-group-close button-simple" style={{padding:"0 0.55rem"}} >
+      <IoClose className="q-filter-close-icon" />
+    </button>}
       </div>
       <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
@@ -118,7 +125,6 @@ export const QFilterComponent = <T,>({ columns, onFilter }: QFilterProps<T>): Re
           <FooterButton title="Apply" onClick={handleFilter} />
         </div>
       </div>
-    </div>
     </div>
 
   );

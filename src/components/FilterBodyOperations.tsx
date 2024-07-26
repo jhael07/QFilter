@@ -38,8 +38,8 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
         if (filter.type === "logicalOperator") {
           return (
-            <div className={("w-full")}>
-              <div key={x.id} className={("w-fit max-w-[4.5rem]")}>
+            <div style={{width:"100%"}}>
+              <div key={x.id} style={{maxWidth:'4.5rem'}} >
                 <SelectComponent<T>
                   reRenderFn={setReRender}
                   type="operator"
