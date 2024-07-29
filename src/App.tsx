@@ -63,8 +63,6 @@ const App = (): ReactElement<any, any> => {
     },
   ];
 
-  // const [ setDataResult] = useState<Array<User>>();
-
   return (
     <div className="w-full min-h-screen h-full bg-terciary-950 flex justify-center  ">
       <div className="bg-black/50 w-full p-3 rounded-md pt-20  justify-center relative">
