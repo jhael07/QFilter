@@ -6,7 +6,7 @@ import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
 import { ERROR_CODES, QFilterOption } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
-import { FilterOperator } from "../lib/types";
+import { FilterOperator, Join } from "../lib/types";
 import { errorMessage } from "../utils/errors";
 import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
@@ -15,9 +15,13 @@ import HeadButton from "./buttons/HeadButton";
 import QFilter from "../lib/QFilter";
 import { IoClose } from "react-icons/io5";
 
+export type ColumnsQFilter<T> = {
+  [Key in Join<T>]?: QFilterOption;
+};
+
 type QFilterProps<T> = {
-  columns: Array<QFilterOption<T>>;
-  onFilter: (data: QFilter<T>, onError?: (error: any) => void) => void;
+  columns: ColumnsQFilter<T>;
+  onFilter: (QFilter: QFilter<T>, onError?: (error: any) => void) => void;
   onReset?: () => void;
   onClose?: () => void;
   onError: (error: any) => void;
@@ -59,13 +63,12 @@ export const QFilterComponent = <T,>({
     filters?.forEach((x, _) => {
       const item: FilterOperator<any> = x as any;
 
-      const column = columns.find(
-        (col) => col.value === item?.field?.toString() && item.type === "comparisonOperator"
-      );
+      if (item.type !== "comparisonOperator") return;
+
+      const column = columns[item.field as Join<T>];
 
       if (!item.children) {
-        if (!column && item.type === "comparisonOperator")
-          throw Error(errorMessage(ERROR_CODES.EmptyColumn));
+        if (!column) throw Error(errorMessage(ERROR_CODES.EmptyColumn));
 
         if (!item.operator)
           throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
@@ -85,7 +88,7 @@ export const QFilterComponent = <T,>({
 
   const handleFilter = () => {
     try {
-      validation();
+      validation(filtersArr);
       onFilter(QFilter.current!.build(), onError);
     } catch (err: any) {
       onError?.(err.message ?? "One or more conditions are empty or invalid.");

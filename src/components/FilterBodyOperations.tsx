@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaLayerGroup } from "react-icons/fa";
-import type { FilterOperator, FiltersUI } from "../lib/types";
+import type { FilterOperator, FiltersUI, Join } from "../lib/types";
 import { addConditionUI, addGroupUI } from "../lib/utils/operations";
-import type { FilterBodyOperationsProps, QFilterOption } from "../types";
+import type { FilterBodyOperationsProps } from "../types";
 import { operators } from "../utils/string";
 import SelectComponent from "./SelectComponent";
 import { MdFilterListAlt } from "react-icons/md";
@@ -11,6 +11,7 @@ import { CloseButtonGroup } from "./buttons/CloseButtonGroup";
 import ColumnFilter from "./ColumnFilter";
 import ColumnValue from "./ColumnValue";
 import CloseButton from "./buttons/CloseButton";
+import { ColumnsQFilter } from "./QFilterComponent";
 
 const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactElement<any> => {
   const { filters, setReRender, columns, changesSave } = props;
@@ -30,7 +31,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
               arr={arr}
               i={i}
               changesSave={changesSave}
-              columns={columns ?? []}
+              columns={columns ?? {}}
               item={x as any}
               reRenderFn={() => setReRender((prev) => !prev)}
             />
@@ -96,7 +97,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 export default FilterBodyOperations;
 
 type ComparisonOperatorProps<T> = {
-  columns: Array<QFilterOption<T>>;
+  columns: ColumnsQFilter<T>;
   reRenderFn: Dispatch<SetStateAction<boolean>>;
   item: FilterOperator<T>;
   changesSave: Dispatch<SetStateAction<boolean>>;
@@ -111,39 +112,60 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     label: x,
   })) as any;
 
-  const optionsForSelectFromItem = columns.find((col) => col.value === item.field)?.options;
+  const colItem = columns?.[item.field as Join<T>];
+
   const defaultOptions = [
     { label: "Equals", value: "Equals" },
     { label: "NotEquals", value: "NotEquals" },
   ];
 
+  const columnsOptions = Object.entries<any>(columns).map((item) => ({
+    label: item[1].label,
+    value: item[0],
+  }));
+
+  const handleRenderUpdate = (value: string | number | boolean | undefined | null) => {
+    item.value = value;
+    reRenderFn((prev) => !prev);
+  };
+
   return (
     <div className="comparison-operator_container">
       <ColumnFilter title="Column">
-        <SelectComponent<T> reRenderFn={reRenderFn} item={item} options={columns} type="column" />
+        <SelectComponent<T>
+          reRenderFn={reRenderFn}
+          item={item}
+          options={columnsOptions}
+          type="column"
+        />
       </ColumnFilter>
       <ColumnFilter title="Operator">
         <SelectComponent<T>
           reRenderFn={reRenderFn}
           type="operator"
           item={item}
-          options={optionsForSelectFromItem ? defaultOptions : operatorsOptions}
-          valueType={columns.find((col) => col.value === item.field)?.type ?? "text"}
+          options={colItem?.options ? defaultOptions : operatorsOptions}
+          valueType={colItem?.type ?? "text"}
         />
       </ColumnFilter>
-      {columns.find((col) => col.value === item.field)?.options ? (
+
+      {colItem?.render ? (
+        <ColumnFilter title="Value">
+          {colItem.render?.(item as any, handleRenderUpdate)}
+        </ColumnFilter>
+      ) : colItem?.options ? (
         <ColumnFilter title="Value">
           <SelectComponent<T>
             reRenderFn={reRenderFn}
             type="value"
             item={item}
-            options={columns.find((col) => col.value === item.field)?.options}
-            valueType={columns.find((col) => col.value === item.field)?.type ?? "text"}
+            options={colItem?.options}
+            valueType={colItem?.type ?? "text"}
           />
         </ColumnFilter>
       ) : (
         <ColumnValue
-          type={columns.find((col) => col.value === item.field)?.type}
+          type={colItem?.type}
           changesSave={changesSave}
           reRenderFn={reRenderFn}
           filter={item}

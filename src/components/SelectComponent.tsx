@@ -55,14 +55,14 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
       setLabelValue(
         props.item.type === "logicalOperator"
           ? props.options?.find((x) => x.value === props.item.operator)?.label
-          : (labelValue ?? selectedValue?.value?.toString())
+          : labelValue ?? selectedValue?.value?.toString()
       );
     }
   }, []);
 
   const optionsSelectArr = optionsFilter?.filter((x) =>
     x.label
-      .toString()
+      ?.toString()
       .toLowerCase()
       .includes(filter?.toString().toLowerCase() ?? "")
   );
