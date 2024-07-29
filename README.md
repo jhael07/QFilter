@@ -121,7 +121,7 @@ const App = () => {
       company: {
         name: "FMP",
         subgroup: {
-          subname: "Shit what i've done with my life ",
+          subname: "Company 2",
         },
       },
     },
