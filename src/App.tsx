@@ -80,10 +80,10 @@ const App = (): ReactElement<any, any> => {
         <div className="h-96 w-96 ">
           <QFilterComponent
             onReset={() => {
-              console.log("klk mi loco");
+              // console.log("klk mi loco");
             }}
             onClose={() => {
-              alert("hi my name is, hi name is.");
+              // alert("hi my name is, hi name is.");
             }}
             onFilter={(data) => {
               data.gridify();

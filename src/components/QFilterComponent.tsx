@@ -20,6 +20,7 @@ type QFilterProps<T> = {
   onFilter: (data: QFilter<T>) => void;
   onReset?: () => void;
   onClose?: () => void;
+  onError?: (error: any) => void;
 };
 
 /**
@@ -33,6 +34,7 @@ export const QFilterComponent = <T,>({
   onFilter,
   onReset,
   onClose,
+  onError,
 }: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
@@ -84,10 +86,9 @@ export const QFilterComponent = <T,>({
   const handleFilter = () => {
     try {
       validation();
-      console.log(QFilter.current?.build().gridify());
       onFilter(QFilter.current!.build());
     } catch (err: any) {
-      alert(err.message ?? "One or more conditions are empty or invalid.");
+      onError?.(err.message ?? "One or more conditions are empty or invalid.");
     }
   };
 
