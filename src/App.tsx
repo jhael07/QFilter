@@ -13,34 +13,34 @@ type User = {
 };
 
 const App = (): ReactElement<any, any> => {
-  // const users: User[] = [
-  //   {
-  //     name: "jhael",
-  //     age: 20,
-  //     company: {
-  //       name: "FMP",
-  //     },
-  //     a: [],
-  //   },
-  //   {
-  //     name: "Tomas",
-  //     age: 20,
-  //     company: {
-  //       name: "FMP",
-  //     },
-  //     a: [],
-  //   },
-  //   {
-  //     name: "Miguel",
-  //     age: 26,
-  //     company: {
-  //       name: "FMP",
-  //       subgroup: {
-  //         subname: "Shit what i've done with my life ",
-  //       },
-  //     },
-  //   },
-  // ];
+  const users: User[] = [
+    {
+      name: "jhael",
+      age: 20,
+      company: {
+        name: "FMP",
+      },
+      a: [],
+    },
+    {
+      name: "Tomas",
+      age: 20,
+      company: {
+        name: "FMP",
+      },
+      a: [],
+    },
+    {
+      name: "Miguel",
+      age: 26,
+      company: {
+        name: "FMP",
+        subgroup: {
+          subname: "Shit what i've done with my life ",
+        },
+      },
+    },
+  ];
 
   const columns: Array<QFilterOption<User>> = [
     { label: "Name", value: "name", type: "text" },
@@ -79,6 +79,9 @@ const App = (): ReactElement<any, any> => {
 
         <div className="h-96 w-96 ">
           <QFilterComponent
+            onError={(err) => {
+              console.log(err);
+            }}
             onReset={() => {
               // console.log("klk mi loco");
             }}
@@ -86,7 +89,7 @@ const App = (): ReactElement<any, any> => {
               // alert("hi my name is, hi name is.");
             }}
             onFilter={(data) => {
-              data.gridify();
+              console.log(data.filter(users));
             }}
             columns={columns}
           />

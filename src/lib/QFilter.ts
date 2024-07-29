@@ -18,12 +18,26 @@ import {
 class QFilter<T> extends QExecute<T> {
   private buildFilters?: string;
   private filters: Array<FiltersType<T>> = [];
+  private static operators: Record<string, string> = {
+    Equals: `data.{field} == {value}`,
+    NotEquals: `data.{field} !== {value}`,
+    GreaterThan: `data.{field} > {value}`,
+    GreaterThanOrEqual: `data.{field} >= {value}`,
+    LessThan: `data.{field} < {value}`,
+    LessThanOrEqual: `data.{field} <= {value}`,
+    StartsWith: `data.{field}.toLowerCase().startsWith({value}.toLowerCase())`,
+    NotStartsWith: `!data.{field}.toLowerCase().startsWith({value}.toLowerCase())`,
+    EndsWith: `data.{field}.toLowerCase().endsWith({value}.toLowerCase())`,
+    NotEndsWith: `!data.{field}.toLowerCase().endsWith({value}.toLowerCase())`,
+    Contains: `data.{field}.toLowerCase().includes({value}.toLowerCase())`,
+    NotContains: `!data.{field}.toLowerCase().includes({value}.toLowerCase())`,
+  };
 
   /**
    * Creates an instance of QFilter.
    * @param {Array<FiltersType<T>>} filters - An array of filters to be applied.
    */
-  constructor(filters: Array<FiltersType<T>>) {
+  constructor(filters: Array<FiltersType<T>>, private onError?: (error: any) => void) {
     super();
     this.filters = filters;
   }
@@ -47,73 +61,13 @@ class QFilter<T> extends QExecute<T> {
     if (item.type === "comparisonOperator") {
       const { field, operator, value } = item as FilterOperator<T>;
 
-      if (operator === "Equals" || operator === "===") {
-        this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()} == ${typeof value === "string" ? `'${value}'` : value}`
-        );
-        return;
-      }
-      if (operator === "NotEquals" || operator === "!==") {
-        this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()} != ${typeof value === "string" ? `'${value}'` : value}`
-        );
-        return;
-      }
-      if (operator === "GreaterThan" || operator === ">") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} > ${value}`);
-        return;
-      }
+      const newVal = typeof value === "string" ? `'${value}'` : value;
 
-      if (operator === "GreaterThanOrEqual" || operator === ">=") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} >= ${value}`);
-        return;
-      }
+      this.buildFilters += QFilter.operators[operator]
+        .replaceAll("{field}", field.toString())
+        .replaceAll("{value}", newVal?.toString() ?? "");
 
-      if (operator === "LessThan" || operator === "<") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} < ${value}`);
-        return;
-      }
-
-      if (operator === "LessThanOrEqual" || operator === "<=") {
-        this.buildFilters = this.buildFilters.concat(`data.${field.toString()} <= ${value}`);
-        return;
-      }
-      if (operator === "StartsWith") {
-        this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().startsWith('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
-      if (operator === "NotStartsWith") {
-        this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().startsWith('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
-      if (operator === "EndsWith") {
-        this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().endsWith('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
-      if (operator === "NotEndsWith") {
-        this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().endsWith('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
-      if (operator === "Contains") {
-        this.buildFilters = this.buildFilters.concat(
-          `data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
-      if (operator === "NotContains") {
-        this.buildFilters = this.buildFilters.concat(
-          `!data.${field.toString()}.toLowerCase().includes('${value?.toString().toLowerCase()}')`
-        );
-        return;
-      }
+      return;
     }
 
     if (item.type === "logicalOperator") {
@@ -188,12 +142,16 @@ class QFilter<T> extends QExecute<T> {
    * @returns {readonly T[]} An array of filtered data matching the applied filters.
    */
   filter(dataSource: T[]): T[] {
-    if (!this.buildFilters) {
-      this.buildFilters = "";
-      this.filters?.forEach((item) => this.generateFilter(item));
+    try {
+      if (!this.buildFilters) {
+        this.buildFilters = "";
+        this.filters?.forEach((item) => this.generateFilter(item));
+      }
+      return this.QExecute(this.buildFilters, dataSource) as T[];
+    } catch (err: any) {
+      this.onError?.(err);
+      return [];
     }
-
-    return this.QExecute(this.buildFilters, dataSource) as T[];
   }
 }
 
