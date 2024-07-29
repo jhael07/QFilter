@@ -322,6 +322,7 @@
 
 .q-filter-empty-filters {
   width: 100%; /* w-full */
+  height: 100%;
   margin: auto;
   /*height: 100%; /* h-full */
   padding: 2.5rem; /* p-10 (10 * 0.25rem = 2.5rem) */
