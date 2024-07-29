@@ -28,13 +28,17 @@ type QFilterProps<T> = {
  * @param {QFilterProps<T>} props - The props for the component.
  * @returns {ReactElement<any>} The filter component.
  */
-export const QFilterComponent = <T,>({ columns, onFilter,onReset ,onClose}: QFilterProps<T>): ReactElement<any> => {
+export const QFilterComponent = <T,>({
+  columns,
+  onFilter,
+  onReset,
+  onClose,
+}: QFilterProps<T>): ReactElement<any> => {
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
-  
   const QFilter = useRef<QFilterBuilder<T> | null>(null); // Create a ref to hold the builder instance
-  
+
   if (!QFilter.current) QFilter.current = new QFilterBuilder<T>(); // Initialize the builder only if it doesn't already exist
 
   const filtersArr = QFilter.current.getFilters;
@@ -92,19 +96,25 @@ export const QFilterComponent = <T,>({ columns, onFilter,onReset ,onClose}: QFil
     QFilter.current?.getFilters.splice(0, deleteCount);
     QFilter.current!.build();
     setReRender((prev) => !prev);
-    onReset?.()
+    onReset?.();
   };
 
   return (
     <div className="q-filter-container">
       <div className="q-filter-container-header">
-        <div style={{display:"flex", gap:10}}>
-        <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
-        <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
+        <div style={{ display: "flex", gap: 10 }}>
+          <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
+          <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
         </div>
-       {onClose &&  <button onClick={onClose} className=" q-filter-group-close button-simple" style={{padding:"0 0.55rem"}} >
-      <IoClose className="q-filter-close-icon" />
-    </button>}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="q-filter-group-close"
+            style={{ padding: "0 0.55rem" }}
+          >
+            <IoClose className="q-filter-close-icon" />
+          </button>
+        )}
       </div>
       <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
@@ -126,7 +136,6 @@ export const QFilterComponent = <T,>({ columns, onFilter,onReset ,onClose}: QFil
         </div>
       </div>
     </div>
-
   );
 };
 
