@@ -54,7 +54,7 @@ const App = (): ReactElement<any, any> => {
         </div>
 
         <div className="h-96 w-96 ">
-          <QFilterComponent
+          <QFilterComponent<User>
             onError={(err) => {
               console.error(err);
             }}
@@ -65,9 +65,52 @@ const App = (): ReactElement<any, any> => {
             columns={{
               name: {
                 label: "Name",
+                render(item, setUpdate) {
+                  return (
+                    <input
+                      value={item.value?.toString()}
+                      type="datetime-local"
+                      onChange={(e) => setUpdate(e.target.value)}
+                      className="q-filter-input-value"
+                    />
+                  );
+                },
+                // render: (item, setUpdateValue) => (
+                //   <input
+                //     type="date"
+                //     className="q-filter-input-value"
+                //     value={item.value?.toString()}
+                //     onChange={(e) => {
+                //       Array.from(e.target.value).forEach(() => {});
+                //       console.log(e.target.value);
+                //       setUpdateValue(e.target.value);
+                //       item.value = e.target.type;
+                //     }}
+                //   />
+                // ),
+                // render(item,setUpdateValue) {
+                //   return <></>;
+                // },
+                // render(item, setUpdateValue) {
+                //   console.log("render");
+
+                //   return (
+                //     <input
+                //       type="date"
+                //       className="q-filter-input-value"
+                //       // value={item.value?.toString()}
+                //       onChange={(e) => {
+                //         Array.from(e.target.value).forEach(()=>{})
+                //         console.log(e.target.value);
+                //         setUpdateValue(e.target.value);
+                //       }}
+                //     />
+                //   );
+                // },
               },
               age: {
                 label: "Age",
+
                 type: "number",
               },
             }}

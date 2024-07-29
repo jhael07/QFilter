@@ -5,12 +5,18 @@ import { FilterOperator, FiltersType } from "../lib/types";
 import { QFilterBuilder } from "../lib";
 import { ColumnsQFilter } from "@/components/QFilterComponent";
 
-type QFilterOption = {
+interface QFilterOption {
   label: string | number;
   type?: "number" | "text" | "boolean" | "date";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
-};
+  render?:
+    | ((item: Readonly<FilterOperator<any>>) => ReactNode)
+    | ((
+        item: Readonly<FilterOperator<any>>,
+        setUpdateValue: (value: string | number | boolean | undefined | null) => void
+      ) => ReactNode);
+}
 
 type FilterColumnProps<T> = {
   title: string;
@@ -20,19 +26,6 @@ type FilterColumnProps<T> = {
   type?: "input" | "select" | "action";
   options?: Array<QFilterOption>;
 };
-
-// type QFilterColumn<T> = {
-//   label: string;
-//   dataIndex: Join<T>;
-//   type: "number" | "string" | "boolean" | "date";
-//   selectMultiple?: boolean;
-//   options?: Array<QFilterOption<T>>;
-//   renderComponent?: (column: QFilterColumn<T>) => ReactNode;
-// };
-
-// type QfilterComponentProps<T> = {
-//   columns: Array<QFilterColumn<T>>;
-// };
 
 type QFilterConfig = {
   columns: Array<QFilterOption>;

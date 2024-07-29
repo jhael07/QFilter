@@ -124,6 +124,11 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     value: item[0],
   }));
 
+  const handleRenderUpdate = (value: string | number | boolean | undefined | null) => {
+    item.value = value;
+    reRenderFn((prev) => !prev);
+  };
+
   return (
     <div className="comparison-operator_container">
       <ColumnFilter title="Column">
@@ -143,7 +148,12 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
           valueType={colItem?.type ?? "text"}
         />
       </ColumnFilter>
-      {colItem?.options ? (
+
+      {colItem?.render ? (
+        <ColumnFilter title="Value">
+          {colItem.render?.(item as any, handleRenderUpdate)}
+        </ColumnFilter>
+      ) : colItem?.options ? (
         <ColumnFilter title="Value">
           <SelectComponent<T>
             reRenderFn={reRenderFn}

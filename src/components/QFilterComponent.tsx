@@ -61,7 +61,6 @@ export const QFilterComponent = <T,>({
 
   const validation = (filters?: any[]): void => {
     filters?.forEach((x, _) => {
-      console.log("Is Executing");
       const item: FilterOperator<any> = x as any;
 
       if (item.type !== "comparisonOperator") return;
