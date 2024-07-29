@@ -26,31 +26,7 @@ Install the library using the followind commands:
 npm
 
 ```bash
-npx jsr add @jrod/qfilter
-```
-
-deno
-
-```bash
-deno add @jrod/qfilter
-```
-
-yarn
-
-```bash
-yarn dlx jsr add @jrod/qfilter
-```
-
-pnpm
-
-```bash
-pnpm dlx jsr add @jrod/qfilter
-```
-
-bun
-
-```bash
-bunx jsr add @jrod/qfilter
+npm i @jehlicot07/qfilter
 ```
 
 ## Usage
@@ -60,7 +36,7 @@ bunx jsr add @jrod/qfilter
 To start using QFilter, import the necessary components and create filters using the `QFilterBuilder` class:
 
 ```typescript
-import { QFilterBuilder } from "@jrod/qfilter";
+import { QFilterBuilder } from "@jehlicot07/qfilter";
 
 const users = [
   { name: "Jhael", age: 20, city: "DN" },
@@ -92,7 +68,7 @@ console.log(filteredUsers);
 You can use logical operators and groups to create more complex filters:
 
 ```typescript
-import { QFilterBuilder, condition, and, or, not, group } from "@jrod/qfilter";
+import { QFilterBuilder, condition, and, or, not, group } from "@jehlicot07/qfilter";
 
 const builder = new QFilterBuilder()
   .condition("name", "Contains", "e")
@@ -120,7 +96,7 @@ Integrate QFilter in your React components for a more interactive experience:
 
 ```typescript
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QFilterComponent } from "@jrod/qfilter";
+import QFilterComponent from "@jehlicot07/qfilter";
 
 type User = {
   name: string;
@@ -130,8 +106,6 @@ type User = {
 };
 
 const App = () => {
-  const builder = new QFilterBuilder<User>();
-
   const users: User[] = [
     {
       name: "jhael",
@@ -156,7 +130,10 @@ const App = () => {
   return (
     <QFilterComponent
       dataSource={users}
-      QFilter={builder}
+      onFilter={(data) => {
+        const result = data.filter(users);
+        console.log(result);
+      }}
       columns={[
         { label: "Name", value: "name", type: "text" },
         { label: "Company Name", value: "company?.name", type: "text" },
