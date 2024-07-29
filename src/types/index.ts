@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { FilterOperator, FiltersType, Join } from "../lib/types";
+import { FilterOperator, FiltersType } from "../lib/types";
 import { QFilterBuilder } from "../lib";
+import { ColumnsQFilter } from "@/components/QFilterComponent";
 
-type QFilterOption<T> = {
+type QFilterOption = {
   label: string | number;
-  value: Join<T>;
   type?: "number" | "text" | "boolean" | "date";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
@@ -18,7 +18,7 @@ type FilterColumnProps<T> = {
   QFilter: QFilterBuilder<T>;
   item?: FilterOperator<T>;
   type?: "input" | "select" | "action";
-  options?: Array<QFilterOption<T>>;
+  options?: Array<QFilterOption>;
 };
 
 // type QFilterColumn<T> = {
@@ -34,8 +34,8 @@ type FilterColumnProps<T> = {
 //   columns: Array<QFilterColumn<T>>;
 // };
 
-type QFilterConfig<T> = {
-  columns: Array<QFilterOption<T>>;
+type QFilterConfig = {
+  columns: Array<QFilterOption>;
 };
 
 type CloseButtonProps = {
@@ -57,7 +57,7 @@ type FilterBodyOperationsProps<T> = {
   filters: FiltersType<T>[];
   setReRender: Dispatch<SetStateAction<boolean>>;
   changesSave: Dispatch<SetStateAction<boolean>>;
-  columns?: Array<QFilterOption<T>>;
+  columns?: ColumnsQFilter<T>;
 };
 
 type SelectOption = {

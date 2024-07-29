@@ -7,12 +7,9 @@ import { MdModeEdit } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
 import CustomButton from "./buttons/CustomButton";
 
-const ColumnValue = <T,>({
-  filter,
-  changesSave,
-  reRenderFn,
-  type,
-}: ColumnValueProps<T>): ReactElement<any> => {
+const ColumnValue = <T,>(props: ColumnValueProps<T>): ReactElement<any> => {
+  const { filter, changesSave, reRenderFn, type } = props;
+
   const [inputValue, setInputValue] = useState("");
   const [isDisable, setIsDisable] = useState(false);
 
