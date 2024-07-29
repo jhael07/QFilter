@@ -150,6 +150,8 @@ const App = () => {
 export default App;
 ```
 
+## UI VIEW
+
 ![tool](https://raw.githubusercontent.com/jhael07/QFilter/main/public/img/preview-1.png)
 
 ## API
