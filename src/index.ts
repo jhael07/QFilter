@@ -2,7 +2,6 @@ import QFilterBuilder from "./lib/QFilterBuilder";
 import { generateUID, and, group, not, or, condition } from "./lib/utils/operations";
 import {
   ColumnValueProps,
-  ColumnsQFilter,
   ERROR_CODES,
   FilterBodyOperationsProps,
   FilterColumnProps,
@@ -12,6 +11,7 @@ import {
 } from "./types";
 import { QFilterComponent } from "./components/QFilterComponent";
 import QFilter from "./lib/QFilter";
+import { ColumnsQFilter } from "./types";
 import {
   AddFilterFn,
   BuildResult,
