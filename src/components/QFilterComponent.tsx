@@ -17,7 +17,7 @@ import { IoClose } from "react-icons/io5";
 
 type QFilterProps<T> = {
   columns: ColumnsQFilter<T>;
-  onFilter: (QFilter: QFilter<T>, onError?: (error: any) => void) => void;
+  onFilter: (QFilter: QFilter<T>) => void;
   onReset?: () => void;
   onClose?: () => void;
   onError: (error: any) => void;
@@ -85,7 +85,7 @@ export const QFilterComponent = <T,>({
   const handleFilter = () => {
     try {
       validation(filtersArr);
-      onFilter(QFilter.current!.build(), onError);
+      onFilter(QFilter.current!.build());
     } catch (err: any) {
       onError(err.message ?? "One or more conditions are empty or invalid.");
     }
