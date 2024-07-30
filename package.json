@@ -3,13 +3,10 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "private": false,
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jhael07/QFilter"

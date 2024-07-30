@@ -68,6 +68,7 @@ enum ERROR_CODES {
 
 export {
   ERROR_CODES,
+  type ColumnsQFilter,
   type SelectOption,
   type FilterBodyOperationsProps,
   type QFilterOption,
