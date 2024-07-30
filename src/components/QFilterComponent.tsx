@@ -87,7 +87,7 @@ export const QFilterComponent = <T,>({
       validation(filtersArr);
       onFilter(QFilter.current!.build(), onError);
     } catch (err: any) {
-      onError?.(err.message ?? "One or more conditions are empty or invalid.");
+      onError(err.message ?? "One or more conditions are empty or invalid.");
     }
   };
 
