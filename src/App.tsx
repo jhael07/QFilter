@@ -61,6 +61,7 @@ const App = (): ReactElement<any, any> => {
             onReset={() => {}}
             onFilter={(QFilter) => {
               console.log(QFilter.filter(users));
+              console.log(QFilter.filtersApplied);
             }}
             columns={{
               name: {

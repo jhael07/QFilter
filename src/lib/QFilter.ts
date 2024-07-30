@@ -42,7 +42,7 @@ class QFilter<T> extends QExecute<T> {
   constructor(filters: Array<FiltersType<T>>, private onError?: (error: any) => void) {
     super();
     this.filters = filters;
-    this.filtersApplied = this.filters.length;
+    this.filtersApplied = filters.length;
   }
 
   /**
