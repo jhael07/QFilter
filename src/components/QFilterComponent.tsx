@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
-import { ERROR_CODES } from "../types";
+import { ColumnsQFilter, ERROR_CODES, QFilterOption } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
 import { FilterOperator, Join } from "../lib/types";
 import { errorMessage } from "../utils/errors";
@@ -14,10 +14,9 @@ import EmptyFilters from "./EmptyFilters";
 import HeadButton from "./buttons/HeadButton";
 import QFilter from "../lib/QFilter";
 import { IoClose } from "react-icons/io5";
-import * as types from "../types";
 
 type QFilterProps<T> = {
-  columns: types.ColumnsQFilter<T>;
+  columns: ColumnsQFilter<T>;
   onFilter: (QFilter: QFilter<T>, onError?: (error: any) => void) => void;
   onReset?: () => void;
   onClose?: () => void;

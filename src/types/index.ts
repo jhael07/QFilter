@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { FilterOperator, FiltersType } from "../lib/types";
+import { FilterOperator, FiltersType, Join } from "../lib/types";
 import { QFilterBuilder } from "../lib";
-import { ColumnsQFilter } from "@/components/QFilterComponent";
+
+type ColumnsQFilter<T> = {
+  [Key in Join<T>]?: QFilterOption;
+};
 
 interface QFilterOption {
   label: string | number;
