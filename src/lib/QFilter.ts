@@ -33,6 +33,8 @@ class QFilter<T> extends QExecute<T> {
     NotContains: `!data.{field}.toLowerCase().includes({value}.toLowerCase())`,
   };
 
+  public hasFiltersApplied: boolean = this.filters.length > 0;
+
   /**
    * Creates an instance of QFilter.
    * @param {Array<FiltersType<T>>} filters - An array of filters to be applied.

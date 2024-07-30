@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
-import { ColumnsQFilter, ERROR_CODES, QFilterOption } from "../types";
+import { ColumnsQFilter, ERROR_CODES } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
 import { FilterOperator, Join } from "../lib/types";
 import { errorMessage } from "../utils/errors";

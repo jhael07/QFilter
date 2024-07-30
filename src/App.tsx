@@ -75,38 +75,6 @@ const App = (): ReactElement<any, any> => {
                     />
                   );
                 },
-                // render: (item, setUpdateValue) => (
-                //   <input
-                //     type="date"
-                //     className="q-filter-input-value"
-                //     value={item.value?.toString()}
-                //     onChange={(e) => {
-                //       Array.from(e.target.value).forEach(() => {});
-                //       console.log(e.target.value);
-                //       setUpdateValue(e.target.value);
-                //       item.value = e.target.type;
-                //     }}
-                //   />
-                // ),
-                // render(item,setUpdateValue) {
-                //   return <></>;
-                // },
-                // render(item, setUpdateValue) {
-                //   console.log("render");
-
-                //   return (
-                //     <input
-                //       type="date"
-                //       className="q-filter-input-value"
-                //       // value={item.value?.toString()}
-                //       onChange={(e) => {
-                //         Array.from(e.target.value).forEach(()=>{})
-                //         console.log(e.target.value);
-                //         setUpdateValue(e.target.value);
-                //       }}
-                //     />
-                //   );
-                // },
               },
               age: {
                 label: "Age",
