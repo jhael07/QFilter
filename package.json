@@ -6,6 +6,9 @@
   "version": "0.5.1",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
+  "repository": {
+    "url": "https://github.com/jhael07/QFilter"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "vite",
