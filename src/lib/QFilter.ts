@@ -39,7 +39,7 @@ class QFilter<T> extends QExecute<T> {
    * Creates an instance of QFilter.
    * @param {Array<FiltersType<T>>} filters - An array of filters to be applied.
    */
-  constructor(filters: Array<FiltersType<T>>, private onError?: (error: any) => void) {
+  constructor(filters: Array<FiltersType<T>>) {
     super();
     this.filters = filters;
     this.filtersApplied = filters.length;
@@ -152,7 +152,6 @@ class QFilter<T> extends QExecute<T> {
       }
       return this.QExecute(this.buildFilters, dataSource) as T[];
     } catch (err: any) {
-      this.onError?.(err);
       return [];
     }
   }
