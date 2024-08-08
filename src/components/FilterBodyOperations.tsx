@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaLayerGroup } from "react-icons/fa";
-import type { FilterOperator, FiltersUI, Join } from "../lib/types";
+import type { FiltersUI, Join } from "../lib/types";
 import { addConditionUI, addGroupUI } from "../lib/utils/operations";
-import type { FilterBodyOperationsProps } from "../types";
+import type { ComparisonOperatorProps, FilterBodyOperationsProps } from "../types";
 import { operators } from "../utils/string";
 import SelectComponent from "./SelectComponent";
 import { MdFilterListAlt } from "react-icons/md";
-import { Dispatch, ReactElement, SetStateAction } from "react";
+import { ReactElement } from "react";
 import { CloseButtonGroup } from "./buttons/CloseButtonGroup";
 import ColumnFilter from "./ColumnFilter";
 import ColumnValue from "./ColumnValue";
 import CloseButton from "./buttons/CloseButton";
-import { ColumnsQFilter } from "./QFilterComponent";
 
 const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactElement<any> => {
-  const { filters, setReRender, columns, changesSave } = props;
+  const { filters, setReRender, columns, changesSave, operators } = props;
   const logicalOperatorsOptions = [
     { value: "&&", label: "AND" },
     { value: "||", label: "OR" },
@@ -27,6 +26,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
         if (filter.type === "comparisonOperator")
           return (
             <ComparisonOperator
+              operators={operators}
               key={x.id}
               arr={arr}
               i={i}
@@ -96,21 +96,18 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 
 export default FilterBodyOperations;
 
-type ComparisonOperatorProps<T> = {
-  columns: ColumnsQFilter<T>;
-  reRenderFn: Dispatch<SetStateAction<boolean>>;
-  item: FilterOperator<T>;
-  changesSave: Dispatch<SetStateAction<boolean>>;
-  arr: any[];
-  i: number;
-};
 const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
-  const { item, columns, reRenderFn, changesSave, arr, i } = props;
+  const { item, columns, reRenderFn, changesSave, arr, i, operators: OperatorsConfig } = props;
 
-  const operatorsOptions = Object.keys(operators).map((x) => ({
-    value: x,
-    label: x,
-  })) as any;
+  const operatorsOptions = Object.keys(operators).map((x) => {
+    const operatorAlias = (OperatorsConfig as any)?.[x];
+    const IsValid = operatorAlias && operatorAlias !== "" ? true : false;
+    console.log({ operatorAlias, x, OperatorsConfig });
+    return {
+      value: x,
+      label: IsValid ? operatorAlias : x,
+    };
+  }) as any;
 
   const colItem = columns?.[item.field as Join<T>];
 

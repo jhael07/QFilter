@@ -53,12 +53,21 @@ const App = (): ReactElement<any, any> => {
           </h1>
         </div>
 
-        <div className="h-96 w-96 ">
-          <QFilterComponent<User>
+        <div className="h-96 w-11/12 ">
+          <QFilterComponent
             onError={(err) => {
               console.error(err);
             }}
             onReset={() => {}}
+            config={{
+              operators: {
+                Contains: "",
+                Equals: "sas",
+                GreatherThan: "Mayor que",
+                NotContains: "No contiene",
+                NotEquals: "No es igual a",
+              },
+            }}
             onFilter={(QFilter) => {
               console.log(QFilter.filter(users));
               console.log(QFilter.filtersApplied);
@@ -79,7 +88,6 @@ const App = (): ReactElement<any, any> => {
               },
               age: {
                 label: "Age",
-
                 type: "number",
               },
             }}

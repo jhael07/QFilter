@@ -54,6 +54,7 @@ type FilterBodyOperationsProps<T> = {
   setReRender: Dispatch<SetStateAction<boolean>>;
   changesSave: Dispatch<SetStateAction<boolean>>;
   columns?: ColumnsQFilter<T>;
+  operators?: OperatorsConfig;
 };
 
 type SelectOption = {
@@ -69,8 +70,35 @@ enum ERROR_CODES {
   GroupEmpty = 5,
 }
 
+type OperatorsConfig = {
+  Equals?: string;
+  NotEquals?: string;
+  lessThan?: string;
+  GreatherThan?: string;
+  GreatherThanOrEqual?: string;
+  LessThan?: string;
+  Contains?: string;
+  NotContains?: string;
+  StartsWith?: string;
+  NotStartsWith?: string;
+  EndsWith?: string;
+  NotEndsWith?: string;
+};
+
+type ComparisonOperatorProps<T> = {
+  columns: ColumnsQFilter<T>;
+  reRenderFn: Dispatch<SetStateAction<boolean>>;
+  item: FilterOperator<T>;
+  changesSave: Dispatch<SetStateAction<boolean>>;
+  arr: any[];
+  i: number;
+  operators?: OperatorsConfig;
+};
+
 export {
   ERROR_CODES,
+  type OperatorsConfig,
+  type ComparisonOperatorProps,
   type ColumnsQFilter,
   type SelectOption,
   type FilterBodyOperationsProps,

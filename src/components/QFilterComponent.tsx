@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
-import { ColumnsQFilter, ERROR_CODES } from "../types";
+import { ColumnsQFilter, ERROR_CODES, OperatorsConfig } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
 import { FilterOperator, Join } from "../lib/types";
 import { errorMessage } from "../utils/errors";
@@ -21,6 +21,9 @@ type QFilterProps<T> = {
   onReset?: () => void;
   onClose?: () => void;
   onError: (error: any) => void;
+  config?: {
+    operators?: OperatorsConfig;
+  };
 };
 
 /**
@@ -29,13 +32,9 @@ type QFilterProps<T> = {
  * @param {QFilterProps<T>} props - The props for the component.
  * @returns {ReactElement<any>} The filter component.
  */
-export const QFilterComponent = <T,>({
-  columns,
-  onFilter,
-  onReset,
-  onClose,
-  onError,
-}: QFilterProps<T>): ReactElement<any> => {
+export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> => {
+  const { columns, onFilter, onReset, onClose, onError, config } = props;
+
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
@@ -124,6 +123,7 @@ export const QFilterComponent = <T,>({
             filters={filtersArr}
             setReRender={setReRender}
             columns={columns}
+            operators={config?.operators}
           />
         ) : (
           <EmptyFilters />
