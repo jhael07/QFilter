@@ -8,7 +8,7 @@ const logicalOperationCondition = (type: LogicalOperator) => {
 
 export { logicalOperationCondition };
 
-export enum operators {
+export enum OPERATORS {
   "Equals" = "Equals",
   "NotEquals" = "NotEquals",
   "LessThan" = "LessThan",

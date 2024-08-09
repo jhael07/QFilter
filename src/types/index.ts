@@ -11,7 +11,7 @@ type ColumnsQFilter<T> = {
 
 interface QFilterOption {
   label: string | number;
-  type?: "number" | "text" | "boolean" | "date";
+  type?: "number" | "text";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
   render?:
@@ -109,10 +109,10 @@ type QFilterProps<T> = {
 type OperatorsConfig = {
   Equals?: string;
   NotEquals?: string;
-  lessThan?: string;
-  GreatherThan?: string;
-  GreatherThanOrEqual?: string;
+  GreaterThan?: string;
+  GreaterThanOrEqual?: string;
   LessThan?: string;
+  LessThanOrEqual?: string;
   Contains?: string;
   NotContains?: string;
   StartsWith?: string;

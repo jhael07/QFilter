@@ -3,7 +3,7 @@ import { FaLayerGroup } from "react-icons/fa";
 import type { FiltersUI, Join } from "../lib/types";
 import { addConditionUI, addGroupUI } from "../lib/utils/operations";
 import type { ComparisonOperatorProps, FilterBodyOperationsProps } from "../types";
-import { operators } from "../utils/string";
+import { OPERATORS } from "../utils/string";
 import SelectComponent from "./SelectComponent";
 import { MdFilterListAlt } from "react-icons/md";
 import { ReactElement } from "react";
@@ -118,9 +118,9 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     columnsConfig,
   } = props;
 
-  const operatorsOptions = Object.keys(operators).map((x) => {
-    const operatorAlias = (OperatorsConfig as any)?.[x];
-    const IsValid = operatorAlias && operatorAlias !== "" ? true : false;
+  const operatorsOptions = Object.keys(OPERATORS).map((x) => {
+    const operatorAlias = (OperatorsConfig as any)?.[x] ?? x;
+    const IsValid = operatorAlias !== "" ? true : false;
     return {
       value: x,
       label: IsValid ? operatorAlias : x,
@@ -155,6 +155,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
       </ColumnFilter>
       <ColumnFilter title={columnsConfig?.["Operator"] ?? "Operator"}>
         <SelectComponent<T>
+          changesSave={changesSave}
           reRenderFn={reRenderFn}
           type="operator"
           item={item}

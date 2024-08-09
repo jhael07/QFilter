@@ -67,7 +67,9 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       }
     });
 
-    if (changesNotSave) throw Error("Error: Please save all the filters.");
+    if (changesNotSave) {
+      throw Error("Error: Please save all the filters.");
+    }
   };
 
   const handleFilter = () => {

@@ -5,7 +5,7 @@ import { FilterGroup } from "./lib/types";
 import QFilterComponent from "./lib";
 
 type User = {
-  name: string;
+  name: string | boolean;
   age: number;
   company?: { name: string; subgroup?: { subname: string } };
   a?: FilterGroup[];
@@ -14,7 +14,7 @@ type User = {
 const App = (): ReactElement<any, any> => {
   const users: User[] = [
     {
-      name: "jhael",
+      name: true,
       age: 20,
       company: {
         name: "FMP",
@@ -54,7 +54,7 @@ const App = (): ReactElement<any, any> => {
         </div>
 
         <div className="h-96 w-11/12 ">
-          <QFilterComponent
+          <QFilterComponent<User>
             onError={(err) => {
               console.error(err);
             }}
@@ -78,12 +78,18 @@ const App = (): ReactElement<any, any> => {
                 Reset: "Reiniciar",
               },
               operators: {
-                Contains: "hi",
-                Equals: "sas",
-                GreatherThan: "Mayor que",
+                Contains: "Contiene",
+                Equals: "Igual a",
+                NotEquals: "No igual a",
                 NotContains: "No contiene",
-                NotEquals: "No es igual a",
+                StartsWith: "Comienza con",
+                NotStartsWith: "No comienza con",
                 EndsWith: "Termina con",
+                NotEndsWith: "No termina con",
+                GreaterThan: "Mayor a",
+                LessThan: "Menor a",
+                LessThanOrEqual: "Menor o igual a",
+                GreaterThanOrEqual: "Mayor o igual a",
               },
             }}
             onFilter={(QFilter) => {
@@ -93,16 +99,18 @@ const App = (): ReactElement<any, any> => {
             columns={{
               name: {
                 label: "Name",
-                render(item, setUpdate) {
-                  return (
-                    <input
-                      value={item.value?.toString()}
-                      type="datetime-local"
-                      onChange={(e) => setUpdate(e.target.value)}
-                      className="q-filter-input-value"
-                    />
-                  );
-                },
+                options: [{ label: "Verdadero", value: true }],
+                // render(item, setUpdate) {
+                //   return (
+                //     <input
+                //       value={item.value?.toString()}
+                //       type="datetime-local"
+                //       onChange={(e) => setUpdate(e.target.value)}
+                //       className="q-filter-input-value"
+                //     />
+                //   );
+                // },
+                // type: "boolean",
               },
               age: {
                 label: "Age",
