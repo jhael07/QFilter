@@ -3,6 +3,7 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { FilterOperator, FiltersType, Join } from "../lib/types";
 import { QFilterBuilder } from "../lib";
+import QFilter from "@/lib/QFilter";
 
 type ColumnsQFilter<T> = {
   [Key in Join<T>]?: QFilterOption;
@@ -47,6 +48,12 @@ type ColumnValueProps<T> = {
   type?: "number" | "text" | "boolean" | "date";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
+  label: string;
+};
+
+type LogicalOperatorsConfig = {
+  AND?: string;
+  OR?: string;
 };
 
 type FilterBodyOperationsProps<T> = {
@@ -55,6 +62,10 @@ type FilterBodyOperationsProps<T> = {
   changesSave: Dispatch<SetStateAction<boolean>>;
   columns?: ColumnsQFilter<T>;
   operators?: OperatorsConfig;
+  columnsConfig?: ColumnsConfig;
+  logicalOperators?: LogicalOperatorsConfig;
+  headerButtons?: HeaderButtons;
+  FooterButtons?: FooterButtons;
 };
 
 type SelectOption = {
@@ -69,6 +80,31 @@ enum ERROR_CODES {
   StartWithLogicalOperator = 4,
   GroupEmpty = 5,
 }
+
+type HeaderButtons = {
+  Filter?: string;
+  Group?: string;
+};
+
+type FooterButtons = {
+  Reset?: string;
+  Apply?: string;
+};
+
+type QFilterProps<T> = {
+  columns: ColumnsQFilter<T>;
+  onFilter: (QFilter: QFilter<T>) => void;
+  onReset?: () => void;
+  onClose?: () => void;
+  onError: (error: any) => void;
+  config?: {
+    logicalOperators?: LogicalOperatorsConfig;
+    operators?: OperatorsConfig;
+    columns?: ColumnsConfig;
+    headerButtons?: HeaderButtons;
+    FooterButtons?: FooterButtons;
+  };
+};
 
 type OperatorsConfig = {
   Equals?: string;
@@ -85,6 +121,12 @@ type OperatorsConfig = {
   NotEndsWith?: string;
 };
 
+type ColumnsConfig = {
+  Column?: string;
+  Operator?: string;
+  Value?: string;
+};
+
 type ComparisonOperatorProps<T> = {
   columns: ColumnsQFilter<T>;
   reRenderFn: Dispatch<SetStateAction<boolean>>;
@@ -93,10 +135,13 @@ type ComparisonOperatorProps<T> = {
   arr: any[];
   i: number;
   operators?: OperatorsConfig;
+  columnsConfig?: ColumnsConfig;
 };
 
 export {
   ERROR_CODES,
+  type QFilterProps,
+  type ColumnsConfig,
   type OperatorsConfig,
   type ComparisonOperatorProps,
   type ColumnsQFilter,

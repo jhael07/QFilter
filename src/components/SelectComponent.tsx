@@ -27,7 +27,9 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
   const [labelValue, setLabelValue] = useState<string | number>();
   const [filter, setFilter] = useState<string>("");
 
-  const operatorNumber = [
+  const operatorText = [
+    "Equals",
+    "NotEquals",
     "Contains",
     "NotContains",
     "StartsWith",
@@ -36,14 +38,21 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
     "NotEndsWith",
   ];
 
-  const operatorText = ["LessThan", "LessThanOrEqual", "GreaterThan", "GreaterThanOrEqual"];
+  const operatorNumber = [
+    "Equals",
+    "NotEquals",
+    "LessThan",
+    "LessThanOrEqual",
+    "GreaterThan",
+    "GreaterThanOrEqual",
+  ];
+
+  console.log(options);
 
   const optionsFilter = options?.filter((option) => {
-    // if (props.options[0].)
-    // return operatorSelect.includes(option.label.toString());
-    if (props.valueType === "number") return !operatorNumber.includes(option.label.toString());
-    if (props.valueType === "text") return !operatorText.includes(option.label.toString());
-    // if (props.valueType && ) return !operatorText.includes(option.label.toString());
+    if (props.valueType === "number")
+      return operatorNumber.includes(option?.value?.toString() ?? "");
+    if (props.valueType === "text") return operatorText.includes(option?.value?.toString() ?? "");
 
     return option;
   });

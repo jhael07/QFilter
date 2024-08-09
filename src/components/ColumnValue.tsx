@@ -8,7 +8,7 @@ import { FaSave } from "react-icons/fa";
 import CustomButton from "./buttons/CustomButton";
 
 const ColumnValue = <T,>(props: ColumnValueProps<T>): ReactElement<any> => {
-  const { filter, changesSave, reRenderFn, type } = props;
+  const { filter, changesSave, reRenderFn, type, label } = props;
 
   const [inputValue, setInputValue] = useState("");
   const [isDisable, setIsDisable] = useState(false);
@@ -26,7 +26,7 @@ const ColumnValue = <T,>(props: ColumnValueProps<T>): ReactElement<any> => {
   };
 
   return (
-    <ColumnFilter title="Value">
+    <ColumnFilter title={label}>
       {type !== "boolean" && type !== "date" && (
         <BasicInput
           setValue={setInputValue}

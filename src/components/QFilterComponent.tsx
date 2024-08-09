@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, useRef, useState } from "react";
 import { QFilterBuilder } from "../lib";
-import { ColumnsQFilter, ERROR_CODES, OperatorsConfig } from "../types";
+import { ERROR_CODES, QFilterProps } from "../types";
 import FilterBodyOperations from "../components/FilterBodyOperations";
 import { FilterOperator, Join } from "../lib/types";
 import { errorMessage } from "../utils/errors";
@@ -12,19 +12,7 @@ import { MdFilterListAlt } from "react-icons/md";
 import { FaLayerGroup } from "react-icons/fa";
 import EmptyFilters from "./EmptyFilters";
 import HeadButton from "./buttons/HeadButton";
-import QFilter from "../lib/QFilter";
 import { IoClose } from "react-icons/io5";
-
-type QFilterProps<T> = {
-  columns: ColumnsQFilter<T>;
-  onFilter: (QFilter: QFilter<T>) => void;
-  onReset?: () => void;
-  onClose?: () => void;
-  onError: (error: any) => void;
-  config?: {
-    operators?: OperatorsConfig;
-  };
-};
 
 /**
  * QFilterComponent
@@ -38,9 +26,10 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
-  const QFilter = useRef<QFilterBuilder<T> | null>(null); // Create a ref to hold the builder instance
+  const QFilter = useRef<QFilterBuilder<T> | null>(null);
 
-  if (!QFilter.current) QFilter.current = new QFilterBuilder<T>(); // Initialize the builder only if it doesn't already exist
+  // Initialize the builder only if it doesn't already exist
+  if (!QFilter.current) QFilter.current = new QFilterBuilder<T>();
 
   const filtersArr = QFilter.current.getFilters;
 
@@ -103,8 +92,16 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
     <div className="q-filter-container">
       <div className="q-filter-container-header">
         <div style={{ display: "flex", gap: 10 }}>
-          <HeadButton title="Filter" Icon={MdFilterListAlt} onClick={handleAddCondition} />
-          <HeadButton title="Group" Icon={FaLayerGroup} onClick={handleAddGroup} />
+          <HeadButton
+            title={config?.headerButtons?.["Filter"] ?? "Filter"}
+            Icon={MdFilterListAlt}
+            onClick={handleAddCondition}
+          />
+          <HeadButton
+            title={config?.headerButtons?.["Group"] ?? "Group"}
+            Icon={FaLayerGroup}
+            onClick={handleAddGroup}
+          />
         </div>
         {onClose && (
           <button
@@ -119,10 +116,13 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
           <FilterBodyOperations
+            logicalOperators={config?.logicalOperators}
             changesSave={setChangesNotSave}
+            columnsConfig={config?.columns}
             filters={filtersArr}
             setReRender={setReRender}
             columns={columns}
+            headerButtons={config?.headerButtons}
             operators={config?.operators}
           />
         ) : (
@@ -132,8 +132,11 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
 
       <div className="q-filter-footer_container">
         <div className="q-filter-footer_content">
-          <FooterButton title="Reset" onClick={handleReset} />
-          <FooterButton title="Apply" onClick={handleFilter} />
+          <FooterButton title={config?.FooterButtons?.["Reset"] ?? "Reset"} onClick={handleReset} />
+          <FooterButton
+            title={config?.FooterButtons?.["Apply"] ?? "Apply"}
+            onClick={handleFilter}
+          />
         </div>
       </div>
     </div>
@@ -145,7 +148,7 @@ const FooterButton = ({
   ...rest
 }: { title: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <button className="button-simple" style={{ width: "5rem" }} {...rest}>
+    <button className="button-simple" style={{ minWidth: "5rem" }} {...rest}>
       {title}
     </button>
   );

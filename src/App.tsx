@@ -60,12 +60,30 @@ const App = (): ReactElement<any, any> => {
             }}
             onReset={() => {}}
             config={{
+              logicalOperators: {
+                AND: "Y",
+                OR: "O",
+              },
+              columns: {
+                Column: "Columna",
+                Operator: "Operador",
+                Value: "Valor",
+              },
+              headerButtons: {
+                Filter: "Filtro",
+                Group: "Grupo",
+              },
+              FooterButtons: {
+                Apply: "Aplicar Filtros",
+                Reset: "Reiniciar",
+              },
               operators: {
-                Contains: "",
+                Contains: "hi",
                 Equals: "sas",
                 GreatherThan: "Mayor que",
                 NotContains: "No contiene",
                 NotEquals: "No es igual a",
+                EndsWith: "Termina con",
               },
             }}
             onFilter={(QFilter) => {

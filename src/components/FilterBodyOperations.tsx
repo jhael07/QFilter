@@ -13,10 +13,19 @@ import ColumnValue from "./ColumnValue";
 import CloseButton from "./buttons/CloseButton";
 
 const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactElement<any> => {
-  const { filters, setReRender, columns, changesSave, operators } = props;
+  const {
+    filters,
+    setReRender,
+    columns,
+    changesSave,
+    operators,
+    columnsConfig,
+    logicalOperators,
+    headerButtons,
+  } = props;
   const logicalOperatorsOptions = [
-    { value: "&&", label: "AND" },
-    { value: "||", label: "OR" },
+    { value: "&&", label: logicalOperators?.["AND"] ?? "AND" },
+    { value: "||", label: logicalOperators?.["OR"] ?? "OR" },
   ] as any;
 
   return (
@@ -30,6 +39,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
               key={x.id}
               arr={arr}
               i={i}
+              columnsConfig={columnsConfig}
               changesSave={changesSave}
               columns={columns ?? {}}
               item={x as any}
@@ -56,7 +66,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
           return (
             <div key={x.id} className="q-filter-group_container">
               <div className="q-filter-group-header">
-                <p>Group:</p>
+                <p>{headerButtons?.Group ?? "Group"}:</p>
                 <div className="q-filter-group-button">
                   <button
                     className="button-simple"
@@ -97,12 +107,20 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 export default FilterBodyOperations;
 
 const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
-  const { item, columns, reRenderFn, changesSave, arr, i, operators: OperatorsConfig } = props;
+  const {
+    item,
+    columns,
+    reRenderFn,
+    changesSave,
+    arr,
+    i,
+    operators: OperatorsConfig,
+    columnsConfig,
+  } = props;
 
   const operatorsOptions = Object.keys(operators).map((x) => {
     const operatorAlias = (OperatorsConfig as any)?.[x];
     const IsValid = operatorAlias && operatorAlias !== "" ? true : false;
-    console.log({ operatorAlias, x, OperatorsConfig });
     return {
       value: x,
       label: IsValid ? operatorAlias : x,
@@ -125,10 +143,9 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     item.value = value;
     reRenderFn((prev) => !prev);
   };
-
   return (
     <div className="comparison-operator_container">
-      <ColumnFilter title="Column">
+      <ColumnFilter title={columnsConfig?.["Column"] ?? "Column"}>
         <SelectComponent<T>
           reRenderFn={reRenderFn}
           item={item}
@@ -136,7 +153,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
           type="column"
         />
       </ColumnFilter>
-      <ColumnFilter title="Operator">
+      <ColumnFilter title={columnsConfig?.["Operator"] ?? "Operator"}>
         <SelectComponent<T>
           reRenderFn={reRenderFn}
           type="operator"
@@ -147,11 +164,11 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
       </ColumnFilter>
 
       {colItem?.render ? (
-        <ColumnFilter title="Value">
+        <ColumnFilter title={columnsConfig?.["Value"] ?? "Value"}>
           {colItem.render?.(item as any, handleRenderUpdate)}
         </ColumnFilter>
       ) : colItem?.options ? (
-        <ColumnFilter title="Value">
+        <ColumnFilter title={columnsConfig?.["Value"] ?? "Value"}>
           <SelectComponent<T>
             reRenderFn={reRenderFn}
             type="value"
@@ -162,6 +179,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
         </ColumnFilter>
       ) : (
         <ColumnValue
+          label={columnsConfig?.["Value"] ?? "Value"}
           type={colItem?.type}
           changesSave={changesSave}
           reRenderFn={reRenderFn}
