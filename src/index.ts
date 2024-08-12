@@ -33,6 +33,8 @@ import {
 } from "./lib/types/index";
 
 import "./index.css";
+import { QFILTER_CONFIG } from "./constants/config";
+import { QFilterProps } from "./types";
 
 export {
   QFilterBuilder,
@@ -43,6 +45,8 @@ export {
   or,
   condition,
   ERROR_CODES,
+  QFILTER_CONFIG,
+  type QFilterProps,
   type AddFilterFn,
   type BuildResult,
   type ComparisonOperator,
