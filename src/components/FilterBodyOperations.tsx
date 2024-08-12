@@ -130,8 +130,8 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
   const colItem = columns?.[item.field as Join<T>];
 
   const defaultOptions = [
-    { label: "Equals", value: OperatorsConfig?.["Equals"] ?? "Equals" },
-    { label: "NotEquals", value: OperatorsConfig?.["NotEquals"] ?? "Not Equals" },
+    { value: "Equals", label: OperatorsConfig?.["Equals"] ?? "Equals" },
+    { value: "NotEquals", label: OperatorsConfig?.["NotEquals"] ?? "Not Equals" },
   ];
 
   const columnsOptions = Object.entries<any>(columns).map((item) => ({
