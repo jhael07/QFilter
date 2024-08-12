@@ -5,7 +5,7 @@ import {
   ERROR_CODES,
   FilterBodyOperationsProps,
   FilterColumnProps,
-  QFilterConfig,
+  QFilterLangConfig,
   QFilterOption,
   SelectOption,
 } from "./types";
@@ -65,7 +65,7 @@ export {
   type ColumnsQFilter,
   type FilterBodyOperationsProps,
   type FilterColumnProps,
-  type QFilterConfig,
+  type QFilterLangConfig,
   type QFilterOption,
   type SelectOption,
 };

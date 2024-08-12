@@ -31,7 +31,7 @@ type FilterColumnProps<T> = {
   options?: Array<QFilterOption>;
 };
 
-type QFilterConfig = {
+type QFilterLangConfig = {
   logicalOperators?: LogicalOperatorsConfig;
   operators?: OperatorsConfig;
   columns?: ColumnsConfig;
@@ -101,7 +101,7 @@ type QFilterProps<T> = {
   onReset?: () => void;
   onClose?: () => void;
   onError: (error: any) => void;
-  config?: QFilterConfig;
+  lang?: QFilterLangConfig;
 };
 
 type OperatorsConfig = {
@@ -146,7 +146,7 @@ export {
   type SelectOption,
   type FilterBodyOperationsProps,
   type QFilterOption,
-  type QFilterConfig,
+  type QFilterLangConfig,
   type FilterColumnProps,
   type CloseButtonProps,
   type ColumnValueProps,

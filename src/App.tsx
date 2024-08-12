@@ -3,6 +3,7 @@ import { ReactElement } from "react";
 import "./index.css";
 import { FilterGroup } from "./lib/types";
 import QFilterComponent from "./lib";
+import { QFILTER_CONFIG } from "./constants/config";
 
 type User = {
   name: string | boolean;
@@ -59,39 +60,7 @@ const App = (): ReactElement<any, any> => {
               console.error(err);
             }}
             onReset={() => {}}
-            config={{
-              logicalOperators: {
-                AND: "Y",
-                OR: "O",
-              },
-              columns: {
-                Column: "Columna",
-                Operator: "Operador",
-                Value: "Valor",
-              },
-              headerButtons: {
-                Filter: "Filtro",
-                Group: "Grupo",
-              },
-              FooterButtons: {
-                Apply: "Aplicar Filtros",
-                Reset: "Reiniciar",
-              },
-              operators: {
-                Contains: "Contiene",
-                Equals: "Igual a",
-                NotEquals: "No igual a",
-                NotContains: "No contiene",
-                StartsWith: "Comienza con",
-                NotStartsWith: "No comienza con",
-                EndsWith: "Termina con",
-                NotEndsWith: "No termina con",
-                GreaterThan: "Mayor a",
-                LessThan: "Menor a",
-                LessThanOrEqual: "Menor o igual a",
-                GreaterThanOrEqual: "Mayor o igual a",
-              },
-            }}
+            lang={QFILTER_CONFIG.spanish}
             onFilter={(QFilter) => {
               console.log(QFilter.filter(users));
               console.log(QFilter.filtersApplied);

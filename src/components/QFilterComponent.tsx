@@ -21,7 +21,7 @@ import { IoClose } from "react-icons/io5";
  * @returns {ReactElement<any>} The filter component.
  */
 export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> => {
-  const { columns, onFilter, onReset, onClose, onError, config } = props;
+  const { columns, onFilter, onReset, onClose, onError, lang: config } = props;
 
   const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
