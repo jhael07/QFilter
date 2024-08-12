@@ -32,7 +32,11 @@ type FilterColumnProps<T> = {
 };
 
 type QFilterConfig = {
-  columns: Array<QFilterOption>;
+  logicalOperators?: LogicalOperatorsConfig;
+  operators?: OperatorsConfig;
+  columns?: ColumnsConfig;
+  headerButtons?: HeaderButtons;
+  FooterButtons?: FooterButtons;
 };
 
 type CloseButtonProps = {
