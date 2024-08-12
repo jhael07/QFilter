@@ -9,8 +9,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "typeRoots": ["./src/types", "./src/lib/types", "node_modules/@types"]
   },
+
   "include": ["vite.config.ts"]
 }
 

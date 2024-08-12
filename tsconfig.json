@@ -24,7 +24,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "typeRoots": ["./src/types", "./src/lib/types", "node_modules/@types"]
   },
   "declarationDir": "types",
   "declarationMap": true,
