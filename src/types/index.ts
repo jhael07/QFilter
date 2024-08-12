@@ -101,13 +101,7 @@ type QFilterProps<T> = {
   onReset?: () => void;
   onClose?: () => void;
   onError: (error: any) => void;
-  config?: {
-    logicalOperators?: LogicalOperatorsConfig;
-    operators?: OperatorsConfig;
-    columns?: ColumnsConfig;
-    headerButtons?: HeaderButtons;
-    FooterButtons?: FooterButtons;
-  };
+  config?: QFilterConfig;
 };
 
 type OperatorsConfig = {
