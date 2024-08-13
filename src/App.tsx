@@ -15,7 +15,7 @@ type User = {
 const App = (): ReactElement<any, any> => {
   const users: User[] = [
     {
-      name: "2024-08-11",
+      name: "2024-08-11T00:00:00.000Z",
       age: 20,
       company: {
         name: "FMP",
@@ -69,6 +69,7 @@ const App = (): ReactElement<any, any> => {
             columns={{
               name: {
                 label: "Name",
+                type: "date",
                 // render(item, setUpdate) {
                 //   return (
                 //     <input

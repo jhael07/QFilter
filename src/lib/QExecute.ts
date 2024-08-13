@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * ### QExecute Class
  *  * This class provides methods to execute queries constructed using the QFilterBuilder.
@@ -16,10 +17,11 @@ class QExecute<T> {
    */
   protected QExecute(filters: string, dataSource: Array<T>): ReadonlyArray<T> {
     const result: Array<T> = [];
-    const fn = new Function("data", "return " + filters);
 
+    const fn = new Function("data", "return " + filters);
     for (let i = 0; i < dataSource.length; i++) {
       const data = dataSource[i];
+
       if (fn(data)) result.push(data);
     }
     return result as ReadonlyArray<T>;

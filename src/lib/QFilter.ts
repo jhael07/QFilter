@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+import { OperatorsType } from "@/utils/string";
 import QExecute from "./QExecute";
 import {
   commonFilterProps,
@@ -37,12 +38,12 @@ class QFilter<T> extends QExecute<T> {
     IsNotNull: `data.{field} != null`,
     IsUndefined: `data.{field} == undefined`,
     IsNotUndefined: `data.{field} != undefined`,
-    IsDateGreaterThan: `new Date(data.{field}) > new Date({value})`,
-    IsDateGreaterThanOrEqual: `new Date(data.{field}) >= new Date({value})`,
-    IsDateLessThan: `new Date(data.{field}) < new Date({value})`,
-    IsDateLessThanOrEqual: `new Date(data.{field}) <= new Date({value})`,
-    IsDateEqualTo: `new Date(data.{field}) == new Date({value})`,
-    IsDateNotEqualTo: `new Date(data.{field}) != new Date({value})`,
+    IsDateGreaterThan: `new Date(data.{field}?.split("T")[0]).getTime() > new Date({value}).getTime()`,
+    IsDateGreaterThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() >= new Date({value}).getTime()`,
+    IsDateLessThan: `new Date(data.{field}?.split("T")[0]).getTime() < new Date({value}).getTime()`,
+    IsDateLessThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() <= new Date({value}).getTime()`,
+    IsDateEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() == new Date({value}).getTime()`,
+    IsDateNotEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() != new Date({value}).getTime()`,
   };
 
   public filtersApplied: number;
@@ -81,6 +82,7 @@ class QFilter<T> extends QExecute<T> {
         .replaceAll("{field}", field.toString())
         .replaceAll("{value}", newVal?.toString() ?? "");
 
+      console.log(this.buildFilters);
       return;
     }
 
@@ -103,7 +105,7 @@ class QFilter<T> extends QExecute<T> {
   }
 
   gridify(): QFilterGridify {
-    const gridifyCompare: Record<string, string> = {
+    const gridifyCompare: { [key in keyof OperatorsType]?: string } = {
       Equals: "=",
       NotEquals: "!=",
       LessThan: "<",
@@ -116,6 +118,18 @@ class QFilter<T> extends QExecute<T> {
       NotStartsWith: "!^",
       EndsWith: "$",
       NotEndsWith: "!$",
+      IsDateEqualTo: "=",
+      IsDateGreaterThan: ">",
+      IsDateGreaterThanOrEqual: ">=",
+      IsDateLessThan: "<",
+      IsDateLessThanOrEqual: "<=",
+      IsDateNotEqualTo: "!=",
+      IsEmpty: "=",
+      IsNotEmpty: "!=",
+      IsNotNull: "!=",
+      IsNotUndefined: "!=",
+      IsNull: "=",
+      IsUndefined: "=",
     };
 
     let gridifyFilter: string = "";
@@ -127,7 +141,9 @@ class QFilter<T> extends QExecute<T> {
         if (item.type === "comparisonOperator") {
           if (!item.field) return;
           gridifyFilter +=
-            item.field?.toString().replaceAll("?", "") + gridifyCompare[item.operator] + item.value;
+            item.field?.toString().replaceAll("?", "") +
+            gridifyCompare[item.operator as keyof OperatorsType] +
+            item.value;
         }
         if (item.type === "logicalOperator") {
           if ((item.operator as any) === "&&") gridifyFilter += ",";

@@ -34,3 +34,30 @@ export enum OPERATORS {
   "IsUndefined" = "IsUndefined",
   "IsNotUndefined" = "IsNotUndefined",
 }
+
+export type OperatorsType = {
+  Equals: string;
+  NotEquals: string;
+  LessThan: string;
+  GreaterThan: string;
+  GreaterThanOrEqual: string;
+  LessThanOrEqual: string;
+  Contains: string;
+  NotContains: string;
+  StartsWith: string;
+  NotStartsWith: string;
+  EndsWith: string;
+  NotEndsWith: string;
+  IsEmpty: string;
+  IsNotEmpty: string;
+  IsNull: string;
+  IsNotNull: string;
+  IsDateGreaterThan: string;
+  IsDateGreaterThanOrEqual: string;
+  IsDateLessThan: string;
+  IsDateLessThanOrEqual: string;
+  IsDateEqualTo: string;
+  IsDateNotEqualTo: string;
+  IsUndefined: string;
+  IsNotUndefined: string;
+};
