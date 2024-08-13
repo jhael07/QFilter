@@ -11,7 +11,7 @@ type ColumnsQFilter<T> = {
 
 interface QFilterOption {
   label: string | number;
-  type?: "number" | "text";
+  type?: "number" | "text" | "date";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
   render?:
@@ -47,12 +47,12 @@ type CloseButtonProps = {
 
 type ColumnValueProps<T> = {
   filter: FilterOperator<T>;
-  changesSave: Dispatch<SetStateAction<boolean>>;
   reRenderFn: Function;
   type?: "number" | "text" | "boolean" | "date";
   options?: Array<SelectOption>;
   allowMultiple?: boolean;
   label: string;
+  isDisabled?: boolean;
 };
 
 type LogicalOperatorsConfig = {
@@ -63,7 +63,6 @@ type LogicalOperatorsConfig = {
 type FilterBodyOperationsProps<T> = {
   filters: FiltersType<T>[];
   setReRender: Dispatch<SetStateAction<boolean>>;
-  changesSave: Dispatch<SetStateAction<boolean>>;
   columns?: ColumnsQFilter<T>;
   operators?: OperatorsConfig;
   columnsConfig?: ColumnsConfig;
@@ -117,6 +116,18 @@ type OperatorsConfig = {
   NotStartsWith?: string;
   EndsWith?: string;
   NotEndsWith?: string;
+  IsEmpty?: string;
+  IsNotEmpty?: string;
+  IsNull?: string;
+  IsNotNull?: string;
+  IsDateGreaterThan?: string;
+  IsDateGreaterThanOrEqual?: string;
+  IsDateLessThan?: string;
+  IsDateLessThanOrEqual?: string;
+  IsDateEqualTo?: string;
+  IsDateNotEqualTo?: string;
+  IsUndefined?: string;
+  IsNotUndefined?: string;
 };
 
 type ColumnsConfig = {
@@ -129,7 +140,6 @@ type ComparisonOperatorProps<T> = {
   columns: ColumnsQFilter<T>;
   reRenderFn: Dispatch<SetStateAction<boolean>>;
   item: FilterOperator<T>;
-  changesSave: Dispatch<SetStateAction<boolean>>;
   arr: any[];
   i: number;
   operators?: OperatorsConfig;

@@ -14,11 +14,10 @@ type SelectComponent<T> = {
   allowMultiple?: boolean;
   type?: "column" | "operator" | "value";
   valueType?: "number" | "text" | "date" | "boolean";
-  changesSave?: Dispatch<SetStateAction<boolean>>;
 };
 
 const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
-  const { options, allowMultiple = false, type = "column", changesSave } = props;
+  const { options, allowMultiple = false, type = "column" } = props;
 
   const [selectedValue, setSelectedValue] = useState<{
     hideOptions: boolean;
@@ -37,6 +36,12 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
     "NotStartsWith",
     "EndsWith",
     "NotEndsWith",
+    "IsEmpty",
+    "IsNotEmpty",
+    "IsNull",
+    "IsNotNull",
+    "IsUndefined",
+    "IsNotUndefined",
   ];
 
   const operatorNumber = [
@@ -48,6 +53,15 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
     "GreaterThanOrEqual",
   ];
 
+  const operatorDate = [
+    "IsDateGreaterThan",
+    "IsDateGreaterThanOrEqual",
+    "IsDateLessThan",
+    "IsDateLessThanOrEqual",
+    "IsDateEqualTo",
+    "IsDateNotEqualTo",
+  ];
+
   const optionsFilter = options?.filter((option) => {
     if (type !== "operator") return option;
     if (props.valueType === "number") {
@@ -55,6 +69,9 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
     }
     if (props.valueType === "text") {
       return operatorText.includes(option?.value?.toString() ?? "");
+    }
+    if (props.valueType === "date") {
+      return operatorDate.includes(option?.value?.toString() ?? "");
     }
 
     return option;
@@ -131,7 +148,6 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
                 setLabelValue(x.label);
                 setFilter("");
                 props.reRenderFn((prev) => !prev);
-                changesSave?.(false);
               };
 
               return (

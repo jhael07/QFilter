@@ -12,9 +12,21 @@ type OP =
   | "NotStartsWith"
   | "EndsWith"
   | "NotEndsWith"
+  | "IsEmpty"
+  | "IsNotEmpty"
+  | "IsNull"
+  | "IsNotNull"
+  | "IsDateGreaterThan"
+  | "IsDateGreaterThanOrEqual"
+  | "IsDateLessThan"
+  | "IsDateLessThanOrEqual"
+  | "IsDateEqualTo"
+  | "IsDateNotEqualTo"
+  | "IsUndefined"
+  | "IsNotUndefined"
   | ComparisonOperator;
 
-type FilterType = "group" | "logicalOperator" | "comparisonOperator";
+type FilterType = "group" | "logicalOperator" | "comparisonOperator" | "dateOperator";
 
 type FilterGroup = "(" | ")";
 

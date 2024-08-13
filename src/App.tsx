@@ -15,7 +15,7 @@ type User = {
 const App = (): ReactElement<any, any> => {
   const users: User[] = [
     {
-      name: true,
+      name: "2024-08-11",
       age: 20,
       company: {
         name: "FMP",
@@ -62,13 +62,13 @@ const App = (): ReactElement<any, any> => {
             onReset={() => {}}
             lang={QFILTER_CONFIG.spanish}
             onFilter={(QFilter) => {
+              console.log(QFilter.gridify());
               console.log(QFilter.filter(users));
-              console.log(QFilter.filtersApplied);
+              // console.log(QFilter.filtersApplied);
             }}
             columns={{
               name: {
                 label: "Name",
-                options: [{ label: "Verdadero", value: true }],
                 // render(item, setUpdate) {
                 //   return (
                 //     <input

@@ -31,6 +31,18 @@ class QFilter<T> extends QExecute<T> {
     NotEndsWith: `!data.{field}.toLowerCase().endsWith({value}.toLowerCase())`,
     Contains: `data.{field}.toLowerCase().includes({value}.toLowerCase())`,
     NotContains: `!data.{field}.toLowerCase().includes({value}.toLowerCase())`,
+    IsEmpty: `data.{field}?.length == ''`,
+    IsNotEmpty: "data.{field}?.length != ''",
+    IsNull: `data.{field} == null`,
+    IsNotNull: `data.{field} != null`,
+    IsUndefined: `data.{field} == undefined`,
+    IsNotUndefined: `data.{field} != undefined`,
+    IsDateGreaterThan: `new Date(data.{field}) > new Date({value})`,
+    IsDateGreaterThanOrEqual: `new Date(data.{field}) >= new Date({value})`,
+    IsDateLessThan: `new Date(data.{field}) < new Date({value})`,
+    IsDateLessThanOrEqual: `new Date(data.{field}) <= new Date({value})`,
+    IsDateEqualTo: `new Date(data.{field}) == new Date({value})`,
+    IsDateNotEqualTo: `new Date(data.{field}) != new Date({value})`,
   };
 
   public filtersApplied: number;
@@ -63,7 +75,6 @@ class QFilter<T> extends QExecute<T> {
 
     if (item.type === "comparisonOperator") {
       const { field, operator, value } = item as FilterOperator<T>;
-
       const newVal = typeof value === "string" ? `'${value}'` : value;
 
       this.buildFilters += QFilter.operators[operator]
@@ -113,9 +124,11 @@ class QFilter<T> extends QExecute<T> {
       const itemFilters = filters ?? this.filters;
       itemFilters?.forEach((x) => {
         const item = x as FilterOperator<any>;
-        if (item.type === "comparisonOperator")
+        if (item.type === "comparisonOperator") {
+          if (!item.field) return;
           gridifyFilter +=
-            item.field.toString().replaceAll("?", "") + gridifyCompare[item.operator] + item.value;
+            item.field?.toString().replaceAll("?", "") + gridifyCompare[item.operator] + item.value;
+        }
         if (item.type === "logicalOperator") {
           if ((item.operator as any) === "&&") gridifyFilter += ",";
           if ((item.operator as any) === "||") gridifyFilter += "|";
@@ -150,6 +163,7 @@ class QFilter<T> extends QExecute<T> {
         this.buildFilters = "";
         this.filters?.forEach((item) => this.generateFilter(item));
       }
+
       return this.QExecute(this.buildFilters, dataSource) as T[];
     } catch (err: any) {
       return [];

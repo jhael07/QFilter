@@ -33,6 +33,18 @@ export namespace QFILTER_CONFIG {
       LessThan: "Menor a",
       LessThanOrEqual: "Menor o igual a",
       GreaterThanOrEqual: "Mayor o igual a",
+      IsEmpty: "Esta vacio",
+      IsNotEmpty: "No está vacio",
+      IsDateEqualTo: "La fecha es igual a",
+      IsDateGreaterThan: "La fecha es mayor a",
+      IsDateGreaterThanOrEqual: "La fecha es mayor o igual a",
+      IsDateLessThan: "La fecha es menor a",
+      IsDateLessThanOrEqual: "La fecha es menor o igual a",
+      IsDateNotEqualTo: "La fecha no es igual a",
+      IsNotNull: "No es nulo",
+      IsNotUndefined: "No es indefinido",
+      IsNull: "Es nulo",
+      IsUndefined: "Es Indefinido",
     },
   };
 }

@@ -17,22 +17,23 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
     filters,
     setReRender,
     columns,
-    changesSave,
     operators,
     columnsConfig,
     logicalOperators,
     headerButtons,
   } = props;
+
   const logicalOperatorsOptions = [
     { value: "&&", label: logicalOperators?.["AND"] ?? "AND" },
     { value: "||", label: logicalOperators?.["OR"] ?? "OR" },
-  ] as any;
+  ] as { value: string; label: string }[];
 
   return (
     <div className="q-filter-operation-container">
       {filters?.map((x, i, arr) => {
         const filter: FiltersUI<T> = x as any;
-        if (filter.type === "comparisonOperator")
+
+        if (filter.type === "comparisonOperator") {
           return (
             <ComparisonOperator
               operators={operators}
@@ -40,12 +41,12 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
               arr={arr}
               i={i}
               columnsConfig={columnsConfig}
-              changesSave={changesSave}
               columns={columns ?? {}}
               item={x as any}
               reRenderFn={() => setReRender((prev) => !prev)}
             />
           );
+        }
 
         if (filter.type === "logicalOperator") {
           return (
@@ -107,16 +108,7 @@ const FilterBodyOperations = <T,>(props: FilterBodyOperationsProps<T>): ReactEle
 export default FilterBodyOperations;
 
 const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
-  const {
-    item,
-    columns,
-    reRenderFn,
-    changesSave,
-    arr,
-    i,
-    operators: OperatorsConfig,
-    columnsConfig,
-  } = props;
+  const { item, columns, reRenderFn, arr, i, operators: OperatorsConfig, columnsConfig } = props;
 
   const operatorsOptions = Object.keys(OPERATORS).map((x) => {
     const operatorAlias = (OperatorsConfig as any)?.[x] ?? x;
@@ -143,6 +135,7 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
     item.value = value;
     reRenderFn((prev) => !prev);
   };
+
   return (
     <div className="comparison-operator_container">
       <ColumnFilter title={columnsConfig?.["Column"] ?? "Column"}>
@@ -153,9 +146,9 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
           type="column"
         />
       </ColumnFilter>
+
       <ColumnFilter title={columnsConfig?.["Operator"] ?? "Operator"}>
         <SelectComponent<T>
-          changesSave={changesSave}
           reRenderFn={reRenderFn}
           type="operator"
           item={item}
@@ -182,7 +175,6 @@ const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
         <ColumnValue
           label={columnsConfig?.["Value"] ?? "Value"}
           type={colItem?.type}
-          changesSave={changesSave}
           reRenderFn={reRenderFn}
           filter={item}
         />

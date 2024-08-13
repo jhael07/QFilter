@@ -1,46 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { ColumnValueProps } from "../types";
 import ColumnFilter from "./ColumnFilter";
 import { BasicInput } from "./form";
-import { MdModeEdit } from "react-icons/md";
-import { FaSave } from "react-icons/fa";
-import CustomButton from "./buttons/CustomButton";
+import { OP } from "../lib/types";
 
 const ColumnValue = <T,>(props: ColumnValueProps<T>): ReactElement<any> => {
-  const { filter, changesSave, reRenderFn, type, label } = props;
+  const { filter, reRenderFn, type, label } = props;
 
   const [inputValue, setInputValue] = useState("");
-  const [isDisable, setIsDisable] = useState(false);
 
-  const handleEditBtn = () => {
-    setIsDisable(false);
-    changesSave(true);
-  };
-
-  const handleSaveButton = () => {
-    setIsDisable(true);
+  useEffect(() => {
     filter.value = inputValue;
-    changesSave(false);
     reRenderFn();
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, inputValue]);
 
+  const listOfOperatorsThatDisabledTheInput: OP[] = [
+    "IsEmpty",
+    "IsNotEmpty",
+    "IsNotNull",
+    "IsNull",
+    "IsUndefined",
+    "IsNotUndefined",
+  ];
   return (
     <ColumnFilter title={label}>
-      {type !== "boolean" && type !== "date" && (
-        <BasicInput
-          setValue={setInputValue}
-          value={filter.value as any}
-          disabled={isDisable}
-          type={type}
-        >
-          {isDisable ? (
+      <BasicInput
+        setValue={setInputValue}
+        value={filter.value as any}
+        disabled={listOfOperatorsThatDisabledTheInput.includes(filter.operator)}
+        type={type}
+      >
+        {/* {isDisable ? (
             <CustomButton Icon={MdModeEdit} onClick={handleEditBtn} />
           ) : (
             <CustomButton Icon={FaSave} onClick={handleSaveButton} />
-          )}
-        </BasicInput>
-      )}
+          )} */}
+      </BasicInput>
     </ColumnFilter>
   );
 };

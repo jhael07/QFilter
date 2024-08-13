@@ -21,9 +21,8 @@ import { IoClose } from "react-icons/io5";
  * @returns {ReactElement<any>} The filter component.
  */
 export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> => {
-  const { columns, onFilter, onReset, onClose, onError, lang: config } = props;
+  const { columns, onFilter, onReset, onClose, onError, lang } = props;
 
-  const [changesNotSave, setChangesNotSave] = useState(false);
   const [_, setReRender] = useState(false);
 
   const QFilter = useRef<QFilterBuilder<T> | null>(null);
@@ -47,29 +46,23 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
     filters?.forEach((x, _) => {
       const item: FilterOperator<any> = x as any;
 
-      if (item.type !== "comparisonOperator") return;
-
       const column = columns[item.field as Join<T>];
 
-      if (!item.children) {
-        if (!column) throw Error(errorMessage(ERROR_CODES.EmptyColumn));
+      if (!item.children || item.children.length < 1) {
+        if (item.children && item.children?.length < 1) {
+          throw Error(errorMessage(ERROR_CODES.GroupEmpty));
+        }
 
-        if (!item.operator)
+        if (!column) {
+          throw Error(errorMessage(ERROR_CODES.EmptyColumn));
+        }
+        if (!item.operator) {
           throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
-
-        if (!item.value)
-          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
+        }
       } else {
-        if (item.children && item.children.length === 0)
-          throw Error(errorMessage(ERROR_CODES.EmptyValue, column?.label.toString()));
-
         validation(item.children);
       }
     });
-
-    if (changesNotSave) {
-      throw Error("Error: Please save all the filters.");
-    }
   };
 
   const handleFilter = () => {
@@ -77,7 +70,6 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       validation(filtersArr);
       onFilter(QFilter.current!.build());
     } catch (err: any) {
-      console.log(onError);
       onError(err.message ?? "One or more conditions are empty or invalid.");
     }
   };
@@ -95,12 +87,12 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       <div className="q-filter-container-header">
         <div style={{ display: "flex", gap: 10 }}>
           <HeadButton
-            title={config?.headerButtons?.["Filter"] ?? "Filter"}
+            title={lang?.headerButtons?.["Filter"] ?? "Filter"}
             Icon={MdFilterListAlt}
             onClick={handleAddCondition}
           />
           <HeadButton
-            title={config?.headerButtons?.["Group"] ?? "Group"}
+            title={lang?.headerButtons?.["Group"] ?? "Group"}
             Icon={FaLayerGroup}
             onClick={handleAddGroup}
           />
@@ -118,14 +110,13 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
           <FilterBodyOperations
-            logicalOperators={config?.logicalOperators}
-            changesSave={setChangesNotSave}
-            columnsConfig={config?.columns}
+            logicalOperators={lang?.logicalOperators}
+            columnsConfig={lang?.columns}
             filters={filtersArr}
             setReRender={setReRender}
             columns={columns}
-            headerButtons={config?.headerButtons}
-            operators={config?.operators}
+            headerButtons={lang?.headerButtons}
+            operators={lang?.operators}
           />
         ) : (
           <EmptyFilters />
@@ -134,11 +125,8 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
 
       <div className="q-filter-footer_container">
         <div className="q-filter-footer_content">
-          <FooterButton title={config?.FooterButtons?.["Reset"] ?? "Reset"} onClick={handleReset} />
-          <FooterButton
-            title={config?.FooterButtons?.["Apply"] ?? "Apply"}
-            onClick={handleFilter}
-          />
+          <FooterButton title={lang?.FooterButtons?.["Reset"] ?? "Reset"} onClick={handleReset} />
+          <FooterButton title={lang?.FooterButtons?.["Apply"] ?? "Apply"} onClick={handleFilter} />
         </div>
       </div>
     </div>
