@@ -38,12 +38,12 @@ class QFilter<T> extends QExecute<T> {
     IsNotNull: `data.{field} != null`,
     IsUndefined: `data.{field} == undefined`,
     IsNotUndefined: `data.{field} != undefined`,
-    IsDateGreaterThan: `new Date(data.{field}?.split("T")[0]).getTime() > new Date({value}).getTime()`,
-    IsDateGreaterThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() >= new Date({value}).getTime()`,
-    IsDateLessThan: `new Date(data.{field}?.split("T")[0]).getTime() < new Date({value}).getTime()`,
-    IsDateLessThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() <= new Date({value}).getTime()`,
-    IsDateEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() == new Date({value}).getTime()`,
-    IsDateNotEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() != new Date({value}).getTime()`,
+    IsDateGreaterThan: `new Date(data.{field}?.split("T")[0]).getTime() > new Date({value}?.split("T")[0]).getTime()`,
+    IsDateGreaterThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() >= new Date({value}?.split("T")[0]).getTime()`,
+    IsDateLessThan: `new Date(data.{field}?.split("T")[0]).getTime() < new Date({value}?.split("T")[0]).getTime()`,
+    IsDateLessThanOrEqual: `new Date(data.{field}?.split("T")[0]).getTime() <= new Date({value}?.split("T")[0]).getTime()`,
+    IsDateEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() == new Date({value}?.split("T")[0]).getTime()`,
+    IsDateNotEqualTo: `new Date(data.{field}?.split("T")[0]).getTime() != new Date({value}?.split("T")[0]).getTime()`,
   };
 
   public filtersApplied: number;
