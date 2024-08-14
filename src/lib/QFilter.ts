@@ -82,7 +82,6 @@ class QFilter<T> extends QExecute<T> {
         .replaceAll("{field}", field.toString())
         .replaceAll("{value}", newVal?.toString() ?? "");
 
-      console.log(this.buildFilters);
       return;
     }
 
