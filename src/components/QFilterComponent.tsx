@@ -44,6 +44,8 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
 
   const validation = (filters?: any[]): void => {
     filters?.forEach((x, _) => {
+      if (x.type === "logicalOperator") return;
+
       const item: FilterOperator<any> = x as any;
 
       const column = columns[item.field as Join<T>];
