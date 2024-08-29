@@ -1,44 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement } from "react";
 import "./index.css";
-import { FilterGroup } from "./lib/types";
 import QFilterComponent from "./lib";
 import { QFILTER_CONFIG } from "./constants/config";
 
 type User = {
   name: string | boolean;
-  age: number;
-  company?: { name: string; subgroup?: { subname: string } };
-  a?: FilterGroup[];
+  email?: string;
 };
 
 const App = (): ReactElement<any, any> => {
   const users: User[] = [
     {
-      name: "2024-08-11T00:00:00.000Z",
-      age: 20,
-      company: {
-        name: "FMP",
-      },
-      a: [],
+      name: "Jhael",
+      email: "jhael@gmail.com",
+    },
+    {
+      name: "Jose Galva",
+      email: "galva@gmail.com",
+    },
+    {
+      name: "Sthifer Montero",
+      email: "sthifer@gmail.com",
     },
     {
       name: "Tomas",
-      age: 20,
-      company: {
-        name: "FMP",
-      },
-      a: [],
+      email: "Tomas@gmail.com",
     },
     {
-      name: "Miguel",
-      age: 26,
-      company: {
-        name: "FMP",
-        subgroup: {
-          subname: "Shit what i've done with my life ",
-        },
-      },
+      name: "Thammy",
+    },
+    {
+      name: "Enmanuel",
     },
   ];
 
@@ -64,27 +57,13 @@ const App = (): ReactElement<any, any> => {
             onFilter={(QFilter) => {
               console.log(QFilter.gridify());
               console.log(QFilter.filter(users));
-              // console.log(QFilter.filtersApplied);
             }}
             columns={{
               name: {
                 label: "Name",
-                type: "date",
-                // render(item, setUpdate) {
-                //   return (
-                //     <input
-                //       value={item.value?.toString()}
-                //       type="datetime-local"
-                //       onChange={(e) => setUpdate(e.target.value)}
-                //       className="q-filter-input-value"
-                //     />
-                //   );
-                // },
-                // type: "boolean",
               },
-              age: {
-                label: "Age",
-                type: "number",
+              email: {
+                label: "Email",
               },
             }}
           />
