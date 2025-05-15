@@ -47,23 +47,17 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
       if (x.type === "logicalOperator") return;
 
       const item: FilterOperator<any> = x as any;
-
       const column = columns[item.field as Join<T>];
 
       if (!item.children || item.children.length < 1) {
-        if (item.children && item.children?.length < 1) {
+        if (item.children && item.children?.length < 1)
           throw Error(errorMessage(ERROR_CODES.GroupEmpty));
-        }
 
-        if (!column) {
-          throw Error(errorMessage(ERROR_CODES.EmptyColumn));
-        }
-        if (!item.operator) {
+        if (!column) throw Error(errorMessage(ERROR_CODES.EmptyColumn));
+
+        if (!item.operator)
           throw Error(errorMessage(ERROR_CODES.EmptyOperator, column?.label.toString()));
-        }
-      } else {
-        validation(item.children);
-      }
+      } else validation(item.children);
     });
   };
 
@@ -109,6 +103,7 @@ export const QFilterComponent = <T,>(props: QFilterProps<T>): ReactElement<any> 
           </button>
         )}
       </div>
+
       <div className="q-filter-operations-container">
         {filtersArr?.length > 0 ? (
           <FilterBodyOperations

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect, useMemo, useState } from "react";
 import { FilterOperator, Join, OP } from "../lib/types";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaInbox } from "react-icons/fa";
@@ -16,13 +16,18 @@ type SelectComponent<T> = {
   valueType?: "number" | "text" | "date" | "boolean";
 };
 
+type SelectedValueProps = {
+  hideOptions: boolean;
+  value?: string | string[] | number | number[] | boolean | boolean[] | null;
+};
+
 const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
   const { options, allowMultiple = false, type = "column" } = props;
 
-  const [selectedValue, setSelectedValue] = useState<{
-    hideOptions: boolean;
-    value?: string | string[] | number | number[] | boolean | boolean[] | null;
-  }>({ hideOptions: true, value: props.item.field?.toString() ?? "" });
+  const [selectedValue, setSelectedValue] = useState<SelectedValueProps>({
+    hideOptions: true,
+    value: props.item.field?.toString() ?? "",
+  });
 
   const [labelValue, setLabelValue] = useState<string | number>();
   const [filter, setFilter] = useState<string>("");
@@ -64,48 +69,44 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
 
   const optionsFilter = options?.filter((option) => {
     if (type !== "operator") return option;
-    if (props.valueType === "number") {
+
+    if (props.valueType === "number")
       return operatorNumber.includes(option?.value?.toString() ?? "");
-    }
-    if (props.valueType === "text") {
-      return operatorText.includes(option?.value?.toString() ?? "");
-    }
-    if (props.valueType === "date") {
-      return operatorDate.includes(option?.value?.toString() ?? "");
-    }
+
+    if (props.valueType === "text") return operatorText.includes(option?.value?.toString() ?? "");
+    if (props.valueType === "date") return operatorDate.includes(option?.value?.toString() ?? "");
 
     return option;
   });
 
   useEffect(() => {
-    if (type === "value") {
-      setLabelValue("");
-    } else {
+    if (type === "value") setLabelValue("");
+    else
       setLabelValue(
         props.item.type === "logicalOperator"
           ? props.options?.find((x) => x.value === props.item.operator)?.label
           : labelValue ?? selectedValue?.value?.toString()
       );
-    }
   }, []);
 
-  const optionsSelectArr = optionsFilter?.filter((x) =>
-    x.label
-      ?.toString()
-      .toLowerCase()
-      .includes(filter?.toString().toLowerCase() ?? "")
+  const optionsSelectArr = useMemo(
+    () =>
+      optionsFilter?.filter((x) =>
+        x.label
+          ?.toString()
+          .toLowerCase()
+          .includes(filter?.toString().toLowerCase() ?? "")
+      ),
+    [optionsFilter, filter]
   );
 
   const handleOnClick = () => {
-    setSelectedValue((prev) => ({
-      ...prev,
-      hideOptions: !prev?.hideOptions,
-    }));
+    setSelectedValue((prev) => ({ ...prev, hideOptions: !prev.hideOptions }));
   };
 
   return (
     <div style={{ width: "100%", position: "relative" }}>
-      <div onClick={handleOnClick} className="q-filter-select-container">
+      <div className="q-filter-select-container">
         <input
           type="text"
           autoComplete="none"
@@ -114,13 +115,21 @@ const SelectComponent = <T,>(props: SelectComponent<T>): ReactElement<any> => {
           style={{ width: "100%" }}
           className="q-filter-outline-none q-filter-bg-transparent "
           value={labelValue ?? ""}
+          onBlurCapture={(e) => {
+            const classList = e.relatedTarget?.classList;
+            if (classList?.contains("q-filter-select_input")) return;
+            handleOnClick();
+          }}
+          onFocus={() => {
+            setSelectedValue((prev) => ({ ...prev, hideOptions: false }));
+          }}
           onChange={(e) => {
             setLabelValue(e.target.value);
             setFilter(e.target.value);
           }}
         />
 
-        <button className="q-filter-select-arrow">
+        <button className="q-filter-select-arrow" onClick={handleOnClick}>
           {!selectedValue?.hideOptions ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </button>
       </div>

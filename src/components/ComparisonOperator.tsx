@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Join } from "@/lib/types";
 import { ComparisonOperatorProps } from "@/types";
-import ColumnFilter from "./ColumnFilter";
-import SelectComponent from "./SelectComponent";
-import ColumnValue from "./ColumnValue";
 import CloseButton from "./buttons/CloseButton";
+import SelectComponent from "./SelectComponent";
 import { OPERATORS } from "../utils/string";
+import ColumnFilter from "./ColumnFilter";
+import ColumnValue from "./ColumnValue";
+import { Join } from "@/lib/types";
 
 const ComparisonOperator = <T,>(props: ComparisonOperatorProps<T>) => {
   const { item, columns, reRenderFn, arr, i, operators: OperatorsConfig, columnsConfig } = props;

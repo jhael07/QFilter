@@ -19,6 +19,7 @@ class QExecute<T> {
     const result: Array<T> = [];
 
     const fn = new Function("data", "return " + filters);
+
     for (let i = 0; i < dataSource.length; i++) {
       const data = dataSource[i];
 

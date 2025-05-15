@@ -1,5 +1,5 @@
 import QFilterBuilder from "./lib/QFilterBuilder";
-import { generateUID, and, group, not, or, condition } from "./lib/utils/operations";
+import { generateUUID, and, group, not, or, condition } from "./lib/utils/operations";
 import {
   ColumnValueProps,
   ERROR_CODES,
@@ -38,7 +38,7 @@ import { QFilterProps } from "./types";
 
 export {
   QFilterBuilder,
-  generateUID,
+  generateUUID as generateUID,
   and,
   group,
   not,

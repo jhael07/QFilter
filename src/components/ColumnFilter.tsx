@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactElement, ReactNode } from "react";
 
-const ColumnFilter = ({
-  children,
-  title,
-}: {
+type ColumnFilterProps = {
   title: string;
   children: ReactNode;
-}): ReactElement<any> => {
+};
+
+const ColumnFilter = ({ children, title }: ColumnFilterProps): ReactElement<any> => {
   return (
     <div className="column-filter_container">
       <p className="column-filter_text">{title}:</p>

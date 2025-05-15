@@ -135,6 +135,7 @@ class QFilter<T> extends QExecute<T> {
 
     const executeGridify = (filters?: FiltersType<T>[]) => {
       const itemFilters = filters ?? this.filters;
+
       itemFilters?.forEach((x) => {
         const item = x as FilterOperator<any>;
         if (item.type === "comparisonOperator") {

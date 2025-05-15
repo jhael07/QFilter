@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FilterGroupOperator, FiltersType, GroupCondition, Join, OP } from "../types";
+import { v4 as uuid } from "uuid";
 
 /**
  * Generates a random UID with only 8 characters.
@@ -7,14 +8,14 @@ import { FilterGroupOperator, FiltersType, GroupCondition, Join, OP } from "../t
  *
  * @returns {string} A string representing the generated UID.
  */
-export const generateUID = (): string => crypto.randomUUID().substring(0, 8);
+export const generateUUID = (): string => uuid().substring(0, 8);
 
 /**
  * Adds a filter condition to the query.
  * @param {Join<T>} field The field on which to apply the filter.
  * @param {OP} operator The comparison operator for the filter.
  * @param {number | string | boolean} value The value to compare against.
- * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+ * @param {string | number} [id=uuid().substring(0, 8)] Optional unique identifier for the filter.
  * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
  * @returns {GroupCondition<T>} returns a group condition object..
  */
@@ -22,7 +23,7 @@ export const condition = <T>(
   field: Join<T>,
   operator: OP,
   value: number | string | boolean | undefined | null,
-  id: string | number = crypto.randomUUID().substring(0, 8),
+  id: string | number = uuid().substring(0, 8),
   parentId: string | number | null = null
 ): GroupCondition<T> => {
   const body: GroupCondition<T> = {
@@ -42,7 +43,7 @@ export const addGroupUI = <T>(
   parentId: string | number | null = null
 ): void => {
   const body: FilterGroupOperator<T> = {
-    id: generateUID(),
+    id: generateUUID(),
     parentId,
     children: [],
     type: "group",
@@ -59,7 +60,7 @@ export const addGroupUI = <T>(
  * @param {Join<T>} field The field on which to apply the filter.
  * @param {OP} operator The comparison operator for the filter.
  * @param {number | string | boolean} value The value to compare against.
- * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+ * @param {string | number} [id=uuid().substring(0, 8)] Optional unique identifier for the filter.
  * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
  * @returns {this} The instance of the class with the added filter condition.
  */
@@ -68,7 +69,7 @@ export const addConditionUI = <T>(
   parentId: string | number | null = null
 ): void => {
   const body = {
-    id: generateUID(),
+    id: generateUUID(),
     parentId,
     type: "comparisonOperator",
   } as any;
@@ -84,14 +85,13 @@ export const addConditionUI = <T>(
 export const group = <T>(
   filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>
 ): Array<GroupCondition<T>> => {
-  const id = generateUID();
+  const id = generateUUID();
 
   const children: any[] = [];
 
   filters.forEach((item) => {
-    if (children.length > 0 && children.at(-1)?.type !== "logicalOperator") {
-      children.push(and());
-    }
+    if (children.length > 0 && children.at(-1)?.type !== "logicalOperator") children.push(and());
+
     children.push({ ...item, parentId: id });
   });
 
@@ -110,7 +110,7 @@ export const group = <T>(
  */
 export const and = <T>(): GroupCondition<T> => {
   return {
-    id: generateUID(),
+    id: generateUUID(),
     operator: "&&",
     type: "logicalOperator",
   };
@@ -122,7 +122,7 @@ export const and = <T>(): GroupCondition<T> => {
  */
 export const or = <T>(): GroupCondition<T> => {
   return {
-    id: generateUID(),
+    id: generateUUID(),
     operator: "||",
     type: "logicalOperator",
   };
@@ -134,7 +134,7 @@ export const or = <T>(): GroupCondition<T> => {
  */
 export const not = <T>(): GroupCondition<T> => {
   return {
-    id: generateUID(),
+    id: generateUUID(),
     operator: "!",
     type: "logicalOperator",
   };

@@ -31,13 +31,7 @@ const ColumnValue = <T,>(props: ColumnValueProps<T>): ReactElement<any> => {
         value={filter.value as any}
         disabled={listOfOperatorsThatDisabledTheInput.includes(filter.operator)}
         type={type}
-      >
-        {/* {isDisable ? (
-            <CustomButton Icon={MdModeEdit} onClick={handleEditBtn} />
-          ) : (
-            <CustomButton Icon={FaSave} onClick={handleSaveButton} />
-          )} */}
-      </BasicInput>
+      ></BasicInput>
     </ColumnFilter>
   );
 };

@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import QFilter from "./QFilter";
 import { FilterOperator, FiltersType, GroupCondition, Join, OP } from "./types";
-import { generateUID } from "./utils/operations";
+import { generateUUID } from "./utils/operations";
+import { v4 as uuid } from "uuid";
 
 /**
  * ### QFilterBuilder
@@ -24,7 +25,7 @@ class QFilterBuilder<T> {
    * @param {Join<T>} field The field on which to apply the filter.
    * @param {OP} operator The comparison operator for the filter.
    * @param {number | string | boolean} value The value to compare against.
-   * @param {string | number} [id=crypto.randomUUID().substring(0, 8)] Optional unique identifier for the filter.
+   * @param {string | number} [id=uuid().substring(0, 8)] Optional unique identifier for the filter.
    * @param {string | number | null} [parentId=null] Optional parent identifier for hierarchical filters.
    * @returns {this} The instance of the class with the added filter condition.
    */
@@ -33,7 +34,7 @@ class QFilterBuilder<T> {
     field: Join<T>,
     operator: OP,
     value: number | string | boolean | undefined | null,
-    id: string | number = crypto.randomUUID().substring(0, 8),
+    id: string | number = uuid().substring(0, 8),
     parentId: string | number | null = null
   ): this {
     const body: FilterOperator<T> = {
@@ -53,7 +54,7 @@ class QFilterBuilder<T> {
   addConditionUI<T>(filters?: FiltersType<T>[], parentId: string | number | null = null): this {
     const internalFilters = filters ?? this.filters;
     const body = {
-      id: generateUID(),
+      id: generateUUID(),
       parentId,
       type: "comparisonOperator",
     } as any;
@@ -70,7 +71,7 @@ class QFilterBuilder<T> {
    * @returns {this} The instance of the class with the added grouped filter conditions.
    */
   group(filters: Array<GroupCondition<T> | Array<GroupCondition<T>>>): this {
-    const id = generateUID();
+    const id = generateUUID();
 
     const children = filters?.map((filter: any) => ({
       ...filter,
@@ -222,11 +223,13 @@ class QFilterBuilder<T> {
    * @returns {this} The instance of the class with the added logical AND operator.
    */
   and(): this {
-    this.filters.push({
-      id: generateUID(),
+    const filters = {
+      id: generateUUID(),
       operator: "&&",
       type: "logicalOperator",
-    });
+    };
+
+    this.filters.push(filters as any);
 
     return this;
   }
@@ -237,7 +240,7 @@ class QFilterBuilder<T> {
    */
   or(): this {
     this.filters.push({
-      id: generateUID(),
+      id: generateUUID(),
       operator: "||",
       type: "logicalOperator",
     });
@@ -250,7 +253,7 @@ class QFilterBuilder<T> {
    */
   not(): this {
     this.filters.push({
-      id: generateUID(),
+      id: generateUUID(),
       operator: "!",
       type: "logicalOperator",
     });
