@@ -9,6 +9,11 @@
 //   email?: string;
 //   company?: {
 //     name?: string;
+//     address: {
+//       buildingNo: string;
+//       streetNo: string;
+//       addressLine: number;
+//     };
 //   };
 // };
 
@@ -60,6 +65,21 @@
 //             lang={QFILTER_CONFIG.spanish}
 //             onFilter={(QFilter) => {}}
 //             columns={{
+//               "company?.address.streetNo": {
+//                 label: "Numero de la calle",
+//                 options: [{ label: "klk", value: 1 }],
+//                 render(item, setUpdateValue) {
+//                   return (
+//                     <div>
+//                       <iframe
+//                         width="420"
+//                         height="315"
+//                         src="https://www.youtube.com/embed/tgbNymZ7vqY"
+//                       ></iframe>
+//                     </div>
+//                   );
+//                 },
+//               },
 //               company: {
 //                 label: "Nombre de la compañia",
 //               },
