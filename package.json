@@ -1,9 +1,9 @@
 {
   "name": "@jehlicot07/qfilter",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "private": false,
-  "version": "0.8.5",
+  "version": "0.10.9",
   "description": "Query library designed for advanced filtering, crafted with ❤ using TypeScript and React. ⚛",
   "type": "module",
   "author": "Jhael Antonio Rodriguez",
@@ -17,7 +17,7 @@
     "build:vite": "vite build",
     "pub": "npx jsr publish",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "build": "rollup -c && npm publish",
+    "build": "vite build && rollup -c rollup.dts.config.js && node inject-css.js",
     "local": "rollup -c",
     "preview": "vite preview"
   },
